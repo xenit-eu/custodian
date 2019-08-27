@@ -1,0 +1,23 @@
+plugins {
+    id 'java-gradle-plugin'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    lombok = '1.18.8'
+}
+dependencies {
+
+
+    testImplementation 'junit:junit:4.12'
+
+//    testImplementation gradleTestKit()
+//    testImplementation gradleApi()
+
+    implementation "org.projectlombok:lombok:${project.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${project.lombok}"
+
+}

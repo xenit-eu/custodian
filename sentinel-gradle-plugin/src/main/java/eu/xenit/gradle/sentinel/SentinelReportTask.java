@@ -1,0 +1,55 @@
+package eu.xenit.gradle.sentinel;
+
+import eu.xenit.gradle.sentinel.analyzer.SentinelProjectAnalyzer;
+import eu.xenit.gradle.sentinel.analyzer.model.SentinelAnalysisResult;
+import eu.xenit.gradle.sentinel.reporting.SentinelJsonReporter;
+import eu.xenit.gradle.sentinel.reporting.SentinelReporter;
+import eu.xenit.gradle.sentinel.reporting.io.IndentingWriter;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.file.Files;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.OutputFile;
+import org.gradle.api.tasks.TaskAction;
+
+public class SentinelReportTask extends DefaultTask {
+
+    public SentinelReportTask() {
+        this.setDescription("Create a structured report on project metadata and dependencies");
+        this.setGroup("Help");
+
+        // this.getOutputs().upToDateWhen(element -> false);
+    }
+
+
+    private File output = this.getProject().file(this.getProject().getBuildDir().getPath() + "/sentinel/report.json");
+
+    @OutputFile
+    public File getOutput() { return this.output; }
+
+    public SentinelReportTask setOutput(File output) {
+        this.output = output;
+        return this;
+    }
+
+    @TaskAction
+    void report() throws IOException {
+        SentinelAnalysisResult result = new SentinelProjectAnalyzer().analyze(this.getProject());
+
+        SentinelReporter reporter = new SentinelJsonReporter();
+
+//        Writer out = new StringWriter();
+        try (IndentingWriter writer = new IndentingWriter(new BufferedWriter(new FileWriter(getOutput())))) {
+            reporter.write(writer, result);
+        }
+
+//        System.out.println(out.toString());
+    }
+
+}
