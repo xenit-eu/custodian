@@ -1,13 +1,13 @@
-package eu.xenit.gradle.sentinel.reporting;
+package eu.xenit.custodian.sentinel.reporting;
 
-import eu.xenit.gradle.sentinel.analyzer.model.AnalyzedDependency;
-import eu.xenit.gradle.sentinel.analyzer.model.ConfigurationResult;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution.DependencyResolutionState;
-import eu.xenit.gradle.sentinel.analyzer.model.RepositoryResult;
-import eu.xenit.gradle.sentinel.analyzer.model.SentinelAnalysisResult;
-import eu.xenit.gradle.sentinel.reporting.io.IndentingWriter;
-import eu.xenit.gradle.sentinel.reporting.io.JsonWriter;
+import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution;
+import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution.DependencyResolutionState;
+import eu.xenit.custodian.sentinel.analyzer.model.SentinelAnalysisResult;
+import eu.xenit.custodian.sentinel.analyzer.model.AnalyzedDependency;
+import eu.xenit.custodian.sentinel.analyzer.model.ConfigurationResult;
+import eu.xenit.custodian.sentinel.analyzer.model.RepositoryResult;
+import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
+import eu.xenit.custodian.sentinel.reporting.io.JsonWriter;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.BiConsumer;

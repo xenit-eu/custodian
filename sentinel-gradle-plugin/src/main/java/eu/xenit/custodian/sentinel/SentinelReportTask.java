@@ -1,20 +1,15 @@
-package eu.xenit.gradle.sentinel;
+package eu.xenit.custodian.sentinel;
 
-import eu.xenit.gradle.sentinel.analyzer.SentinelProjectAnalyzer;
-import eu.xenit.gradle.sentinel.analyzer.model.SentinelAnalysisResult;
-import eu.xenit.gradle.sentinel.reporting.SentinelJsonReporter;
-import eu.xenit.gradle.sentinel.reporting.SentinelReporter;
-import eu.xenit.gradle.sentinel.reporting.io.IndentingWriter;
+import eu.xenit.custodian.sentinel.analyzer.SentinelProjectAnalyzer;
+import eu.xenit.custodian.sentinel.analyzer.model.SentinelAnalysisResult;
+import eu.xenit.custodian.sentinel.reporting.SentinelJsonReporter;
+import eu.xenit.custodian.sentinel.reporting.SentinelReporter;
+import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.nio.file.Files;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 

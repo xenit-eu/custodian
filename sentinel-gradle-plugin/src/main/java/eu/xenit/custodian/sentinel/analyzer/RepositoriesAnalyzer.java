@@ -1,10 +1,10 @@
-package eu.xenit.gradle.sentinel.analyzer;
+package eu.xenit.custodian.sentinel.analyzer;
 
-import eu.xenit.gradle.sentinel.analyzer.model.FlatDirsRepositoryDetails;
-import eu.xenit.gradle.sentinel.analyzer.model.IvyRepositoryDetails;
-import eu.xenit.gradle.sentinel.analyzer.model.RepositoriesContainer;
-import eu.xenit.gradle.sentinel.analyzer.model.RepositoryResult;
-import eu.xenit.gradle.sentinel.analyzer.model.RepositoryResult.RepositoryResultBuilder;
+import eu.xenit.custodian.sentinel.analyzer.model.FlatDirsRepositoryDetails;
+import eu.xenit.custodian.sentinel.analyzer.model.IvyRepositoryDetails;
+import eu.xenit.custodian.sentinel.analyzer.model.RepositoriesContainer;
+import eu.xenit.custodian.sentinel.analyzer.model.RepositoryResult;
+import eu.xenit.custodian.sentinel.analyzer.model.RepositoryResult.RepositoryResultBuilder;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Collections;

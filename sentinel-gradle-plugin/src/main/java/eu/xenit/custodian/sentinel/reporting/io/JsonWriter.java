@@ -1,4 +1,4 @@
-package eu.xenit.gradle.sentinel.reporting.io;
+package eu.xenit.custodian.sentinel.reporting.io;
 
 import java.io.Writer;
 import java.util.Arrays;

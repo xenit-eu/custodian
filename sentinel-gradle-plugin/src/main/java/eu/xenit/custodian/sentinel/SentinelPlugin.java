@@ -1,4 +1,4 @@
-package eu.xenit.gradle.sentinel;
+package eu.xenit.custodian.sentinel;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

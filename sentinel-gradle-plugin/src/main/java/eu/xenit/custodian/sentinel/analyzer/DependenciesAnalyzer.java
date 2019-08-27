@@ -1,10 +1,10 @@
-package eu.xenit.gradle.sentinel.analyzer;
+package eu.xenit.custodian.sentinel.analyzer;
 
-import eu.xenit.gradle.sentinel.analyzer.model.AnalyzedDependency;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyContainer;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution.DependencyResolutionBuilder;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution.DependencyResolutionState;
+import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution;
+import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution.DependencyResolutionState;
+import eu.xenit.custodian.sentinel.analyzer.model.AnalyzedDependency;
+import eu.xenit.custodian.sentinel.analyzer.model.DependencyContainer;
+import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution.DependencyResolutionBuilder;
 import java.util.Optional;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ResolvableDependencies;

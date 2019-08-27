@@ -1,4 +1,4 @@
-package eu.xenit.gradle.sentinel.analyzer.model;
+package eu.xenit.custodian.sentinel.analyzer.model;
 
 import java.util.HashSet;
 import java.util.Set;

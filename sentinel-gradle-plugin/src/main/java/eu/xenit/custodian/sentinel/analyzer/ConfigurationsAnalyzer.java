@@ -1,24 +1,11 @@
-package eu.xenit.gradle.sentinel.analyzer;
+package eu.xenit.custodian.sentinel.analyzer;
 
-import eu.xenit.gradle.sentinel.analyzer.model.AnalyzedDependency;
-import eu.xenit.gradle.sentinel.analyzer.model.ConfigurationContainer;
-import eu.xenit.gradle.sentinel.analyzer.model.ConfigurationResult;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyContainer;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution.DependencyResolutionBuilder;
-import eu.xenit.gradle.sentinel.analyzer.model.DependencyResolution.DependencyResolutionState;
-import java.util.Optional;
+import eu.xenit.custodian.sentinel.analyzer.model.ConfigurationContainer;
+import eu.xenit.custodian.sentinel.analyzer.model.ConfigurationResult;
+import eu.xenit.custodian.sentinel.analyzer.model.DependencyContainer;
 import java.util.stream.Collectors;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.DependencySet;
-import org.gradle.api.artifacts.ResolvableDependencies;
-import org.gradle.api.artifacts.component.ComponentSelector;
-import org.gradle.api.artifacts.component.ModuleComponentSelector;
-import org.gradle.api.artifacts.result.ResolutionResult;
-import org.gradle.api.artifacts.result.ResolvedDependencyResult;
-import org.gradle.api.artifacts.result.UnresolvedDependencyResult;
-import org.gradle.api.internal.artifacts.result.ResolvedComponentResultInternal;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 

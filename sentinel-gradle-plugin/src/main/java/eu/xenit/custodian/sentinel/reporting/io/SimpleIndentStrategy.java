@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.xenit.gradle.sentinel.reporting.io;
+package eu.xenit.custodian.sentinel.reporting.io;
 
 import java.util.function.Function;
 

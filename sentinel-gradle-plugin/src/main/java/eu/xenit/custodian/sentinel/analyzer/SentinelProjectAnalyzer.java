@@ -1,6 +1,6 @@
-package eu.xenit.gradle.sentinel.analyzer;
+package eu.xenit.custodian.sentinel.analyzer;
 
-import eu.xenit.gradle.sentinel.analyzer.model.SentinelAnalysisResult;
+import eu.xenit.custodian.sentinel.analyzer.model.SentinelAnalysisResult;
 import org.gradle.api.Project;
 
 public class SentinelProjectAnalyzer {

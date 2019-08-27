@@ -1,4 +1,4 @@
-package eu.xenit.gradle.sentinel.analyzer.model;
+package eu.xenit.custodian.sentinel.analyzer.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

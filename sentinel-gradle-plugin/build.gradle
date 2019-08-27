@@ -1,14 +1,25 @@
 plugins {
     id 'java-gradle-plugin'
+    id 'maven-publish'
 }
 
 repositories {
     mavenCentral()
 }
 
+gradlePlugin {
+    plugins {
+        sentinelPlugin {
+            id = 'eu.xenit.custodian.sentinel'
+            implementationClass = 'eu.xenit.custodian.sentinel.SentinelPlugin'
+        }
+    }
+}
+
 ext {
     lombok = '1.18.8'
 }
+
 dependencies {
 
 
