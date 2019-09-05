@@ -1,15 +1,21 @@
 package eu.xenit.custodian.sentinel.analyzer.model;
 
+import javax.annotation.Nullable;
 import lombok.Setter;
 import lombok.Getter;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
+import org.gradle.api.internal.artifacts.DefaultModuleIdentifier;
 import org.gradle.api.internal.artifacts.DefaultModuleVersionIdentifier;
 
-public class AnalyzedDependency implements ModuleVersionIdentifier {
+public class AnalyzedDependency implements ModuleIdentifier {
 
-    private final ModuleVersionIdentifier dependency;
+    @Getter
+    private final ModuleIdentifier module;
+
+    @Getter
+    private String version;
 
     @Getter @Setter
     private ComponentType component;
@@ -17,48 +23,69 @@ public class AnalyzedDependency implements ModuleVersionIdentifier {
     @Getter @Setter
     private DependencyResolution resolution;
 
-//    private final Dependency dependency;
+//    private final Dependency module;
 
     public static AnalyzedDependency create(Dependency dependency)
     {
         return new AnalyzedDependency(dependency.getGroup(), dependency.getName(), dependency.getVersion());
     }
 
-    public AnalyzedDependency(String group, String name, String version)
+    public static AnalyzedDependency create(String group, String name, String version)
     {
-        this(DefaultModuleVersionIdentifier.newId(group, name, version));
+        return new AnalyzedDependency(group, name, version);
     }
 
-    public AnalyzedDependency(ModuleVersionIdentifier dependency) {
-        this.dependency = dependency;
+    public static AnalyzedDependency create(String group, String name)
+    {
+        return new AnalyzedDependency(group, name, null);
+    }
+
+    public static AnalyzedDependency from(String coordinates)
+    {
+        String[] split = coordinates.split(":");
+        if (split.length == 2) {
+            return create(split[0], split[1]);
+        } else if (split.length == 3) {
+            return create(split[0], split[1], split[2]);
+        } else {
+            throw new IllegalArgumentException("Cannot parse '"+coordinates+"' as dependency coordinates");
+        }
+
+    }
+
+
+
+    private AnalyzedDependency(String group, String name, String version)
+    {
+        this(DefaultModuleIdentifier.newId(group, name), version);
+    }
+
+    public AnalyzedDependency(ModuleIdentifier module) {
+        this(module, null);
+    }
+
+    public AnalyzedDependency(ModuleIdentifier module, String version) {
+        this.module = module;
+        this.version = version;
     }
 
     public ModuleIdentifier getId() {
-        return this.dependency.getModule();
+        return this.getModule();
     }
 
     @Override
     public String toString() {
-        return this.dependency.toString();
-    }
-
-    @Override
-    public String getVersion() {
-        return this.dependency.getVersion();
+        return this.module.toString();
     }
 
     @Override
     public String getGroup() {
-        return this.dependency.getGroup();
+        return this.module.getGroup();
     }
 
     @Override
     public String getName() {
-        return this.dependency.getName();
+        return this.module.getName();
     }
 
-    @Override
-    public ModuleIdentifier getModule() {
-        return this.dependency.getModule();
-    }
 }

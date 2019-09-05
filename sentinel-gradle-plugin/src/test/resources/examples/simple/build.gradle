@@ -1,0 +1,19 @@
+plugins {
+    id 'eu.xenit.custodian.sentinel'
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+
+ext {
+    junitVersion = '4.12'
+}
+
+dependencies {
+    implementation 'org.apache.httpcomponents:httpclient:4.5.1'
+
+    testImplementation "junit:junit:${junitVersion}"
+}

@@ -18,9 +18,17 @@ public class ConfigurationsAnalyzer {
     public ConfigurationContainer analyze(Project project) {
         ConfigurationContainer result = new ConfigurationContainer();
 
-        project.getConfigurations().forEach(config -> {
-            result.add(this.analyzeConfiguration(config));
-        });
+        project.getConfigurations()
+                .stream()
+
+                // filter out configurations that we're not allowed to resovle
+                .filter(Configuration::isCanBeResolved)
+
+                // run analysis on each configuration
+                .map(this::analyzeConfiguration)
+
+                // collect results
+                .forEach(result::add);
 
         return result;
     }

@@ -7,10 +7,8 @@ public class SentinelPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project target) {
-        System.out.println("-- applying SentinelPlugin to "+target.getName()+" -> registering task sentinelReport");
 
-
-        target.getTasks().create("sentinelReport", SentinelReportTask.class);
+        target.getTasks().create(SentinelReportTask.TASK_NAME, SentinelReportTask.class);
 
     }
 }

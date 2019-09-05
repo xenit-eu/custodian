@@ -15,6 +15,8 @@ import org.gradle.api.tasks.TaskAction;
 
 public class SentinelReportTask extends DefaultTask {
 
+    public static final String TASK_NAME = "sentinelReport";
+
     public SentinelReportTask() {
         this.setDescription("Create a structured report on project metadata and dependencies");
         this.setGroup("Help");

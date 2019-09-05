@@ -1,2 +1,3 @@
 .gradle
 sentinel-gradle-plugin/build
+sentinel-gradle-plugin/out/

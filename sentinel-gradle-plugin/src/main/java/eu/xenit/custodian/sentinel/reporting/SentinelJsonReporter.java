@@ -143,8 +143,7 @@ public class SentinelJsonReporter implements SentinelReporter {
     }
 
     private static String quoted(@Nullable String str) {
-        return (str != null ? "\"" + str + "\"" : "");
-
+        return (str != null ? "\"" + str + "\"" : "\"\"");
     }
 
 }
