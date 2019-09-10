@@ -1,7 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'eu.xenit.custodian.sentinel' version '0.0.1'
+    // id 'eu.xenit.custodian.sentinel' version '0.0.1'
 }
 
 repositories {

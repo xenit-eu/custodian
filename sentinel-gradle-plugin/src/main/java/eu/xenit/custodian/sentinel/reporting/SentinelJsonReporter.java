@@ -16,8 +16,13 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.gradle.api.artifacts.result.ComponentSelectionDescriptor;
 import org.gradle.api.artifacts.result.ComponentSelectionReason;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SentinelJsonReporter implements SentinelReporter {
+
+
+     private Logger log = LoggerFactory.getLogger(SentinelJsonReporter.class);
 
     @Override
     public void write(IndentingWriter writer, SentinelAnalysisResult result) {
@@ -80,12 +85,14 @@ public class SentinelJsonReporter implements SentinelReporter {
             property(writer, "artifact", dependency.getName()),
             property(writer, "version", dependency.getVersion()),
 
-            property(writer, "resolution", () -> writeDependencyResolution(writer, dependency.getResolution()))
+            property(writer, "resolution", () -> writeDependencyResolution(writer, dependency.getResolution()), () -> dependency.getResolution() != null)
 
         );
     }
 
     private void writeDependencyResolution(JsonWriter writer, DependencyResolution resolution) {
+
+
         if (resolution.getState() == DependencyResolutionState.RESOLVED) {
             writer.writeObject(
                     property(writer, "state", resolution.getState().toString()),
@@ -120,7 +127,15 @@ public class SentinelJsonReporter implements SentinelReporter {
     }
 
     private Optional<Runnable> property(JsonWriter writer, String name, Runnable value) {
-        return Optional.of(() -> writer.writeProperty(name, value));
+//        return Optional.of(() -> writer.writeProperty(name, value));
+        return this.property(writer, name, value, () -> {
+            if (value == null) {
+                log.warn("Trying to write property {}, but value is unexpectedly 'null'", name);
+                return false;
+            }
+
+            return true;
+        });
     }
 
     private Optional<Runnable> property(JsonWriter writer, String name, Runnable value, BooleanSupplier conditional) {

@@ -15,8 +15,6 @@ import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Stream;
 import org.gradle.api.internal.artifacts.DefaultModuleVersionIdentifier;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.ComponentSelectionReasons;

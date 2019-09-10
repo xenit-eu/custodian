@@ -8,3 +8,5 @@ pluginManagement {
 rootProject.name = 'custodian'
 
 include 'sentinel-gradle-plugin'
+include 'custodian-service'
+include 'custodian-cli'

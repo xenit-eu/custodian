@@ -88,18 +88,6 @@ public class GradleBuild implements TestRule {
 
     private GradleRunner createRunner(String... arguments) throws IOException {
         copyFolder(this.source.getAbsoluteFile().toPath(), this.projectDir.toPath());
-//        FileUtils.copyDirectory(this.source.getAbsoluteFile(), this.projectDir);
-//        File buildFile = new File(this.projectDir, "build.gradle");
-
-//        System.out.println("Executing test build for example " + tempExample.getName());
-//        GradleRunner runner = GradleRunner.create()
-//                .withProjectDir(this.projectDir)
-//                .withGradleVersion(gradleVersion)
-//                .withArguments(task, "--stacktrace", "-i")
-////                .withPluginClasspath()
-////                .withDebug(true)
-//                .forwardOutput();
-
         List<String> allArguments = new ArrayList<>();
 //        allArguments.add("-PpluginClasspath=" + getPluginClasspath());
 //        allArguments.add("-PspringFormatVersion=" + getSpringFormatVersion());
