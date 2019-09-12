@@ -2,6 +2,7 @@ package eu.xenit.custodian.domain.service.analysis;
 
 import eu.xenit.custodian.domain.model.ProjectHandle;
 import eu.xenit.custodian.domain.model.metadata.ProjectMetadata;
+import eu.xenit.custodian.domain.repository.analysis.AnalyzerException;
 import eu.xenit.custodian.domain.repository.analysis.ProjectAnalyzer;
 import org.springframework.util.Assert;
 
@@ -15,7 +16,7 @@ public class DefaultProjectAnalysisService implements ProjectAnalysisService {
     }
 
     @Override
-    public ProjectMetadata analyze(ProjectHandle project) {
-        return this.analyzer.analyze(project.getLocation());
+    public ProjectMetadata analyze(ProjectHandle project) throws AnalyzerException {
+        return this.analyzer.analyze(project);
     }
 }

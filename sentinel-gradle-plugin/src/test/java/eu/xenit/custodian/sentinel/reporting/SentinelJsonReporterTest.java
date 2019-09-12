@@ -1,20 +1,23 @@
 package eu.xenit.custodian.sentinel.reporting;
 
-import eu.xenit.custodian.sentinel.analyzer.model.AnalyzedDependency;
-import eu.xenit.custodian.sentinel.analyzer.model.ConfigurationContainer;
-import eu.xenit.custodian.sentinel.analyzer.model.ConfigurationResult;
-import eu.xenit.custodian.sentinel.analyzer.model.DependencyContainer;
-import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution;
-import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution.DependencyResolutionState;
-import eu.xenit.custodian.sentinel.analyzer.model.RepositoriesContainer;
-import eu.xenit.custodian.sentinel.analyzer.model.SentinelAnalysisResult;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.AnalyzedDependency;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.ConfigurationContainer;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.ConfigurationResult;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.DependencyContainer;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.DependencyResolution;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.DependencyResolution.DependencyResolutionState;
+import eu.xenit.custodian.sentinel.analyzer.project.ProjectInformation;
+import eu.xenit.custodian.sentinel.analyzer.SentinelAnalysisResult;
 import eu.xenit.custodian.sentinel.asserts.ArrayNodeAssert;
+import eu.xenit.custodian.sentinel.asserts.JsonNodeAssert;
 import eu.xenit.custodian.sentinel.asserts.SentinelReportAssert;
 import eu.xenit.custodian.sentinel.asserts.condition.Dependency;
 import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.gradle.api.internal.artifacts.DefaultModuleVersionIdentifier;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.ComponentSelectionReasons;
@@ -22,15 +25,13 @@ import org.junit.Test;
 
 public class SentinelJsonReporterTest {
 
-    private SentinelJsonReporter reporter = new SentinelJsonReporter();
+    private SentinelReporter reporter = new SentinelJsonReporter();
+//    private SentinelReporter reporter = new SentinelJacksonReporter();
 
     @Test
     public void empty() throws IOException {
 
-        SentinelAnalysisResult result = new SentinelAnalysisResult(
-                new ConfigurationContainer(),
-                new RepositoriesContainer()
-        );
+        SentinelAnalysisResult result = SentinelAnalysisResult.builder().build();
 
         String json = writeReport(result);
         System.out.println(json);
@@ -45,6 +46,35 @@ public class SentinelJsonReporterTest {
                     configurations.isObject();
                     configurations.isEmpty();
                 });
+    }
+
+    @Test
+    public void projectInfo() throws IOException {
+        ProjectInformation info = ProjectInformation.builder()
+                .name("foo")
+                .path(":foo")
+                .subprojects(
+                        Stream.of(
+                                ProjectInformation.builder().name("bar").path(":foo:bar").build()
+                        ).collect(Collectors.toMap(ProjectInformation::getName, Function.identity()))
+                )
+                .build();
+        SentinelAnalysisResult result = SentinelAnalysisResult.builder().project(info).build();
+
+        String json = writeReport(result);
+        System.out.println(json);
+
+        SentinelReportAssert report = new SentinelReportAssert(json);
+
+        report.assertField("project", project -> {
+            project.assertField("subprojects", subprojects -> {
+                subprojects.isObject();
+                subprojects.assertField("bar", subprojectBar -> {
+                    subprojectBar.has("name").has("path");
+                    subprojectBar.assertField("subprojects", JsonNodeAssert::isEmpty);
+                });
+            });
+        });
     }
 
     @Test
@@ -80,8 +110,7 @@ public class SentinelJsonReporterTest {
         return out.toString();
     }
 
-    private SentinelAnalysisResult result(String... dependencies)
-    {
+    private SentinelAnalysisResult result(String... dependencies) {
         DependencyContainer dependencyContainer = new DependencyContainer();
         Stream.of(dependencies)
                 .map(SentinelJsonReporterTest::createResolvedDependency)
@@ -92,14 +121,10 @@ public class SentinelJsonReporterTest {
                 ConfigurationResult.builder().name("compileClasspath").dependencies(dependencyContainer).build()
         );
 
-        return new SentinelAnalysisResult(
-                configurationContainer,
-                new RepositoriesContainer()
-        );
+        return SentinelAnalysisResult.builder().configurations(configurationContainer).build();
     }
 
-    private static AnalyzedDependency createResolvedDependency(String dependencyNotation)
-    {
+    private static AnalyzedDependency createResolvedDependency(String dependencyNotation) {
         AnalyzedDependency result = AnalyzedDependency.from(dependencyNotation);
         result.setResolution(DependencyResolution.builder()
                 .state(DependencyResolutionState.RESOLVED)

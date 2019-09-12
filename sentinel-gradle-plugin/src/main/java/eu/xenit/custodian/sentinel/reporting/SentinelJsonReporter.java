@@ -1,11 +1,13 @@
 package eu.xenit.custodian.sentinel.reporting;
 
-import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution;
-import eu.xenit.custodian.sentinel.analyzer.model.DependencyResolution.DependencyResolutionState;
-import eu.xenit.custodian.sentinel.analyzer.model.SentinelAnalysisResult;
-import eu.xenit.custodian.sentinel.analyzer.model.AnalyzedDependency;
-import eu.xenit.custodian.sentinel.analyzer.model.ConfigurationResult;
-import eu.xenit.custodian.sentinel.analyzer.model.RepositoryResult;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.DependencyResolution;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.DependencyResolution.DependencyResolutionState;
+import eu.xenit.custodian.sentinel.analyzer.gradle.GradleInfo;
+import eu.xenit.custodian.sentinel.analyzer.project.ProjectInformation;
+import eu.xenit.custodian.sentinel.analyzer.SentinelAnalysisResult;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.AnalyzedDependency;
+import eu.xenit.custodian.sentinel.analyzer.dependencies.ConfigurationResult;
+import eu.xenit.custodian.sentinel.analyzer.repositories.RepositoryResult;
 import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
 import eu.xenit.custodian.sentinel.reporting.io.JsonWriter;
 import java.util.Collection;
@@ -22,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class SentinelJsonReporter implements SentinelReporter {
 
 
-     private Logger log = LoggerFactory.getLogger(SentinelJsonReporter.class);
+    private Logger log = LoggerFactory.getLogger(SentinelJsonReporter.class);
 
     @Override
     public void write(IndentingWriter writer, SentinelAnalysisResult result) {
@@ -31,11 +33,46 @@ public class SentinelJsonReporter implements SentinelReporter {
 
     private void write(JsonWriter writer, SentinelAnalysisResult result) {
         writer.writeObject(
+                () -> this.writeProjectInfo(writer, result.getProject()),
+                () -> this.writeGradleInfo(writer, result.getGradle()),
                 () -> this.writeRepositories(writer, result.getRepositories().items()),
                 () -> this.writeConfigurations(writer, result.getConfigurations().items())
         );
         writer.println();
     }
+
+
+    private void writeProjectInfo(JsonWriter writer, ProjectInformation project) {
+        writer.writeProperty("project", projectInfo(writer, project));
+    }
+
+    private Runnable projectInfo(JsonWriter writer, ProjectInformation project) {
+        return () -> {
+            writer.writeObject(
+                    property(writer, "name", project.getName()),
+                    property(writer, "path", project.getPath()),
+                    property(writer, "projectDir", project.getProjectDir()),
+                    property(writer, "displayName", project.getDisplayName()),
+                    property(writer, "subprojects", () -> writer.writeObject(
+                            project.getSubprojects().values()
+                                    .stream()
+                                    .map(child -> property(writer, child.getName(), projectInfo(writer, child)))
+                                    .filter(Optional::isPresent).map(Optional::get))
+                    , () -> !project.getSubprojects().isEmpty())
+            );
+        };
+    }
+
+    private void writeGradleInfo(JsonWriter writer, GradleInfo gradle) {
+        writer.writeProperty("gradle", () -> {
+            writer.writeObject(
+                    property(writer, "version", gradle.getVersion()),
+                    property(writer, "buildDir", gradle.getBuildDir()),
+                    property(writer, "buildFile", gradle.getBuildFile())
+            );
+        });
+    }
+
 
     private void writeRepositories(JsonWriter writer, Collection<RepositoryResult> repositories) {
         writer.writeProperty("repositories", array(writer, repositories, this::writeRepository));
@@ -81,17 +118,17 @@ public class SentinelJsonReporter implements SentinelReporter {
 
     private void writeDependency(JsonWriter writer, AnalyzedDependency dependency) {
         writer.writeObject(
-            property(writer, "group", dependency.getGroup()),
-            property(writer, "artifact", dependency.getName()),
-            property(writer, "version", dependency.getVersion()),
+                property(writer, "group", dependency.getGroup()),
+                property(writer, "artifact", dependency.getName()),
+                property(writer, "version", dependency.getVersion()),
 
-            property(writer, "resolution", () -> writeDependencyResolution(writer, dependency.getResolution()), () -> dependency.getResolution() != null)
+                property(writer, "resolution", () -> writeDependencyResolution(writer, dependency.getResolution()),
+                        () -> dependency.getResolution() != null)
 
         );
     }
 
     private void writeDependencyResolution(JsonWriter writer, DependencyResolution resolution) {
-
 
         if (resolution.getState() == DependencyResolutionState.RESOLVED) {
             writer.writeObject(
@@ -139,8 +176,9 @@ public class SentinelJsonReporter implements SentinelReporter {
     }
 
     private Optional<Runnable> property(JsonWriter writer, String name, Runnable value, BooleanSupplier conditional) {
-        if (conditional.getAsBoolean())
+        if (conditional.getAsBoolean()) {
             return Optional.of(() -> writer.writeProperty(name, value));
+        }
 
         return Optional.empty();
     }

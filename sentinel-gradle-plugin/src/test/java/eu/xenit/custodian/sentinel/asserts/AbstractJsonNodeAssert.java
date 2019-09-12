@@ -1,5 +1,7 @@
 package eu.xenit.custodian.sentinel.asserts;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.util.function.Consumer;
@@ -26,9 +28,20 @@ public abstract class AbstractJsonNodeAssert<SELF extends AbstractJsonNodeAssert
     public SELF has(String fieldName)
     {
         if (!this.actual.has(fieldName)) {
-            this.failWithMessage("Field '%s' was not found.");
+            this.failWithMessage("Field '%s' was not found.", fieldName);
         }
 
+        return this.myself;
+    }
+
+    public SELF hasField(String fieldName, String value) {
+        this.assertField(fieldName, field -> field.hasTextValue(value));
+        return this.myself;
+    }
+
+    public SELF hasTextValue(String value) {
+        this.isTextual();
+        assertThat(this.actual.textValue()).isEqualTo(value);
         return this.myself;
     }
 
@@ -58,6 +71,15 @@ public abstract class AbstractJsonNodeAssert<SELF extends AbstractJsonNodeAssert
         return this.myself;
     }
 
+
+    public SELF isTextual() {
+        if (!this.actual.isTextual())
+        {
+            this.failWithMessage("Expected type text, but is %s instead", this.actual.getNodeType());
+        }
+
+        return this.myself;
+    }
 
 
 

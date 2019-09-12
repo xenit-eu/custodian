@@ -1,0 +1,13 @@
+plugins {
+    id 'eu.xenit.custodian.sentinel'
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+
+dependencies {
+
+}

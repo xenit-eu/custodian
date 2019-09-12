@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import eu.xenit.custodian.sentinel.asserts.AbstractJsonNodeAssert;
 import eu.xenit.custodian.sentinel.asserts.SentinelReportAssert;
 import eu.xenit.custodian.sentinel.asserts.condition.Dependency;
 import eu.xenit.custodian.sentinel.asserts.condition.Repository;
@@ -40,6 +41,12 @@ public class SentinelPluginTest {
 
         SentinelReportAssert report = new SentinelReportAssert(reportFile);
         report
+                .assertField("project", AbstractJsonNodeAssert::isObject)
+                .assertField("gradle", gradle -> {
+                    gradle.hasField("version", "5.6");
+                    gradle.hasField("buildDir", "build");
+                    gradle.hasField("buildFile", "build.gradle");
+                })
                 .assertFieldArray("repositories", repositories -> {
                     repositories.hasSize(1);
                     repositories.haveExactlyOne(Repository.withUrl("https://repo.maven.apache.org/maven2/"));
@@ -98,6 +105,31 @@ public class SentinelPluginTest {
                             dependencies.haveExactlyOne(Dependency.from("org.springframework.boot:spring-boot-starter:"));
                             dependencies.haveExactlyOne(Dependency.from("org.springframework.boot:spring-boot-starter-test:"));
                         });
+                    });
+                });
+    }
+
+    @Test
+    public void testSubprojects() throws IOException {
+        BuildResult result = this.gradleBuild.source("src/test/resources/examples/subprojects")
+                .build("sentinelReport");
+
+        BuildTask sentinelReportTask = result.task(":" + SentinelReportTask.TASK_NAME);
+        assertThat(sentinelReportTask, is(notNullValue()));
+        assertThat(sentinelReportTask.getOutcome(), is(TaskOutcome.SUCCESS));
+
+        File reportFile = new File(this.gradleBuild.getProjectDir(), "build/sentinel/report.json");
+
+        // debug output
+        String json = new String(Files.readAllBytes(reportFile.toPath()));
+        System.out.println(json);
+
+        SentinelReportAssert report = new SentinelReportAssert(reportFile);
+        report
+                .assertField("project", project -> {
+                    project.assertField("subprojects", subprojects -> {
+                        subprojects.has("subproject-one");
+                        subprojects.has("subproject-two");
                     });
                 });
     }

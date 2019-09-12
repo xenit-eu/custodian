@@ -23,16 +23,17 @@ ext {
 }
 
 dependencies {
+    implementation "org.projectlombok:lombok:${project.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${project.lombok}"
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
+
     testImplementation 'junit:junit:4.12'
 
     testImplementation gradleTestKit()
 //    testImplementation gradleApi()
     testImplementation "org.mockito:mockito-core:${project.mockitoVersion}"
 //    testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:2.8.0'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
+
     testImplementation 'org.assertj:assertj-core:3.11.1'
-
-    implementation "org.projectlombok:lombok:${project.lombok}"
-    annotationProcessor "org.projectlombok:lombok:${project.lombok}"
-
 }

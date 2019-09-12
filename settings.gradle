@@ -9,4 +9,5 @@ rootProject.name = 'custodian'
 
 include 'sentinel-gradle-plugin'
 include 'custodian-service'
+include 'custodian-buildsystem-gradle'
 include 'custodian-cli'

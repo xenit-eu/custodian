@@ -8,13 +8,14 @@ import static org.mockito.Mockito.when;
 import eu.xenit.custodian.domain.model.ProjectHandle;
 import eu.xenit.custodian.domain.model.ProjectReference;
 import eu.xenit.custodian.domain.model.metadata.ProjectMetadata;
+import eu.xenit.custodian.domain.repository.analysis.AnalyzerException;
 import eu.xenit.custodian.domain.repository.analysis.ProjectAnalyzer;
 import org.junit.Test;
 
 public class DefaultProjectAnalysisServiceTest {
 
     @Test
-    public void analyze() {
+    public void analyze() throws AnalyzerException {
         ProjectAnalyzer projectAnalyzer = mock(ProjectAnalyzer.class);
         ProjectHandle handle = mock(ProjectHandle.class);
         when(projectAnalyzer.analyze(any())).thenReturn(new ProjectMetadata(mock(ProjectReference.class)));
