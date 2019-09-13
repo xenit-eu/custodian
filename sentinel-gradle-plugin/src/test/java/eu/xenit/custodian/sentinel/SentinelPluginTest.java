@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import eu.xenit.custodian.sentinel.asserts.AbstractJsonNodeAssert;
+import eu.xenit.custodian.sentinel.asserts.JsonAssert;
 import eu.xenit.custodian.sentinel.asserts.SentinelReportAssert;
 import eu.xenit.custodian.sentinel.asserts.condition.Dependency;
 import eu.xenit.custodian.sentinel.asserts.condition.Repository;
@@ -41,11 +41,11 @@ public class SentinelPluginTest {
 
         SentinelReportAssert report = new SentinelReportAssert(reportFile);
         report
-                .assertField("project", AbstractJsonNodeAssert::isObject)
+                .assertField("project", JsonAssert::isObject)
                 .assertField("gradle", gradle -> {
-                    gradle.hasField("version", "5.6");
-                    gradle.hasField("buildDir", "build");
-                    gradle.hasField("buildFile", "build.gradle");
+                    gradle.assertField("version", "5.6");
+                    gradle.assertField("buildDir", "build");
+                    gradle.assertField("buildFile", "build.gradle");
                 })
                 .assertFieldArray("repositories", repositories -> {
                     repositories.hasSize(1);
@@ -96,7 +96,7 @@ public class SentinelPluginTest {
                     configurations.isObject();
                     configurations.assertField("compileClasspath", compileClasspath -> {
                         compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies.haveExactlyOne(Dependency.from("org.springframework.boot:spring-boot-starter:"));
+                            dependencies.haveExactlyOne(Dependency.from("org.springframework.boot:spring-boot-starter"));
                         });
                     });
 

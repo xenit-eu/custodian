@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.IterableAssert;
-import org.assertj.core.internal.Failures;
 
-public class ArrayNodeAssert extends AbstractJsonNodeAssert<ArrayNodeAssert, ArrayNode>
+public class ArrayNodeAssert extends JsonAssert<ArrayNodeAssert, ArrayNode>
 {
 
     private final IterableAssert<JsonNode> iterableAssert;

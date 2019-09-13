@@ -3,7 +3,7 @@ package eu.xenit.custodian.sentinel.reporting;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import eu.xenit.custodian.sentinel.analyzer.SentinelAnalysisResult;
+import eu.xenit.custodian.sentinel.domain.SentinelAnalysisReport;
 import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class SentinelJacksonReporter implements SentinelReporter {
 
 
     @Override
-    public void write(IndentingWriter writer, SentinelAnalysisResult result) throws IOException {
+    public void write(IndentingWriter writer, SentinelAnalysisReport result) throws IOException {
 
         mapper.writeValue(writer, result);
     }

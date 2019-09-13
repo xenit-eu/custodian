@@ -1,8 +1,7 @@
 package eu.xenit.custodian.sentinel;
 
-import eu.xenit.custodian.sentinel.analyzer.Sentinel;
-import eu.xenit.custodian.sentinel.analyzer.SentinelAnalysisResult;
-import eu.xenit.custodian.sentinel.reporting.SentinelJacksonReporter;
+import eu.xenit.custodian.sentinel.domain.Sentinel;
+import eu.xenit.custodian.sentinel.domain.SentinelAnalysisReport;
 import eu.xenit.custodian.sentinel.reporting.SentinelJsonReporter;
 import eu.xenit.custodian.sentinel.reporting.SentinelReporter;
 import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
@@ -29,7 +28,9 @@ public class SentinelReportTask extends DefaultTask {
     private File output = this.getProject().file(this.getProject().getBuildDir().getPath() + "/sentinel/report.json");
 
     @OutputFile
-    public File getOutput() { return this.output; }
+    public File getOutput() {
+        return this.output;
+    }
 
     public SentinelReportTask setOutput(File output) {
         this.output = output;
@@ -38,7 +39,7 @@ public class SentinelReportTask extends DefaultTask {
 
     @TaskAction
     void report() throws IOException {
-        SentinelAnalysisResult result = new Sentinel().analyze(this.getProject());
+        SentinelAnalysisReport result = new Sentinel().analyze(this.getProject());
 
         SentinelReporter reporter = new SentinelJsonReporter();
 //        SentinelReporter reporter = new SentinelJacksonReporter();

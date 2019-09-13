@@ -1,21 +1,17 @@
 package eu.xenit.custodian.sentinel.asserts;
 
 import static eu.xenit.custodian.sentinel.asserts.error.ShouldHaveNoFields.shouldHaveNoFields;
-import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class JsonNodeAssert extends AbstractJsonNodeAssert<JsonNodeAssert, JsonNode> {
+public class JsonNodeAssert extends JsonAssert<JsonNodeAssert, JsonNode> {
 
     public JsonNodeAssert(File file) {
         this(parse(file));
@@ -27,6 +23,10 @@ public class JsonNodeAssert extends AbstractJsonNodeAssert<JsonNodeAssert, JsonN
 
     public JsonNodeAssert(JsonNode actual) {
         super(actual, JsonNodeAssert.class);
+    }
+
+    public static JsonNodeAssert assertThat(JsonNode node) {
+        return new JsonNodeAssert(node);
     }
 
     public JsonNodeAssert isEmpty() {

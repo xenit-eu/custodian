@@ -15,7 +15,7 @@ public class Dependency {
         String[] split = dependency.split(":");
 
         if (split.length == 2) {
-            return matches(split[0], split[1], "");
+            return matches(split[0], split[1], null);
         } else if (split.length == 3) {
             return matches(split[0], split[1], split[2]);
         }
@@ -24,8 +24,7 @@ public class Dependency {
 
     }
 
-    private static Predicate<JsonNode> matches(String group, String artifact, String version)
-    {
+    private static Predicate<JsonNode> matches(String group, String artifact, String version) {
         return jsonNode -> {
             if (jsonNode.isMissingNode()) {
                 return false;
