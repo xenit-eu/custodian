@@ -9,18 +9,15 @@ import org.gradle.api.Project;
 
 public class ProjectInfoAnalyzer implements PartialAnalyzer<ProjectInformation> {
 
-//    @Override
-//    public String getName() {
-//        return "project";
-//    }
-
     public ProjectInformation analyze(Project project) {
 
         return ProjectInformation.builder()
                 .name(project.getName())
                 .path(project.getPath())
-                .projectDir(this.getRelativeProjectDir(project).toString())
                 .displayName(project.getDisplayName())
+                .parent(project.getParent() != null ? project.getParent().getPath() : null)
+                .projectDir(this.getRelativeProjectDir(project).toString())
+
                 .subprojects(this.getChildProjects(project))
                 .build();
     }

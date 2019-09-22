@@ -1,7 +1,7 @@
 package eu.xenit.custodian.domain.repository.analysis;
 
-import eu.xenit.custodian.domain.model.ProjectHandle;
-import eu.xenit.custodian.domain.model.metadata.ProjectMetadata;
+import eu.xenit.custodian.domain.repository.scm.ProjectHandle;
+import eu.xenit.custodian.domain.repository.analysis.metadata.ProjectMetadata;
 
 public interface ProjectAnalyzer {
 

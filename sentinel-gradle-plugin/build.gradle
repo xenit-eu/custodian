@@ -19,14 +19,14 @@ gradlePlugin {
 
 ext {
     lombok = '1.18.8'
-    mockitoVersion = '2.27.0'
+    mockitoVersion = '2.23.4'
 }
 
 dependencies {
     implementation "org.projectlombok:lombok:${project.lombok}"
     annotationProcessor "org.projectlombok:lombok:${project.lombok}"
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
 
     testImplementation 'junit:junit:4.12'
 

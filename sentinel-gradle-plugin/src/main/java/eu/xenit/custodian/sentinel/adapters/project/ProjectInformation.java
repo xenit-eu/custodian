@@ -16,6 +16,7 @@ public class ProjectInformation implements AnalysisContentPart {
     private final String name;
     private final String path;
     private final String displayName;
+    private final String parent;
     private final String projectDir;
 
     @Default

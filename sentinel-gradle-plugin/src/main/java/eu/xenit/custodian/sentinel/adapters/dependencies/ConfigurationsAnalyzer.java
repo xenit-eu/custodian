@@ -31,11 +31,6 @@ public class ConfigurationsAnalyzer implements PartialAnalyzer<ConfigurationCont
         return result;
     }
 
-//    @Override
-//    public String getName() {
-//        return "configurations";
-//    }
-
     private ConfigurationResult analyzeConfiguration(Configuration configuration) {
 
         DependencyContainer dependencies = dependenciesAnalyzer.analyze(configuration);

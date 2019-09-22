@@ -1,5 +1,7 @@
 package eu.xenit.custodian.sentinel.reporting;
 
+import static eu.xenit.custodian.sentinel.asserts.JsonNodeAssert.assertThat;
+
 import eu.xenit.custodian.sentinel.adapters.dependencies.AnalyzedDependency;
 import eu.xenit.custodian.sentinel.adapters.dependencies.ConfigurationContainer;
 import eu.xenit.custodian.sentinel.adapters.dependencies.ConfigurationResult;
@@ -66,22 +68,29 @@ public class SentinelJsonReporterTest {
     @Test
     public void testStandardDependency() throws IOException {
 
-        String dependency = "org.apache.httpcomponents:httpclient:4.5.1";
-        SentinelAnalysisReport result = report(configurations(dependency));
+        SentinelAnalysisReport result = report(configurations("org.apache.httpcomponents:httpclient:4.5.1"));
 
         String json = writeReport(result);
         System.out.println(json);
 
         SentinelReportAssert report = new SentinelReportAssert(json);
-        report
-                .assertField("configurations", configurations -> {
-                    configurations.isObject();
-                    configurations.assertField("compileClasspath", compileClasspath -> {
-                        compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies.haveExactlyOne(Dependency.from("org.apache.httpcomponents:httpclient:4.5.1"));
-                        });
-                    });
+        report.assertField("configurations", configurations -> {
+            configurations.isObject();
+            configurations.assertField("compileClasspath", compileClasspath -> {
+                compileClasspath.assertFieldArray("dependencies", dependencies -> {
+                    dependencies.haveExactlyOne(Dependency.from("org.apache.httpcomponents:httpclient:4.5.1"));
+                    dependencies.assertOnlyOneElement(dependency -> dependency
+                            .isObject()
+                            .assertField("group", "org.apache.httpcomponents")
+                            .assertField("artifact", "httpclient")
+                            .assertField("version", "4.5.1")
+                            .assertField("resolution", resolution -> resolution
+                                    .isNotNull()
+                                    .isObject())
+                    );
                 });
+            });
+        });
     }
 
     @Test
@@ -104,7 +113,7 @@ public class SentinelJsonReporterTest {
                     configurations.isObject();
                     configurations.assertField("compileClasspath", compileClasspath -> {
                         compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies.satisfies(array -> JsonNodeAssert.assertThat(array.get(0))
+                            dependencies.satisfies(array -> assertThat(array.get(0))
                                     .assertField("group", "org.springframework.boot")
                                     .assertField("artifact", "spring-boot-starter")
                                     .assertField("version", JsonAssert::isNullValue)

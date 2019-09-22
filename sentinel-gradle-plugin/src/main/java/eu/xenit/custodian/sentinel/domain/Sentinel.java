@@ -41,12 +41,6 @@ public class Sentinel {
             AnalysisContribution contribution = contributor.analyze(project);
             report.add(contributor.getName(), contribution);
         });
-//        return SentinelAnalysisReport.builder()
-//                .project(projectInfoAnalyzer.analyze(project))
-//                .gradle(gradleAnalyzer.analyze(project))
-//                .configurations(configurationsAnalyzer.analyze(project))
-//                .repositories(repositoriesAnalyzer.analyze(project))
-//                .build();
 
         return report;
     }

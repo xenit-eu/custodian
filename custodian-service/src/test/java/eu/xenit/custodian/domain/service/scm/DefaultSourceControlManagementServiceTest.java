@@ -4,15 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 import eu.xenit.custodian.adapters.repository.scm.NullSourceControlHandler;
 import eu.xenit.custodian.adapters.repository.scm.StubbedSourceControlHandler;
-import eu.xenit.custodian.domain.model.ProjectHandle;
-import eu.xenit.custodian.domain.model.ProjectReference;
-import eu.xenit.custodian.domain.model.exceptions.UnsupportedProjectReference;
-import eu.xenit.custodian.domain.repository.scm.SourceControlHandler;
+import eu.xenit.custodian.domain.repository.scm.ProjectHandle;
+import eu.xenit.custodian.domain.repository.scm.ProjectReference;
+import eu.xenit.custodian.domain.repository.scm.UnsupportedProjectReference;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;

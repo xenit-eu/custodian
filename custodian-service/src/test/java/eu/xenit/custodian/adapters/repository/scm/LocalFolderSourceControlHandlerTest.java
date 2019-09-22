@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import eu.xenit.custodian.adapters.repository.scm.local.LocalFolderSourceControlHandler;
 import eu.xenit.custodian.adapters.repository.scm.local.WorkingCopyStrategy;
-import eu.xenit.custodian.domain.model.ProjectHandle;
-import eu.xenit.custodian.domain.model.ProjectReference;
+import eu.xenit.custodian.domain.repository.scm.ProjectHandle;
+import eu.xenit.custodian.domain.repository.scm.ProjectReference;
 import eu.xenit.custodian.domain.repository.scm.SourceControlHandler;
 import java.io.IOException;
 import java.nio.file.Path;

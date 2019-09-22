@@ -20,8 +20,6 @@ public class SentinelReportTask extends DefaultTask {
     public SentinelReportTask() {
         this.setDescription("Create a structured report on project metadata and dependencies");
         this.setGroup("Help");
-
-        // this.getOutputs().upToDateWhen(element -> false);
     }
 
 
@@ -32,10 +30,12 @@ public class SentinelReportTask extends DefaultTask {
         return this.output;
     }
 
-    public SentinelReportTask setOutput(File output) {
-        this.output = output;
+    public SentinelReportTask setOutput(Object output) {
+        this.output = this.getProject().file(output);
         return this;
     }
+
+
 
     @TaskAction
     void report() throws IOException {

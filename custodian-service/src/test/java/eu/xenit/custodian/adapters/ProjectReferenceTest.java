@@ -2,7 +2,7 @@ package eu.xenit.custodian.adapters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.domain.model.ProjectReference;
+import eu.xenit.custodian.domain.repository.scm.ProjectReference;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Test;

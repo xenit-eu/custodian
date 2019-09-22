@@ -10,4 +10,8 @@ initscript {
 
 allprojects {
     apply plugin: eu.xenit.custodian.sentinel.SentinelPlugin
+
+    sentinelReport {
+        output = 'custodian-sentinel-report.json'
+    }
 }

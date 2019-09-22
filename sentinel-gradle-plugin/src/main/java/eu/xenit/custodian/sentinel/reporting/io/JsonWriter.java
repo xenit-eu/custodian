@@ -94,13 +94,8 @@ public class JsonWriter {
         };
     }
 
-//    @SafeVarargs
-//    public final Runnable object(Optional<Runnable>... fields) {
-//        this.writeObject(Arrays.stream(fields).filter(Optional::isPresent).map(Optional::get));
-//    }
-
     public Runnable object() {
-        return () -> this.writer.println("{ }");
+        return () -> this.writer.print("{}");
     }
 
     @SafeVarargs

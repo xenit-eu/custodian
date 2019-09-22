@@ -1,0 +1,81 @@
+{
+  "gradle": {
+    "version": "5.6",
+    "buildDir": "build",
+    "buildFile": "build.gradle"
+  },
+  "project": {
+    "name": "simple",
+    "path": ":",
+    "projectDir": "",
+    "subprojects": {}
+  },
+  "repositories": [
+    {
+      "name": "MavenRepo",
+      "type": "maven",
+      "url": "https://repo.maven.apache.org/maven2/",
+      "metadataSources": [
+        "mavenPom",
+        "artifact"
+      ]
+    }
+  ],
+  "configurations": {
+    "compileClasspath": {
+      "dependencies": [
+        {
+          "group": "org.apache.httpcomponents",
+          "artifact": "httpclient",
+          "version": "4.5.1"
+        }
+      ]
+    },
+    "default": {
+      "dependencies": [
+        {
+          "group": "org.apache.httpcomponents",
+          "artifact": "httpclient",
+          "version": "4.5.1"
+        }
+      ]
+    },
+    "runtimeClasspath": {
+      "dependencies": [
+        {
+          "group": "org.apache.httpcomponents",
+          "artifact": "httpclient",
+          "version": "4.5.1"
+        }
+      ]
+    },
+    "testCompileClasspath": {
+      "dependencies": [
+        {
+          "group": "junit",
+          "artifact": "junit",
+          "version": "4.12"
+        },
+        {
+          "group": "org.apache.httpcomponents",
+          "artifact": "httpclient",
+          "version": "4.5.1"
+        }
+      ]
+    },
+    "testRuntimeClasspath": {
+      "dependencies": [
+        {
+          "group": "junit",
+          "artifact": "junit",
+          "version": "4.12"
+        },
+        {
+          "group": "org.apache.httpcomponents",
+          "artifact": "httpclient",
+          "version": "4.5.1"
+        }
+      ]
+    }
+  }
+}

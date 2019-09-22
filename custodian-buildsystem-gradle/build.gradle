@@ -12,7 +12,13 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
     implementation gradleTestKit()
 
     implementation project(':custodian-service')

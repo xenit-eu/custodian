@@ -32,6 +32,7 @@ public class ProjectInfoJsonReporter implements JsonPartialReporter<ProjectInfor
                 json.property("name", project.getName()),
                 json.property("path", project.getPath()),
                 json.property("projectDir", project.getProjectDir()),
+                json.property("parent", project.getParent()),
                 json.property("subprojects", json.object(
                         project.getSubprojects().values().stream()
                         .map(child -> json.property(child.getName(), report(json, child)))

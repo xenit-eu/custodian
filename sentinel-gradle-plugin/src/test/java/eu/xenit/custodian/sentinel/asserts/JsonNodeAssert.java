@@ -22,7 +22,11 @@ public class JsonNodeAssert extends JsonAssert<JsonNodeAssert, JsonNode> {
     }
 
     public JsonNodeAssert(JsonNode actual) {
-        super(actual, JsonNodeAssert.class);
+        this(actual, null);
+    }
+
+    public JsonNodeAssert(JsonNode actual, String name) {
+        super(actual, JsonNodeAssert.class, name);
     }
 
     public static JsonNodeAssert assertThat(JsonNode node) {

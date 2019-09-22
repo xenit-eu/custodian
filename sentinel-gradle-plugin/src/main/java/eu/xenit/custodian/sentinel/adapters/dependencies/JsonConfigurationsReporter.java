@@ -1,10 +1,10 @@
 package eu.xenit.custodian.sentinel.adapters.dependencies;
 
+import eu.xenit.custodian.sentinel.adapters.dependencies.DependencyResolution.DependencyResolutionState;
 import eu.xenit.custodian.sentinel.domain.JsonPartialReporter;
 import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
 import eu.xenit.custodian.sentinel.reporting.io.JsonWriter;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -47,18 +47,29 @@ public class JsonConfigurationsReporter implements JsonPartialReporter<Configura
                         Optional.of(json.property("artifact", dependency.getName())),
                         Optional.of(json.property("version", dependency.getVersion())),
                         json.property("resolution", this.writeDependencyResolution(json, dependency.getResolution()))
-                )
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
+                ).filter(Optional::isPresent).map(Optional::get)
         );
-//        return (dependency) -> {
-//            return json.property("foo", dependency.getName());
-//        };
     }
 
     private Optional<Runnable> writeDependencyResolution(JsonWriter json, DependencyResolution resolution) {
+        if (resolution == null) {
+            return Optional.empty();
+        }
 
-        return Optional.empty();
+        if (resolution.getState() == DependencyResolutionState.RESOLVED) {
+            return Optional.of(json.object(
+                    json.property("state", resolution.getState().toString()),
+                    json.property("selected", resolution.getSelected().toString()),
+                    json.property("repository", resolution.getRepository()),
+                    json.property("reason", json.array(resolution.getReason().getDescriptions(), json::value))
+            ));
+        } else {
+            return Optional.of(json.object(
+                    json.property("state", resolution.getState().toString()),
+                    json.property("failure", resolution.getFailure())
+            ));
+        }
+
     }
 //
 //    }

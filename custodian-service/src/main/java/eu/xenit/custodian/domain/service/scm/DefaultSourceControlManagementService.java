@@ -1,8 +1,8 @@
 package eu.xenit.custodian.domain.service.scm;
 
-import eu.xenit.custodian.domain.model.ProjectHandle;
-import eu.xenit.custodian.domain.model.ProjectReference;
-import eu.xenit.custodian.domain.model.exceptions.UnsupportedProjectReference;
+import eu.xenit.custodian.domain.repository.scm.ProjectHandle;
+import eu.xenit.custodian.domain.repository.scm.ProjectReference;
+import eu.xenit.custodian.domain.repository.scm.UnsupportedProjectReference;
 import eu.xenit.custodian.domain.repository.scm.SourceControlHandler;
 import java.io.IOException;
 import java.util.ArrayList;
