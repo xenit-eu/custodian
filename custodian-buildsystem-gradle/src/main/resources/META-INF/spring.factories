@@ -1,0 +1,2 @@
+eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzerFactory=\
+eu.xenit.custodian.adapters.metadata.gradle.SentinelGradleProjectAnalayzerFactory

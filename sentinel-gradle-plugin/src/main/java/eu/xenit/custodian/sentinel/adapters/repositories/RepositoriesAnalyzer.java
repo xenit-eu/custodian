@@ -1,8 +1,6 @@
 package eu.xenit.custodian.sentinel.adapters.repositories;
 
 import eu.xenit.custodian.sentinel.domain.PartialAnalyzer;
-import eu.xenit.custodian.sentinel.adapters.dependencies.FlatDirsRepositoryDetails;
-import eu.xenit.custodian.sentinel.adapters.dependencies.IvyRepositoryDetails;
 import eu.xenit.custodian.sentinel.adapters.repositories.RepositoryResult.RepositoryResultBuilder;
 import java.io.File;
 import java.lang.reflect.Field;

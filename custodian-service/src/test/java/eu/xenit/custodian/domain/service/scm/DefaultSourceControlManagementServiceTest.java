@@ -6,11 +6,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 
-import eu.xenit.custodian.adapters.repository.scm.NullSourceControlHandler;
-import eu.xenit.custodian.adapters.repository.scm.StubbedSourceControlHandler;
-import eu.xenit.custodian.domain.repository.scm.ProjectHandle;
-import eu.xenit.custodian.domain.repository.scm.ProjectReference;
-import eu.xenit.custodian.domain.repository.scm.UnsupportedProjectReference;
+import eu.xenit.custodian.adapters.service.scm.NullSourceControlHandler;
+import eu.xenit.custodian.adapters.service.scm.StubbedSourceControlHandler;
+import eu.xenit.custodian.domain.scm.CompositeSourceControlHandler;
+import eu.xenit.custodian.domain.project.ProjectReferenceParser;
+import eu.xenit.custodian.domain.project.ProjectHandle;
+import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
+import eu.xenit.custodian.ports.spi.scm.UnsupportedProjectReference;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,10 +22,10 @@ public class DefaultSourceControlManagementServiceTest {
 
     @Test
     public void noHandlerThrowsException() {
-        SourceControlManagementService service = new DefaultSourceControlManagementService(Collections.emptyList());
+        SourceControlHandler service = new CompositeSourceControlHandler(Collections.emptyList());
 
         assertThatExceptionOfType(UnsupportedProjectReference.class).isThrownBy(() -> {
-            service.checkout(ProjectReference.from("ssh://git@github.com:xenit-eu/custodian.git"));
+            service.checkout(ProjectReferenceParser.from("ssh://git@github.com:xenit-eu/custodian.git"));
         }).withMessageContaining("No handler");
     }
 
@@ -31,11 +33,11 @@ public class DefaultSourceControlManagementServiceTest {
     public void checkoutWithFirstApplicableHandler() throws IOException {
         ProjectHandle handle = mock(ProjectHandle.class);
 
-        SourceControlManagementService service = new DefaultSourceControlManagementService(
+        SourceControlHandler service = new CompositeSourceControlHandler(
                 Collections.singletonList(new StubbedSourceControlHandler(handle)));
 
         ProjectHandle checkout = service
-                .checkout(ProjectReference.from("ssh://git@github.com:xenit-eu/custodian.git"));
+                .checkout(ProjectReferenceParser.from("ssh://git@github.com:xenit-eu/custodian.git"));
 
         assertThat(checkout).isEqualTo(handle);
     }
@@ -44,14 +46,14 @@ public class DefaultSourceControlManagementServiceTest {
     public void shouldUseFirstApplicableHandler() throws IOException {
         ProjectHandle handle = mock(ProjectHandle.class);
 
-        SourceControlManagementService service = new DefaultSourceControlManagementService(Arrays.asList(
+        SourceControlHandler service = new CompositeSourceControlHandler(Arrays.asList(
                 new NullSourceControlHandler(),
                 new StubbedSourceControlHandler(handle),
                 new NullSourceControlHandler()
         ));
 
         ProjectHandle checkout = service
-                .checkout(ProjectReference.from("ssh://git@github.com:xenit-eu/custodian.git"));
+                .checkout(ProjectReferenceParser.from("ssh://git@github.com:xenit-eu/custodian.git"));
 
         assertThat(checkout).isEqualTo(handle);
     }

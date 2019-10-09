@@ -1,0 +1,34 @@
+plugins {
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+group = 'eu.xenit.custodian'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    implementation 'org.projectlombok:lombok'
+//    annotationProcessor 'org.projectlombok:lombok'
+//    testAnnotationProcessor 'org.projectlombok:lombok'
+
+//    implementation 'org.springframework.boot:spring-boot-starter'
+//    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+//    implementation gradleTestKit()
+
+    implementation project(':custodian-service')
+
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.assertj:assertj-core'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
+}

@@ -1,0 +1,2 @@
+eu.xenit.custodian.ports.spi.scm.SourceControlHandlerFactory=\
+eu.xenit.custodian.adapters.service.scm.local.LocalFolderSourceControlHandlerFactory

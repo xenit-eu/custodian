@@ -53,6 +53,18 @@ public abstract class JsonAssert<SELF extends JsonAssert<SELF, ACTUAL>, ACTUAL e
         return this.myself;
     }
 
+    public SELF doesNotHaveTextValue(String value) {
+        this.isTextual();
+        assertThat(this.actual.textValue()).isNotEqualTo(value);
+        return this.myself;
+    }
+
+//    public SELF TextValue(String value) {
+//        this.isTextual();
+//        assertThat(this.actual.textValue()).isEqualTo(value);
+//        return this.myself;
+//    }
+
     /**
      * Asserts that the current node is Object node
      */
@@ -90,12 +102,25 @@ public abstract class JsonAssert<SELF extends JsonAssert<SELF, ACTUAL>, ACTUAL e
      */
     public SELF isNullValue() {
         if (!this.actual.isNull()) {
-            this.failWithMessage("Expected array, but is %s instead", this.actual.getNodeType());
+            this.failWithMessage("Expected null, but is %s instead", this.actual.getNodeType());
         }
 
         return this.myself;
     }
 
+    @Override
+    public SELF isNotNull() {
+
+        if (this.actual.isNull()) {
+            if (this.name.isPresent()) {
+                this.failWithMessage("Field '%s' is %s unexpectedly", this.name.get(),
+                        this.actual.getNodeType());
+            } else {
+                this.failWithMessage("Field is %s unexpectedly", this.actual.getNodeType());
+            }
+        }
+        return super.isNotNull();
+    }
 
     public SELF isTextual() {
         if (!this.actual.isTextual()) {

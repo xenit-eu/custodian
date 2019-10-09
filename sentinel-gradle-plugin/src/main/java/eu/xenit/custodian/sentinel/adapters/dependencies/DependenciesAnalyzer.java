@@ -6,7 +6,9 @@ import eu.xenit.custodian.sentinel.adapters.dependencies.DependencyResolution.De
 import java.util.Optional;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.artifacts.ProjectDependency;
 import org.gradle.api.artifacts.ResolvableDependencies;
+import org.gradle.api.artifacts.SelfResolvingDependency;
 import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.artifacts.component.ModuleComponentSelector;
 import org.gradle.api.artifacts.result.DependencyResult;
@@ -23,9 +25,12 @@ class DependenciesAnalyzer {
 
     DependencyContainer analyze(Configuration configuration) {
 
-        logger.info("Collecting dependencies from configuration '{}' - can be resolved: {}", configuration.getName(),
-                configuration.isCanBeResolved());
+
         ResolvableDependencies incoming = configuration.getIncoming();
+        logger.info("Collecting incoming dependencies from configuration '{}' - count {} - can be resolved: {}",
+                configuration.getName(),
+                incoming.getDependencies().size(),
+                configuration.isCanBeResolved());
 
         // Early exit is there are no incoming dependendencies anyway
         if (incoming.getDependencies().isEmpty()) {
@@ -44,14 +49,21 @@ class DependenciesAnalyzer {
 
         DependencyContainer dependencies = new DependencyContainer();
 
-        // Collect all incoming dependenciers
-//        incomingDependencies.forEach(incomingDep -> {
-//            AnalyzedDependency dep = AnalyzedDependency.create(incomingDep);
-//            dependencies.add(dep);
-//            logger.info("-- incoming dependency: {}", dep.getId());
-//        });
-
         incomingDependencies.stream()
+                .filter(dep -> {
+                    //  A SelfResolvingDependency is a Dependency which is able to resolve itself,
+                    // independent of a repository.
+                    // Examples:
+                    // * ProjectDependency
+                    // * gradleTestKit()
+                    if (dep instanceof SelfResolvingDependency)
+                    {
+                        logger.warn("Skipping self resolving dependency: group:{}, name:{} - isProject:{}",
+                                dep.getGroup(), dep.getName(), dep instanceof ProjectDependency);
+                        return false;
+                    }
+                    return true;
+                })
                 .map(AnalyzedDependency::create)
                 .peek(dep -> logger.info("-- incoming dependency: {}", dep.getId()))
                 .forEach(dependencies::add);

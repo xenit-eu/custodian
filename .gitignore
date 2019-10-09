@@ -3,6 +3,8 @@ build
 
 /*/build
 /*/out/
+/*/*/build
+/*/*/out/
 
 custodian-sentinel-report.json
 

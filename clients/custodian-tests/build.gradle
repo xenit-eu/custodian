@@ -1,0 +1,26 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+group = 'eu.xenit.custodian'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'io.spring.initializr:initializr-generator:0.8.0.RELEASE'
+
+    implementation 'org.assertj:assertj-core'
+
+    implementation project(':custodian-service')
+    implementation project(':custodian-service-asserts')
+    implementation project(':custodian-buildsystem-gradle')
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

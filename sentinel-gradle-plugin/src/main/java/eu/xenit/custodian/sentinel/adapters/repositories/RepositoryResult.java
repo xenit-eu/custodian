@@ -1,7 +1,5 @@
 package eu.xenit.custodian.sentinel.adapters.repositories;
 
-import eu.xenit.custodian.sentinel.adapters.dependencies.FlatDirsRepositoryDetails;
-import eu.xenit.custodian.sentinel.adapters.dependencies.IvyRepositoryDetails;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;

@@ -2,7 +2,8 @@ package eu.xenit.custodian.adapters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.domain.repository.scm.ProjectReference;
+import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.domain.project.ProjectReferenceParser;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testUserHomeReference_fromPath() {
-        ProjectReference projectRef = ProjectReference.from(userHomePath());
+        ProjectReference projectRef = ProjectReferenceParser.from(userHomePath());
         assertThat(projectRef)
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("file://" + userHome() + "/");
@@ -27,7 +28,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testUserHomeReference_fromStringWithoutScheme() {
-        ProjectReference projectRef = ProjectReference.from(userHome());
+        ProjectReference projectRef = ProjectReferenceParser.from(userHome());
         assertThat(projectRef)
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("file://" + userHome() + "/");
@@ -35,7 +36,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testUserHomeReference_fromStringWithScheme() {
-        ProjectReference projectRef = ProjectReference.from("file://" + userHome());
+        ProjectReference projectRef = ProjectReferenceParser.from("file://" + userHome());
         assertThat(projectRef)
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("file://" + userHome());
@@ -43,7 +44,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testGitHub_sshLink() {
-        assertThat(ProjectReference.from("ssh://git@github.com:xenit-eu/custodian.git"))
+        assertThat(ProjectReferenceParser.from("ssh://git@github.com:xenit-eu/custodian.git"))
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("ssh://git@github.com:xenit-eu/custodian.git");
     }
@@ -51,14 +52,14 @@ public class ProjectReferenceTest {
 
     @Test
     public void testGitHub_shortSshLink() {
-        assertThat(ProjectReference.from("git@github.com:xenit-eu/custodian.git"))
+        assertThat(ProjectReferenceParser.from("git@github.com:xenit-eu/custodian.git"))
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("ssh://git@github.com:xenit-eu/custodian.git");
     }
 
     @Test
     public void testGitHub_httpsLink() {
-        assertThat(ProjectReference.from("https://github.com/xenit-eu/custodian.git"))
+        assertThat(ProjectReferenceParser.from("https://github.com/xenit-eu/custodian.git"))
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("https://github.com/xenit-eu/custodian.git");
     }
@@ -66,7 +67,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testBitBucket_sshLink() {
-        assertThat(ProjectReference.from("ssh://git@bitbucket.com:xenit/custodian.git"))
+        assertThat(ProjectReferenceParser.from("ssh://git@bitbucket.com:xenit/custodian.git"))
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("ssh://git@bitbucket.com:xenit/custodian.git");
     }
@@ -74,7 +75,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testBitBucket_shortReference() {
-        assertThat(ProjectReference.from("git@bitbucket.org:xenit/custodian.git"))
+        assertThat(ProjectReferenceParser.from("git@bitbucket.org:xenit/custodian.git"))
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("ssh://git@bitbucket.org:xenit/custodian.git");
     }

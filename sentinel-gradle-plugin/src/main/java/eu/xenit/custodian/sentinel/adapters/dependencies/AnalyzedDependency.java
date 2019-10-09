@@ -1,5 +1,6 @@
 package eu.xenit.custodian.sentinel.adapters.dependencies;
 
+import java.util.Objects;
 import lombok.Setter;
 import lombok.Getter;
 import org.gradle.api.artifacts.Dependency;

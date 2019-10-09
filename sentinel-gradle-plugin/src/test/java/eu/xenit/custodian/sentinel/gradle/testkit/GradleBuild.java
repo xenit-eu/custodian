@@ -12,12 +12,17 @@ import java.util.stream.Stream;
 import lombok.Getter;
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.GradleRunner;
+import org.gradle.testkit.runner.internal.PluginUnderTestMetadataReading;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GradleBuild implements TestRule {
+
+    private static final Logger logger = LoggerFactory.getLogger(GradleBuild.class);
 
     private final TemporaryFolder temp = new TemporaryFolder();
     private File source;
@@ -89,22 +94,21 @@ public class GradleBuild implements TestRule {
     private GradleRunner createRunner(String... arguments) throws IOException {
         copyFolder(this.source.getAbsoluteFile().toPath(), this.projectDir.toPath());
         List<String> allArguments = new ArrayList<>();
-//        allArguments.add("-PpluginClasspath=" + getPluginClasspath());
-//        allArguments.add("-PspringFormatVersion=" + getSpringFormatVersion());
-        allArguments.add("--stacktrace");
+            allArguments.add("--stacktrace");
+        allArguments.add("--info");
         allArguments.addAll(Arrays.asList(arguments));
 
+        // This shows that it uses the gradle-build-dir as plugin-classpath, NOT the IDE-build-dir
+        // Which means you need to first build the plugin with gradle, if you want to run tests from the IDE
+        // Can/should we change this ?
+        System.out.println("plugin classpath: "+PluginUnderTestMetadataReading.readImplementationClasspath());
 
         return GradleRunner.create()
                 .withProjectDir(this.projectDir)
-                // debug = true triggers a bug in gradle
-                // see https://github.com/gradle/gradle/issues/3995
-                .withDebug(false)
+                .withDebug(true)
                 .withArguments(allArguments)
                 .withPluginClasspath()
                 .forwardOutput();
-
-
 
     }
 
@@ -115,7 +119,7 @@ public class GradleBuild implements TestRule {
                     Path relative = source.relativize(child);
                     Path destination = target.resolve(relative);
                     if (!destination.toFile().isDirectory()) {
-                        System.out.println("copying "+child+" to "+destination);
+                        logger.info("copying "+child+" to "+destination);
                         Files.copy(child, destination, StandardCopyOption.REPLACE_EXISTING);
                     }
                 }

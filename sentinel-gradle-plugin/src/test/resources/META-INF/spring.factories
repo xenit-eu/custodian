@@ -1,2 +1,0 @@
-io.spring.initializr.generator.packaging.PackagingFactory=\
-eu.xenit.alfred.initializr.generator.packaging.amp.AmpPackagingFactory
