@@ -7,10 +7,16 @@ import eu.xenit.custodian.domain.ProjectMetadata;
 import eu.xenit.custodian.domain.project.ProjectHandle;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzer;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -74,35 +80,38 @@ public class SentinelGradleProjectAnalyzer implements ProjectMetadataAnalyzer {
     }
 
     BuildResult runSentinelReports(Path location) throws IOException, UnexpectedBuildFailure, MetadataAnalyzerException {
-        // locate `sentinel.gradle'
-        // Might need to change this into .getResourceAsStream() and write to temp file
-        // especially if we're running this from a .jar file
-        URL sentinelInit = this.getClass().getClassLoader().getResource(SENTINEL_INIT_GRADLE);
-        if (sentinelInit == null) {
-            throw new IOException("Could not locate "+SENTINEL_INIT_GRADLE);
+        Path sentinelInitPath = null;
+        try {
+            // SENTINEL_INIT_GRADLE contains a gradle init-script and is located in a .jar file
+            sentinelInitPath = Files.createTempFile("sentinel-", ".gradle");
+            try (InputStream stream = this.getClass().getClassLoader().getResourceAsStream(SENTINEL_INIT_GRADLE)) {
+                Files.copy(stream, sentinelInitPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            GradleRunner runner = this.gradleSupplier.get()
+                    .withProjectDir(location.toFile())
+                    .forwardOutput()
+                    .withArguments("--init-script", sentinelInitPath.toString(), SENTINEL_REPORT_TASK);
+
+            BuildResult buildResult = runner.build();
+
+            List<BuildTask> failedTasks = buildResult.getTasks()
+                    .stream()
+                    .filter(task -> !hasExpectedOutcome(task))
+                    .collect(Collectors.toList());
+            if (!failedTasks.isEmpty()) {
+                throw new MetadataAnalyzerException(
+                        "Running sentinelReport failed for tasks: " + failedTasks.toString());
+            }
+
+            // optionally we could assert if number of (successful) tasks > 0 ?
+
+            return buildResult;
+        } finally {
+            if (sentinelInitPath != null) {
+                Files.deleteIfExists(sentinelInitPath);
+            }
         }
-
-        GradleRunner runner = this.gradleSupplier.get()
-                .withProjectDir(location.toFile())
-                // debug = true triggers a bug in gradle
-                // see https://github.com/gradle/gradle/issues/3995
-                // .withDebug(false)
-                .forwardOutput()
-                .withArguments("--init-script", sentinelInit.getPath(), SENTINEL_REPORT_TASK);
-
-        BuildResult buildResult = runner.build();
-
-        List<BuildTask> failedTasks = buildResult.getTasks()
-                .stream()
-                .filter(task -> !hasExpectedOutcome(task))
-                .collect(Collectors.toList());
-        if (!failedTasks.isEmpty()) {
-            throw new MetadataAnalyzerException("Running sentinelReport failed for tasks: " + failedTasks.toString());
-        }
-
-        // optionally we could assert if number of (successful) tasks > 0 ?
-
-        return buildResult;
     }
 
     Collection<Report> collectSentinelReports(Path location) {
