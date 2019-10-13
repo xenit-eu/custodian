@@ -44,7 +44,7 @@ public class SentinelIntegrationTests {
         report
                 .assertField("project", JsonAssert::isObject)
                 .assertField("gradle", gradle -> {
-                    gradle.assertField("version", "5.6");
+                    gradle.assertField("version", "5.6.2");
                     gradle.assertField("buildDir", "build");
                     gradle.assertField("buildFile", "build.gradle");
                 })

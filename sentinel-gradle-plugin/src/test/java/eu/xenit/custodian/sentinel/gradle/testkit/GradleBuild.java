@@ -104,6 +104,7 @@ public class GradleBuild implements TestRule {
         System.out.println("plugin classpath: "+PluginUnderTestMetadataReading.readImplementationClasspath());
 
         return GradleRunner.create()
+                .withGradleVersion("5.6.2")
                 .withProjectDir(this.projectDir)
                 .withDebug(true)
                 .withArguments(allArguments)
