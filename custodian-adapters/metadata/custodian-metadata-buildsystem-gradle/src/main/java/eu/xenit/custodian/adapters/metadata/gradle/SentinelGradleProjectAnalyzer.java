@@ -32,8 +32,9 @@ public class SentinelGradleProjectAnalyzer implements ProjectMetadataAnalyzer {
 
     private static final Logger log = LoggerFactory.getLogger(SentinelGradleProjectAnalyzer.class);
 
+    public static final String SENTINEL_REPORT_OUTPUT = "build/sentinel/custodian-sentinel-report.json";
+
     private static final String SENTINEL_REPORT_TASK = "sentinelReport";
-    private static final String SENTINEL_REPORT_OUTPUT = "custodian-sentinel-report.json";
     public static final String SENTINEL_INIT_GRADLE = "sentinel/sentinel.gradle";
 
     private SentinelReportParser parser;

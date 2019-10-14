@@ -50,7 +50,8 @@ public class SentinelReportParserTest {
     }
 
     private InputStream getSampleReportInputStream() {
-        return this.getClass().getClassLoader().getResourceAsStream("sample/custodian-sentinel-report.json");
+        String path = "sample/" + SentinelGradleProjectAnalyzer.SENTINEL_REPORT_OUTPUT;
+        return this.getClass().getClassLoader().getResourceAsStream(path);
     }
 
     private void readStreamAsText(InputStream inputStream, Consumer<String> callback) throws IOException {
