@@ -1,10 +1,10 @@
 package eu.xenit.custodian.ports.api;
 
-import eu.xenit.custodian.domain.ProjectMetadata;
-import eu.xenit.custodian.domain.ProjectMetadataAnalysisResult;
+import eu.xenit.custodian.domain.ProjectUpdateResult;
+import eu.xenit.custodian.domain.changes.ChangeSets;
+import eu.xenit.custodian.domain.metadata.ProjectMetadata;
 import eu.xenit.custodian.domain.project.ProjectHandle;
 import eu.xenit.custodian.domain.project.ProjectReference;
-import eu.xenit.custodian.domain.ProjectUpdateResult;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import java.io.IOException;
 
@@ -16,10 +16,7 @@ public interface Custodian {
 
     ProjectMetadata extractMetadata(ProjectHandle projectHandle) throws MetadataAnalyzerException;
 
-    // 2. look for updates via "channels"
-    // DependencyUpdates checkForUpdates(ProjectMetadata)
-
-    // 3. gather change-sets
+    ChangeSets getChangeSets(ProjectMetadata metadata);
 
     // 4. apply selected changes
     ProjectUpdateResult run(ProjectReference projectReference);

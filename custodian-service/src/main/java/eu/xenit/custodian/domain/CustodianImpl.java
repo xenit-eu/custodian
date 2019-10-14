@@ -1,5 +1,7 @@
 package eu.xenit.custodian.domain;
 
+import eu.xenit.custodian.domain.changes.ChangeSets;
+import eu.xenit.custodian.domain.metadata.ProjectMetadata;
 import eu.xenit.custodian.domain.project.ProjectHandle;
 import eu.xenit.custodian.domain.project.ProjectReference;
 import eu.xenit.custodian.domain.project.ProjectReferenceParser;
@@ -36,6 +38,11 @@ public class CustodianImpl implements Custodian {
         ProjectMetadata result = new ProjectMetadataAnalysisResult(projectHandle);
         this.analyzer.analyze(result, projectHandle);
         return result;
+    }
+
+    @Override
+    public ChangeSets getChangeSets(ProjectMetadata metadata) {
+        return null;
     }
 
     @Override

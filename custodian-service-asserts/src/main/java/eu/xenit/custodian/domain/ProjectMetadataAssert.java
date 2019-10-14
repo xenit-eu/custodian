@@ -1,12 +1,12 @@
 package eu.xenit.custodian.domain;
 
+import eu.xenit.custodian.domain.metadata.ProjectMetadata;
 import eu.xenit.custodian.domain.metadata.buildsystem.Build;
 import eu.xenit.custodian.domain.metadata.buildsystem.BuildAssert;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.api.Assertions;
 
 public class ProjectMetadataAssert extends AbstractAssert<ProjectMetadataAssert, ProjectMetadata> {
 

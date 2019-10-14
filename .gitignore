@@ -1,10 +1,10 @@
 .gradle
-build
+build/
 
-/*/build
+/*/build/
 /*/out/
-/*/*/build
-/*/*/out/
+/**/build/
+/**/out/
 
 custodian-sentinel-report.json
 
