@@ -1,5 +1,6 @@
 package eu.xenit.custodian.sentinel.reporting;
 
+import eu.xenit.custodian.sentinel.domain.AnalysisContentPart;
 import eu.xenit.custodian.sentinel.domain.AnalysisContribution;
 import eu.xenit.custodian.sentinel.domain.OutputFormat;
 import eu.xenit.custodian.sentinel.domain.SentinelAnalysisReport;
@@ -15,7 +16,7 @@ public class SentinelJsonReporter implements SentinelReporter {
         JsonWriter json = new JsonWriter(writer);
         json.object(
                 result.ids().map(id -> {
-                    AnalysisContribution contribution = result.get(id);
+                    AnalysisContribution<? extends AnalysisContentPart> contribution = result.get(id);
                     return json.property(id, contribution.report(writer, JSON));
                 })
         ).run();

@@ -22,5 +22,8 @@ public class ProjectInformation implements AnalysisContentPart {
     @Default
     private final Map<String, ProjectInformation> subprojects = new HashMap<>();
 
-
+    @Override
+    public String getContributionName() {
+        return ProjectInfoAnalysisContributor.NAME;
+    }
 }

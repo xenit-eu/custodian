@@ -1,7 +1,7 @@
 package eu.xenit.custodian.domain;
 
 import eu.xenit.custodian.domain.metadata.ProjectMetadata;
-import eu.xenit.custodian.domain.metadata.buildsystem.BuildSystemsContainer;
+import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
 import eu.xenit.custodian.domain.project.ProjectHandle;
 import eu.xenit.custodian.domain.project.ProjectReference;
 import org.springframework.util.Assert;

@@ -1,6 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
+    id 'groovy'
     // id 'eu.xenit.custodian.sentinel' version '0.0.1'
 }
 
@@ -24,12 +25,12 @@ ext {
 
 dependencies {
     implementation "org.projectlombok:lombok:${project.lombok}"
+//    implementation groovy
     annotationProcessor "org.projectlombok:lombok:${project.lombok}"
 
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
 
     testImplementation 'junit:junit:4.12'
-
     testImplementation gradleTestKit()
 //    testImplementation gradleApi()
     testImplementation "org.mockito:mockito-core:${project.mockitoVersion}"

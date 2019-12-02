@@ -3,20 +3,26 @@ package eu.xenit.custodian.sentinel.reporting;
 import static eu.xenit.custodian.sentinel.asserts.JsonNodeAssert.assertThat;
 
 import eu.xenit.custodian.sentinel.adapters.dependencies.AnalyzedDependency;
-import eu.xenit.custodian.sentinel.adapters.dependencies.ConfigurationContainer;
-import eu.xenit.custodian.sentinel.adapters.dependencies.ConfigurationResult;
-import eu.xenit.custodian.sentinel.adapters.dependencies.ConfigurationsAnalysisContributor;
-import eu.xenit.custodian.sentinel.adapters.dependencies.DependencyContainer;
+import eu.xenit.custodian.sentinel.adapters.dependencies.DeclaredModuleDependency;
+import eu.xenit.custodian.sentinel.adapters.dependencies.DependenciesAnalysisContributor;
+import eu.xenit.custodian.sentinel.adapters.dependencies.DependenciesContainer;
+import eu.xenit.custodian.sentinel.adapters.dependencies.ConfigurationDependenciesContainer;
+import eu.xenit.custodian.sentinel.adapters.dependencies.DependenciesContribution;
 import eu.xenit.custodian.sentinel.adapters.dependencies.DependencyResolution;
 import eu.xenit.custodian.sentinel.adapters.dependencies.DependencyResolution.DependencyResolutionState;
+import eu.xenit.custodian.sentinel.adapters.dependencies.JsonDependenciesReporter;
 import eu.xenit.custodian.sentinel.adapters.project.ProjectInfoAnalysisContributor;
 import eu.xenit.custodian.sentinel.adapters.project.ProjectInformation;
 import eu.xenit.custodian.sentinel.asserts.JsonAssert;
+import eu.xenit.custodian.sentinel.domain.AnalysisContentPart;
 import eu.xenit.custodian.sentinel.domain.AnalysisContribution;
+import eu.xenit.custodian.sentinel.domain.DefaultAnalysisContribution;
+import eu.xenit.custodian.sentinel.domain.DefaultReportingFormattingFactory;
+import eu.xenit.custodian.sentinel.domain.OutputFormat;
 import eu.xenit.custodian.sentinel.domain.SentinelAnalysisReport;
 import eu.xenit.custodian.sentinel.asserts.JsonNodeAssert;
 import eu.xenit.custodian.sentinel.asserts.SentinelReportAssert;
-import eu.xenit.custodian.sentinel.asserts.condition.Dependency;
+import eu.xenit.custodian.sentinel.asserts.condition.Conditions;
 import eu.xenit.custodian.sentinel.reporting.io.IndentingWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -42,7 +48,8 @@ public class SentinelJsonReporterTest {
                         .subprojects(
                                 Stream.of(
                                         ProjectInformation.builder().name("bar").path(":bar").build()
-                                ).collect(Collectors.toMap(ProjectInformation::getName, Function.identity()))
+                                ).collect(
+                                        Collectors.toMap(ProjectInformation::getName, Function.identity()))
                         )
                         .build());
 
@@ -68,57 +75,36 @@ public class SentinelJsonReporterTest {
     @Test
     public void testStandardDependency() throws IOException {
 
-        SentinelAnalysisReport result = report(configurations("org.apache.httpcomponents:httpclient:4.5.1"));
+        SentinelAnalysisReport result = report(dependencies(
+                implementation("org.apache.httpcomponents:httpclient:4.5.1")
+        ));
 
         String json = writeReport(result);
         System.out.println(json);
 
         SentinelReportAssert report = new SentinelReportAssert(json);
-        report.assertField("configurations", configurations -> {
-            configurations.isObject();
-            configurations.assertField("compileClasspath", compileClasspath -> {
-                compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                    dependencies.haveExactlyOne(Dependency.from("org.apache.httpcomponents:httpclient:4.5.1"));
-                    dependencies.assertOnlyOneElement(dependency -> dependency
-                            .isObject()
-                            .assertField("group", "org.apache.httpcomponents")
-                            .assertField("artifact", "httpclient")
-                            .assertField("version", "4.5.1")
-                            .assertField("resolution", resolution -> resolution
-                                    .isNotNull()
-                                    .isObject())
-                    );
-                });
+        report.assertField("dependencies", dependencies -> {
+            dependencies.isObject();
+            dependencies.assertFieldArray("implementation", implementation -> {
+                implementation.haveExactlyOne(Conditions.dependency("org.apache.httpcomponents:httpclient:4.5.1"));
             });
         });
     }
 
     @Test
     public void testBomManagedDependency() throws IOException {
-
-        AnalyzedDependency result = AnalyzedDependency.from("org.springframework.boot:spring-boot-starter");
-        result.setResolution(DependencyResolution.builder()
-                .state(DependencyResolutionState.RESOLVED)
-                .selected(DefaultModuleVersionIdentifier.newId(result, "5.5.5"))
-                .reason(ComponentSelectionReasons.requested())
-                .build());
-
-        SentinelAnalysisReport report = report(configurations(result));
+        SentinelAnalysisReport report = report(
+                dependencies(implementation("org.springframework.boot:spring-boot-starter")));
 
         String json = writeReport(report);
         System.out.println(json);
 
         new SentinelReportAssert(json)
-                .assertField("configurations", configurations -> {
-                    configurations.isObject();
-                    configurations.assertField("compileClasspath", compileClasspath -> {
-                        compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies.satisfies(array -> assertThat(array.get(0))
-                                    .assertField("group", "org.springframework.boot")
-                                    .assertField("artifact", "spring-boot-starter")
-                                    .assertField("version", JsonAssert::isNullValue)
-                            );
-                        });
+                .assertField("dependencies", dependencies -> {
+                    dependencies.isObject();
+                    dependencies.assertFieldArray("implementation", implementation -> {
+                        implementation.haveExactlyOne(
+                                Conditions.dependency("org.springframework.boot", "spring-boot-starter", null));
                     });
                 });
 
@@ -132,34 +118,28 @@ public class SentinelJsonReporterTest {
         return out.toString();
     }
 
-    private AnalysisContribution<ConfigurationContainer> configurations(AnalyzedDependency... dependencies) {
-        ConfigurationsAnalysisContributor contributor = new ConfigurationsAnalysisContributor((project) -> {
-            DependencyContainer dependencyContainer = new DependencyContainer();
-            Arrays.asList(dependencies)
-                    .forEach(dependencyContainer::add);
-
-            ConfigurationContainer configurationContainer = new ConfigurationContainer();
-            configurationContainer.add(
-                    ConfigurationResult.builder().name("compileClasspath").dependencies(dependencyContainer).build()
-            );
-
-            return configurationContainer;
-        });
-
-        return contributor.analyze(null);
+    private static AnalysisContribution<DependenciesContainer> dependencies(
+            ConfigurationDependenciesContainer... configurations) {
+        return new DependenciesContribution(new DependenciesContainer(Stream.of(configurations)));
     }
 
-    private AnalysisContribution<ConfigurationContainer> configurations(String... dependencies) {
-        return configurations(Stream.of(dependencies)
-                .map(SentinelJsonReporterTest::createResolvedDependency)
-                .toArray(AnalyzedDependency[]::new));
+    private static ConfigurationDependenciesContainer implementation(String... dependencies) {
+        return configuration("implementation", dependencies);
+    }
+
+    private static ConfigurationDependenciesContainer configuration(String name, String... dependencies) {
+        return new ConfigurationDependenciesContainer(
+                name, Stream.of(dependencies).map(DeclaredModuleDependency::from));
     }
 
 
-    private SentinelAnalysisReport report(AnalysisContribution<ConfigurationContainer> configurations) {
+    @SafeVarargs
+    private static SentinelAnalysisReport report(AnalysisContribution<? extends AnalysisContentPart>... contributions) {
 
         SentinelAnalysisReport report = new SentinelAnalysisReport();
-        report.add("configurations", configurations);
+        Arrays.asList(contributions).forEach(contribution -> {
+            report.add(contribution.getName(), contribution);
+        });
 
         return report;
     }

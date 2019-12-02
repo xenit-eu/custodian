@@ -7,3 +7,8 @@ allprojects {
     group = 'eu.xenit.custodian'
     version = '0.0.1-SNAPSHOT'
 }
+
+ext {
+    mavenVersion = '3.5.0'
+    mavenResolverVersion = '1.4.1'
+}

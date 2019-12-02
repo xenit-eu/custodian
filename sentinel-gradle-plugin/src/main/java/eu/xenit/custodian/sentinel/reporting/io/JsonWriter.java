@@ -1,15 +1,18 @@
 package eu.xenit.custodian.sentinel.reporting.io;
 
+import eu.xenit.custodian.sentinel.adapters.dependencies.DeclaredModuleDependency;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.internal.impldep.com.google.api.client.json.Json;
 
 public class JsonWriter {
 
@@ -74,9 +77,14 @@ public class JsonWriter {
 
     public <T> Runnable array(Stream<T> collection, Function<T, Runnable> callback) {
         return this.array(collection
-                .map(callback::apply)
+                .map(callback)
                 .collect(Collectors.toList()));
+    }
 
+    public <T> Runnable array(Stream<T> collection, BiFunction<JsonWriter, T, Runnable> callback) {
+        return this.array(collection
+                .map(it -> callback.apply(this, it))
+                .collect(Collectors.toList()));
     }
 
     public Runnable array(Collection<Runnable> content) {

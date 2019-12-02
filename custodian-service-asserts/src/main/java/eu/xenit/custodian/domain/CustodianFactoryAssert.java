@@ -1,5 +1,6 @@
 package eu.xenit.custodian.domain;
 
+import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzer;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import org.assertj.core.api.AbstractAssert;
@@ -36,6 +37,18 @@ public class CustodianFactoryAssert extends AbstractAssert<CustodianFactoryAsser
 
     public CustodianFactoryAssert hasNoMetadataAnalyzers() {
         Assertions.assertThat(this.actual.getMetadataAnalyzers()).isEmpty();
+        return myself;
+    }
+
+    public CustodianFactoryAssert hasUpdateChannel(Class<? extends UpdateChannel> updateChannel) {
+        Assertions.assertThat(this.actual.getUpdateChannels())
+                .hasAtLeastOneElementOfType(updateChannel);
+
+        return myself;
+    }
+
+    public CustodianFactoryAssert hasNoUpdateChannels() {
+        Assertions.assertThat(this.actual.getUpdateChannels()).isEmpty();
         return myself;
     }
 }

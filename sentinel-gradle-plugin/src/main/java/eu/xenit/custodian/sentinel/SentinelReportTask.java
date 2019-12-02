@@ -1,6 +1,12 @@
 package eu.xenit.custodian.sentinel;
 
+import eu.xenit.custodian.sentinel.adapters.dependencies.DependenciesAnalysisContributor;
+import eu.xenit.custodian.sentinel.adapters.gradle.GradleAnalysisContributor;
+import eu.xenit.custodian.sentinel.adapters.project.ProjectInfoAnalysisContributor;
+import eu.xenit.custodian.sentinel.adapters.repositories.RepositoriesAnalysisContributor;
+import eu.xenit.custodian.sentinel.domain.AnalysisContentPart;
 import eu.xenit.custodian.sentinel.domain.Sentinel;
+import eu.xenit.custodian.sentinel.domain.SentinelAnalysisContributor;
 import eu.xenit.custodian.sentinel.domain.SentinelAnalysisReport;
 import eu.xenit.custodian.sentinel.reporting.SentinelJsonReporter;
 import eu.xenit.custodian.sentinel.reporting.SentinelReporter;
@@ -9,6 +15,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
@@ -39,7 +48,13 @@ public class SentinelReportTask extends DefaultTask {
 
     @TaskAction
     void report() throws IOException {
-        SentinelAnalysisReport result = new Sentinel().analyze(this.getProject());
+
+        SentinelAnalysisReport result = new Sentinel(Arrays.asList(
+                new GradleAnalysisContributor(),
+                new ProjectInfoAnalysisContributor(),
+                new RepositoriesAnalysisContributor(),
+                new DependenciesAnalysisContributor()
+        )).analyze(this.getProject());
 
         SentinelReporter reporter = new SentinelJsonReporter();
 //        SentinelReporter reporter = new SentinelJacksonReporter();

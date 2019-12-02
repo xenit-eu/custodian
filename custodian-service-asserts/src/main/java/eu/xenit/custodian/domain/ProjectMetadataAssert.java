@@ -1,8 +1,8 @@
 package eu.xenit.custodian.domain;
 
 import eu.xenit.custodian.domain.metadata.ProjectMetadata;
-import eu.xenit.custodian.domain.metadata.buildsystem.Build;
-import eu.xenit.custodian.domain.metadata.buildsystem.BuildAssert;
+import eu.xenit.custodian.domain.buildsystem.Build;
+import eu.xenit.custodian.domain.buildsystem.BuildAssert;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;

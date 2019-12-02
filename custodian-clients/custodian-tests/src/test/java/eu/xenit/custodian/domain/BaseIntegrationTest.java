@@ -25,12 +25,7 @@ public class BaseIntegrationTest {
         return GradleProjectBuilder.create();
     }
 
-    protected void logFileContent(Path buildDotGradle) throws IOException {
-        String content = new String(Files.readAllBytes(buildDotGradle));
-//        log().info(buildDotGradle.toString() + System.lineSeparator() + content);
-        System.out.println(buildDotGradle.toString() + System.lineSeparator() + content);
 
-    }
 
 
     private Logger log() {

@@ -2,16 +2,22 @@ package eu.xenit.custodian.sentinel.domain;
 
 public class DefaultAnalysisContribution<T extends AnalysisContentPart> implements AnalysisContribution<T> {
 
-    private final T content;
+    private final T analysis;
     private final ReporterFormattingFactory<T> reporterFactory;
 
-    public DefaultAnalysisContribution(T content, ReporterFormattingFactory<T> reporting) {
-        this.content = content;
+    public DefaultAnalysisContribution(T analysis, ReporterFormattingFactory<T> reporting) {
+        this.analysis = analysis;
         this.reporterFactory = reporting;
     }
 
-    public T getContent() { return this.content; }
-    public PartialReporter<T> createReporter(OutputFormat format) {
+    @Override
+    public String getName() {
+        return this.analysis.getContributionName();
+    }
+
+    public T getAnalysis() { return this.analysis; }
+
+    public PartialReporter<T> getReporter(OutputFormat format) {
         return this.reporterFactory.createReporter(format);
     }
 

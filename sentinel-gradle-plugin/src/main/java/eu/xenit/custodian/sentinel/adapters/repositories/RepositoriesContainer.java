@@ -16,4 +16,8 @@ public class RepositoriesContainer extends ItemContainer<String, RepositoryResul
         super(repositories);
     }
 
+    @Override
+    public String getContributionName() {
+        return RepositoriesAnalysisContributor.NAME;
+    }
 }

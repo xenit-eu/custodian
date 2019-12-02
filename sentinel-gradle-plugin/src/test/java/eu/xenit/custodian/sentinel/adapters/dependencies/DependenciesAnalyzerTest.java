@@ -2,11 +2,11 @@ package eu.xenit.custodian.sentinel.adapters.dependencies;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import eu.xenit.custodian.sentinel.adapters.dependencies.DependenciesAnalyzer;
-import eu.xenit.custodian.sentinel.adapters.dependencies.DependencyContainer;
 import java.util.stream.Stream;
+import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.DependencySet;
 import org.gradle.api.artifacts.result.ResolutionResult;
@@ -26,29 +26,33 @@ public class DependenciesAnalyzerTest {
     }
 
     @Test
-    public void analyzeEmpty() {
+    public void analyzeConfigurationWithoutDeclaredDependencies() {
 
         DependencySet dependencySet = Mockito.mock(DependencySet.class);
-        ResolutionResult resolution = Mockito.mock(ResolutionResult.class);
+        when(dependencySet.stream()).thenReturn(Stream.empty());
 
-        DependencyContainer dependencies = analyzer.analyzeIncomingDependencies(dependencySet, resolution);
+        Configuration configuration = Mockito.mock(Configuration.class);
+        when(configuration.getName()).thenReturn("implementation");
+        when(configuration.getDependencies()).thenReturn(dependencySet);
 
-        assertThat(dependencies.isEmpty()).isTrue();
+        ConfigurationDependenciesContainer result = analyzer.analyzeConfiguration(configuration);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getName()).isEqualTo("implementation");
+        assertThat(result.isEmpty()).isTrue();
     }
 
     @Test
     public void analyzeResolved() {
 
-        DependencySet dependencySet = Mockito.mock(DependencySet.class, InvocationOnMock::callRealMethod);
-//        when(dependencySet.forEach();)
-        when(dependencySet.stream()).thenReturn(Stream.of(DEP_HTTPCLIENT));
+        ConfigurationDependenciesContainer result = analyzer
+                .analyzeConfiguration("implementation", Stream.of(DEP_HTTPCLIENT));
 
-        ResolutionResult resolution = Mockito.mock(ResolutionResult.class);
-
-        DependencyContainer dependencies = analyzer.analyzeIncomingDependencies(dependencySet, resolution);
-
-        assertThat(dependencies.items())
-                .hasSize(1)
-                ;
+        assertThat(result.dependencies())
+                .hasOnlyOneElementSatisfying(dep -> {
+                    assertThat(dep.getGroup()).isEqualTo(DEP_HTTPCLIENT.getGroup());
+                    assertThat(dep.getName()).isEqualTo(DEP_HTTPCLIENT.getName());
+                    assertThat(dep.getVersion()).isEqualTo(DEP_HTTPCLIENT.getVersion());
+                });
     }
 }

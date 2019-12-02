@@ -14,4 +14,8 @@ public class GradleInfo implements AnalysisContentPart {
     private final String buildDir;
     private final String buildFile;
 
+    @Override
+    public String getContributionName() {
+        return GradleAnalysisContributor.NAME;
+    }
 }

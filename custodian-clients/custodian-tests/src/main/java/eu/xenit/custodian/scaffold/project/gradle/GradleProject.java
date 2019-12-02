@@ -25,10 +25,10 @@ public class GradleProject {
         this.buildWriter = new GroovyDslGradleBuildWriter();
     }
 
-    public Path materialize(Path projectRoot) throws IOException {
-        Path buildGradle = Files.createFile(projectRoot.resolve("build.gradle"));
-        writeBuild(Files.newBufferedWriter(buildGradle));
-        return buildGradle;
+    public BuildDotGradle materialize(Path projectRoot) throws IOException {
+        Path buildGradlePath = Files.createFile(projectRoot.resolve("build.gradle"));
+        writeBuild(Files.newBufferedWriter(buildGradlePath));
+        return new BuildDotGradle(buildGradlePath);
     }
 
     public void writeBuild(Writer out) throws IOException {

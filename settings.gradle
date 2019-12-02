@@ -12,7 +12,8 @@ include 'sentinel-gradle-plugin'
 include 'custodian-service'
 include 'custodian-service-asserts'
 
-include 'custodian-adapters:metadata:custodian-metadata-buildsystem-gradle'
+include 'custodian-adapters:buildsystem:custodian-buildsystem-maven-model'
+include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle'
 
 include 'custodian-adapters:channel:custodian-channel-maven-repositories'
 

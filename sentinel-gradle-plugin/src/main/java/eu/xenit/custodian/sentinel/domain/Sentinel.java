@@ -1,10 +1,5 @@
 package eu.xenit.custodian.sentinel.domain;
 
-import eu.xenit.custodian.sentinel.adapters.dependencies.ConfigurationsAnalysisContributor;
-import eu.xenit.custodian.sentinel.adapters.gradle.GradleAnalysisContributor;
-import eu.xenit.custodian.sentinel.adapters.project.ProjectInfoAnalysisContributor;
-import eu.xenit.custodian.sentinel.adapters.repositories.RepositoriesAnalysisContributor;
-import java.util.Arrays;
 import java.util.Collection;
 import org.gradle.api.Project;
 
@@ -18,19 +13,8 @@ public class Sentinel {
 //    private ConfigurationsAnalyzer configurationsAnalyzer = new ConfigurationsAnalyzer();
 //    private RepositoriesAnalyzer repositoriesAnalyzer = new RepositoriesAnalyzer();
 
-    // does not comply with hexagonal architecture - provide adapters as arguments!
-    @Deprecated
-    public Sentinel() {
-        this(Arrays.asList(
-                new GradleAnalysisContributor(),
-                new ProjectInfoAnalysisContributor(),
-                new RepositoriesAnalysisContributor(),
-                new ConfigurationsAnalysisContributor()
-        ));
-    }
-
-    public Sentinel(Collection<SentinelAnalysisContributor> contributors) {
-        contributors.forEach(this.contributors::add);
+    public Sentinel(Collection<SentinelAnalysisContributor<? extends AnalysisContentPart>> contributors) {
+        contributors.forEach(c -> this.contributors.add(c));
     }
 
     public SentinelAnalysisReport analyze(Project project) {
@@ -38,7 +22,7 @@ public class Sentinel {
         SentinelAnalysisReport report = new SentinelAnalysisReport();
 
         this.contributors.items().forEach(contributor -> {
-            AnalysisContribution contribution = contributor.analyze(project);
+            AnalysisContribution<? extends AnalysisContentPart> contribution = contributor.analyze(project);
             report.add(contributor.getName(), contribution);
         });
 

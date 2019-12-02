@@ -1,11 +1,11 @@
 package eu.xenit.custodian.sentinel.domain;
 
-public class AnalysisContributorContainer extends ItemContainer<String, SentinelAnalysisContributor> {
+import java.util.Objects;
 
-    public void add(SentinelAnalysisContributor contributor) {
-        if (contributor == null) {
-            throw new IllegalArgumentException("Contributor must not be null");
-        }
+public class AnalysisContributorContainer extends ItemContainer<String, SentinelAnalysisContributor<? extends AnalysisContentPart>> {
+
+    public void add(SentinelAnalysisContributor<? extends AnalysisContentPart> contributor) {
+        Objects.requireNonNull(contributor, "Argument 'contributor' is required");
 
         this.add(contributor.getName(), contributor);
     }

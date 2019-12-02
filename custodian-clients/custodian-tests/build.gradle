@@ -18,7 +18,7 @@ dependencies {
 
     implementation project(':custodian-service')
     implementation project(':custodian-service-asserts')
-    implementation project(':custodian-adapters:metadata:custodian-metadata-buildsystem-gradle')
+    implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

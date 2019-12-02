@@ -1,5 +1,6 @@
 package eu.xenit.custodian.sentinel;
 
+import static eu.xenit.custodian.sentinel.asserts.condition.Conditions.dependency;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -7,7 +8,7 @@ import static org.junit.Assert.assertThat;
 import eu.xenit.custodian.sentinel.asserts.JsonAssert;
 import eu.xenit.custodian.sentinel.asserts.JsonNodeAssert;
 import eu.xenit.custodian.sentinel.asserts.SentinelReportAssert;
-import eu.xenit.custodian.sentinel.asserts.condition.Dependency;
+import eu.xenit.custodian.sentinel.asserts.condition.Conditions;
 import eu.xenit.custodian.sentinel.asserts.condition.Repository;
 import eu.xenit.custodian.sentinel.gradle.testkit.GradleBuild;
 import java.io.File;
@@ -40,8 +41,7 @@ public class SentinelIntegrationTests {
         String json = new String(Files.readAllBytes(reportFile.toPath()));
         System.out.println(json);
 
-        SentinelReportAssert report = new SentinelReportAssert(reportFile);
-        report
+        new SentinelReportAssert(reportFile)
                 .assertField("project", JsonAssert::isObject)
                 .assertField("gradle", gradle -> {
                     gradle.assertField("version", "5.6.2");
@@ -52,21 +52,18 @@ public class SentinelIntegrationTests {
                     repositories.hasSize(1);
                     repositories.haveExactlyOne(Repository.withUrl("https://repo.maven.apache.org/maven2/"));
                 })
-                .assertField("configurations", configurations -> {
+                .assertField("dependencies", dependencies -> {
 
-                    configurations.isObject();
-                    configurations.assertField("compileClasspath", compileClasspath -> {
-                        compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies.haveExactlyOne(Dependency.from("org.apache.httpcomponents:httpclient:4.5.1"));
-                            dependencies.doNotHave(Dependency.from("junit:junit:4.12"));
-                        });
+                    dependencies.isObject();
+                    dependencies.assertFieldArray("implementation", implementation -> {
+//                        implementation.assertFieldArray("dependencies", dependencies -> {
+                        implementation.haveExactlyOne(dependency("org.apache.httpcomponents:httpclient:4.5.1"));
+//                            dependencies.doNotHave(Dependency.from("junit:junit:4.12"));
+//                        });
                     });
 
-                    configurations.assertField("testRuntimeClasspath", testRuntimeClasspath -> {
-                        testRuntimeClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies.haveExactlyOne(Dependency.from("org.apache.httpcomponents:httpclient:4.5.1"));
-                            dependencies.haveExactlyOne(Dependency.from("junit:junit:4.12"));
-                        });
+                    dependencies.assertFieldArray("testImplementation", testImplementation -> {
+                        testImplementation.haveExactlyOne(dependency("junit:junit:4.12"));
                     });
                 });
     }
@@ -92,23 +89,14 @@ public class SentinelIntegrationTests {
                     repositories.hasSize(1);
                     repositories.haveExactlyOne(Repository.withUrl("https://repo.maven.apache.org/maven2/"));
                 })
-                .assertField("configurations", configurations -> {
-
-                    configurations.isObject();
-                    configurations.assertField("compileClasspath", compileClasspath -> {
-                        compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies
-                                    .haveExactlyOne(Dependency.from("org.springframework.boot:spring-boot-starter"));
-                        });
+                .assertField("dependencies", dependencies -> {
+                    dependencies.isNotNull().isObject();
+                    dependencies.assertFieldArray("implementation", implementation -> {
+                        implementation.haveExactlyOne(dependency("org.springframework.boot:spring-boot-starter"));
                     });
-
-                    configurations.assertField("testRuntimeClasspath", testRuntimeClasspath -> {
-                        testRuntimeClasspath.assertFieldArray("dependencies", dependencies -> {
-                            dependencies
-                                    .haveExactlyOne(Dependency.from("org.springframework.boot:spring-boot-starter:"));
-                            dependencies.haveExactlyOne(
-                                    Dependency.from("org.springframework.boot:spring-boot-starter-test:"));
-                        });
+                    dependencies.assertFieldArray("testImplementation", testImplementation -> {
+                        testImplementation
+                                .haveExactlyOne(dependency("org.springframework.boot:spring-boot-starter-test"));
                     });
                 });
     }
@@ -154,18 +142,16 @@ public class SentinelIntegrationTests {
         System.out.println(json);
 
         SentinelReportAssert report = new SentinelReportAssert(reportFile);
-        report
-                .assertField("compileClasspath", compileClasspath -> {
-                    compileClasspath.assertFieldArray("dependencies", dependencies -> {
-                        dependencies.satisfies(arrayNode -> arrayNode.forEach(jsonDependency -> {
-                            JsonNodeAssert.assertThat(jsonDependency)
-                                    .assertField("group", JsonAssert::isNotNull)
-                                    .assertField("artifact", artifact -> {
-                                        artifact.doesNotHaveTextValue("unspecified");
-                                    });
-
-                        }));
-                    });
+        report.assertField("dependencies", dependencies -> {
+            dependencies.assertFieldArray("implementation", implementation -> {
+                // currently ignoring special dependencies like 'gradleTestKit()'
+                implementation.hasOnlyOneElementSatisfying(dep -> {
+                    JsonNodeAssert.assertThat(dep)
+                            .assertField("group", "org.apache.httpcomponents")
+                            .assertField("artifact", "httpclient")
+                            .assertField("version", "4.5.1");
                 });
+            });
+        });
     }
 }

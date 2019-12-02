@@ -1,19 +1,20 @@
 package eu.xenit.custodian.domain;
 
+import eu.xenit.custodian.domain.changes.CompositeUpdateChannel;
 import eu.xenit.custodian.domain.metadata.CompositeProjectMetadataAnalyzer;
 import eu.xenit.custodian.domain.scm.CompositeSourceControlHandler;
 import eu.xenit.custodian.ports.api.Custodian;
+import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
+import eu.xenit.custodian.ports.spi.channel.UpdateChannelFactory;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzer;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzerFactory;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandlerFactory;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting;
 import org.springframework.core.OrderComparator;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
@@ -21,10 +22,12 @@ public class CustodianFactory {
 
     private final Set<SourceControlHandler> scm;
     private final Set<ProjectMetadataAnalyzer> metadata;
+    private final Set<UpdateChannel> channels;
 
     private CustodianFactory(FactorySettings settings) {
         this.scm = Collections.unmodifiableSet(settings.scm);
         this.metadata = Collections.unmodifiableSet(settings.metadata);
+        this.channels = Collections.unmodifiableSet(settings.updateChannels);
     }
 
     /**
@@ -33,25 +36,12 @@ public class CustodianFactory {
      * @return a configured {@link CustodianImpl} instance
      */
     public Custodian create() {
+
         return new CustodianImpl(
-                composeSourceControlHandlers(scm),
-                composeMetadataAnalyzers(metadata)
+                new CompositeSourceControlHandler(scm.stream().sorted(OrderComparator.INSTANCE)),
+                new CompositeProjectMetadataAnalyzer(metadata),
+                new CompositeUpdateChannel(channels)
         );
-    }
-
-    CompositeProjectMetadataAnalyzer composeMetadataAnalyzers(Set<ProjectMetadataAnalyzer> analyzers) {
-        return new CompositeProjectMetadataAnalyzer(analyzers);
-    }
-
-    /**
-     * Composes the registered {@link SourceControlHandler}s by iterating over the registered handlers,
-     * taking {@link org.springframework.core.Ordered} annotation into account.
-     *
-     * @return a SourceControlHandler that composes the registered SourceControlHandler
-     */
-    CompositeSourceControlHandler composeSourceControlHandlers(Set<SourceControlHandler> handlers) {
-
-        return new CompositeSourceControlHandler(handlers.stream().sorted(OrderComparator.INSTANCE));
     }
 
     /**
@@ -62,7 +52,8 @@ public class CustodianFactory {
     public static CustodianFactory withDefaultSettings() {
         return create(settings -> {
             settings.withDefaultScmHandlers()
-                    .withDefaultProjectMetedataAnalyzers();
+                    .withDefaultProjectMetedataAnalyzers()
+                    .withDefaultUpdateChannels();
         });
     }
 
@@ -98,12 +89,22 @@ public class CustodianFactory {
     }
 
     /**
+     * Get registered update channels
+     *
+     * @return the registered {@link UpdateChannel}s
+     */
+    Set<UpdateChannel> getUpdateChannels() {
+        return channels;
+    }
+
+    /**
      * FactorySettings customizer for {@link CustodianFactory}.
      */
     public static final class FactorySettings {
 
         private final Set<SourceControlHandler> scm = new LinkedHashSet<>();
         private final Set<ProjectMetadataAnalyzer> metadata = new LinkedHashSet<>();
+        private final Set<UpdateChannel> updateChannels = new LinkedHashSet<>();
 
         private FactorySettings() {
 
@@ -150,6 +151,28 @@ public class CustodianFactory {
 
         public FactorySettings clearMetadataAnalyzers() {
             this.metadata.clear();
+            return this;
+        }
+
+        public FactorySettings withDefaultUpdateChannels() {
+            this.clearUpdateChannels();
+            SpringFactoriesLoader.loadFactories(UpdateChannelFactory.class,
+                    UpdateChannelFactory.class.getClassLoader())
+                    .stream()
+                    .map(UpdateChannelFactory::create)
+                    .forEach(this::withUpdateChannel);
+
+            return this;
+        }
+
+        public FactorySettings withUpdateChannel(UpdateChannel updateChannel) {
+            Objects.requireNonNull(updateChannel, "updateChannel can not be null");
+            this.updateChannels.add(updateChannel);
+            return this;
+        }
+
+        public FactorySettings clearUpdateChannels() {
+            this.updateChannels.clear();
             return this;
         }
 

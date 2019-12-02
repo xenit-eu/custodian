@@ -48,7 +48,6 @@ public class AnalyzedDependency implements ModuleIdentifier {
         } else {
             throw new IllegalArgumentException("Cannot parse '"+coordinates+"' as dependency coordinates");
         }
-
     }
 
 
