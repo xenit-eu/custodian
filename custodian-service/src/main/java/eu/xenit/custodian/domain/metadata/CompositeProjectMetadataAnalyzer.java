@@ -1,6 +1,7 @@
 package eu.xenit.custodian.domain.metadata;
 
-import eu.xenit.custodian.domain.project.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectMetadata;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzer;
 import java.util.Collection;

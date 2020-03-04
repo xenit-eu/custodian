@@ -25,5 +25,9 @@ public interface MavenDependencyUpdateStrategy {
         default Optional<MavenModuleVersion> getVersion() {
             return this.getQueryResult().getHighestVersion();
         }
+
+        default Optional<MavenVersionSpecification> getVersionSpec() {
+            return this.getVersion().map(MavenVersionSpecification::from);
+        }
     }
 }

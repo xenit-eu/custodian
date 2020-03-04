@@ -9,6 +9,8 @@ import java.util.Set;
 public interface MavenModuleDependency extends MavenDependency, ModuleDependency,
         MavenArtifactSpecificationProvider, MavenArtifactSpecificationDescriptor {
 
+    String SCOPE_COMPILE = "compile";
+
     default MavenArtifactSpecificationDescriptor getMavenArtifactsDescriptor() {
         return this;
     }
@@ -16,6 +18,10 @@ public interface MavenModuleDependency extends MavenDependency, ModuleDependency
     static MavenModuleDependency from(MavenModuleIdentifier moduleId, MavenVersionSpecification version, String scope) {
         return new DefaultMavenModuleDependency(moduleId, version, "jar", null, scope, Collections.emptyList(),
                 Boolean.FALSE.toString());
+    }
+
+    static MavenModuleDependency from(String groupId, String artifactId, String version) {
+        return from(groupId, artifactId, version, SCOPE_COMPILE);
     }
 
     static MavenModuleDependency from(String groupId, String artifactId, String version, String scope){

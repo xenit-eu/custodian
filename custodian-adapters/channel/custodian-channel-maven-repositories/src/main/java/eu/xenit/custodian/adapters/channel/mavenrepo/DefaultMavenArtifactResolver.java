@@ -39,7 +39,6 @@ public class DefaultMavenArtifactResolver implements MavenArtifactResolver {
 //    public DefaultMavenArtifactResolver(MavenProperties properties) {
 
     public DefaultMavenArtifactResolver() {
-//        this.properties = properties;
 
         this.remoteRepositories.add(
                 new RemoteRepository.Builder("maven-central", "default", "https://repo.maven.apache.org/maven2/")
@@ -48,28 +47,6 @@ public class DefaultMavenArtifactResolver implements MavenArtifactResolver {
 
         this.repositorySystem = newRepositorySystem();
     }
-
-
-//    public void resolve(MavenArtifactSpecification coordinates) {
-//
-//        MavenVersionRangeCalculator rangeCalculator = new MavenVersionRangeCalculator();
-//        ArtifactVersion artifactVersion = new DefaultArtifactVersion(coordinates.getVersionSpec().toString());
-//
-//        VersionRange incrementalVersionRange = rangeCalculator.getIncrementalVersionRange(artifactVersion);
-//        Artifact incrementalArtifact = coordinatesToArtifact(coordinates, incrementalVersionRange);
-//        VersionRangeResult incrementalUpdate = this.getUpdatedVersionsInRange(incrementalArtifact);
-//        log.info("Incremental update -> {}", incrementalUpdate.getHighestVersion());
-//
-//        VersionRange minorVersionRange = rangeCalculator.getMinorUpdateVersionRange(artifactVersion);
-//        Artifact minorArtifact = coordinatesToArtifact(coordinates, minorVersionRange);
-//        VersionRangeResult minorUpdate = this.getUpdatedVersionsInRange(minorArtifact);
-//        log.info("Minor update -> {}", minorUpdate.getHighestVersion());
-//
-//        VersionRange majorVersionRange = rangeCalculator.getMajorUpdateVersionRange(artifactVersion);
-//        Artifact majorArtifact = coordinatesToArtifact(coordinates, majorVersionRange);
-//        VersionRangeResult majorUpdate = this.getUpdatedVersionsInRange(majorArtifact);
-//        log.info("Major update -> {}", majorUpdate.getHighestVersion());
-//    }
 
     @Override
     public MavenVersionRangeQueryResult resolve(MavenArtifactSpecification coordinates) {

@@ -8,8 +8,12 @@ public class DefaultGradleVersionSpecification implements GradleVersionSpecifica
     private final String value;
 
     DefaultGradleVersionSpecification(String value) {
-        // parsing yada yada ?
+        // parsing this etc ?
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return this.getValue();
+    }
 }

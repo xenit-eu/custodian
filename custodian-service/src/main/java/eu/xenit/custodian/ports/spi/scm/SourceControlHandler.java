@@ -1,7 +1,7 @@
 package eu.xenit.custodian.ports.spi.scm;
 
-import eu.xenit.custodian.domain.project.ProjectHandle;
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectReference;
 import java.io.IOException;
 import org.springframework.core.Ordered;
 

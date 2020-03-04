@@ -1,5 +1,6 @@
 package eu.xenit.custodian.domain.project;
 
+import eu.xenit.custodian.ports.api.ProjectReference;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;

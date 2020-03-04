@@ -4,17 +4,17 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
-public class RepositoryContainer<R extends Repository> extends BuildItemContainer<String, R> {
+public class RepositoryContainer extends BuildItemContainer<String, Repository> {
 
     protected RepositoryContainer() {
         super(new LinkedHashMap<>());
     }
 
-    public void add(R repository) {
+    public void add(Repository repository) {
         super.add(repository.getId(), repository);
     }
 
-    public void addAll(Collection<R> collection)
+    public void addAll(Collection<Repository> collection)
     {
         Objects.requireNonNull(collection, "collection must not be null");
         collection.forEach(repository -> {

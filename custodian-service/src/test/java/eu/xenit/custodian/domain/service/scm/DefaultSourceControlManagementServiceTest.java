@@ -10,7 +10,7 @@ import eu.xenit.custodian.adapters.service.scm.NullSourceControlHandler;
 import eu.xenit.custodian.adapters.service.scm.StubbedSourceControlHandler;
 import eu.xenit.custodian.domain.scm.CompositeSourceControlHandler;
 import eu.xenit.custodian.domain.project.ProjectReferenceParser;
-import eu.xenit.custodian.domain.project.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectHandle;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import eu.xenit.custodian.ports.spi.scm.UnsupportedProjectReference;
 import java.io.IOException;

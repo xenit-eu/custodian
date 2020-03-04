@@ -22,6 +22,10 @@ public interface MavenVersionSpecification extends VersionSpecification {
         return new DefaultMavenVersionSpecification(version.getValue());
     }
 
+    static MavenVersionSpecification from(MavenModuleVersion version) {
+        return new DefaultMavenVersionSpecification(version.getValue());
+    }
+
 
     interface VersionBounds {
 

@@ -40,13 +40,18 @@ public interface BuildSystem {
         return null;
     }
 
+    Class<? extends Build> getType();
+
     static BuildSystem forId(String id) {
         return forIdAndDialect(id, null);
     }
 
     static BuildSystem forIdAndDialect(String id, String dialect) {
         return SpringFactoriesLoader.loadFactories(BuildSystemFactory.class, BuildSystem.class.getClassLoader())
-                .stream().map((factory) -> factory.createBuildSystem(id, dialect)).filter(Objects::nonNull).findFirst()
+                .stream()
+                .map((factory) -> factory.createBuildSystem(id, dialect))
+                .filter(Objects::nonNull)
+                .findFirst()
                 .orElseThrow(() -> new IllegalStateException(
                         "Unrecognized build system id '" + id + "' and dialect '" + dialect + "'"));
     }

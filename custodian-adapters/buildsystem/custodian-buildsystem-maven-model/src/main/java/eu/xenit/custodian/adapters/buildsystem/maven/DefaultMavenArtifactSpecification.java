@@ -41,7 +41,7 @@ class DefaultMavenArtifactSpecification implements MavenArtifactSpecification {
 
         if (this.extension != null || this.classifier != null) {
             coords += ":";
-            if (this.extension != null) {
+            if (this.extension != null && !this.extension.equalsIgnoreCase("jar")) {
                 coords += this.extension;
             }
 

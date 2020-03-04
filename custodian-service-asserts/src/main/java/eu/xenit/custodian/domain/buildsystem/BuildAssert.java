@@ -3,7 +3,7 @@ package eu.xenit.custodian.domain.buildsystem;
 import java.util.function.Consumer;
 import org.assertj.core.api.AbstractAssert;
 
-public class BuildAssert extends AbstractAssert<BuildAssert, Build<Build, Dependency>> {
+public class BuildAssert extends AbstractAssert<BuildAssert, Build> {
 
     public BuildAssert(Build build) {
         super(build, BuildAssert.class);

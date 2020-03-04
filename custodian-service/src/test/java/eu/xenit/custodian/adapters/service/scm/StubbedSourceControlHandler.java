@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.service.scm;
 
-import eu.xenit.custodian.domain.project.ProjectHandle;
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectReference;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import java.util.function.Predicate;
 

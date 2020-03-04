@@ -1,4 +1,4 @@
-package eu.xenit.custodian.domain.project;
+package eu.xenit.custodian.ports.api;
 
 import java.net.URI;
 

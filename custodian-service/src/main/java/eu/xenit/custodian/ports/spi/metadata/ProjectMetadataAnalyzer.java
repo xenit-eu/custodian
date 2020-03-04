@@ -1,7 +1,7 @@
 package eu.xenit.custodian.ports.spi.metadata;
 
-import eu.xenit.custodian.domain.metadata.ProjectMetadata;
-import eu.xenit.custodian.domain.project.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectMetadata;
+import eu.xenit.custodian.ports.api.ProjectHandle;
 
 public interface ProjectMetadataAnalyzer {
 

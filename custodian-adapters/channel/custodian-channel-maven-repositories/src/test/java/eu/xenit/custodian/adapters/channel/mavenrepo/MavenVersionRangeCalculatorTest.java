@@ -12,8 +12,6 @@ import org.junit.Test;
 
 public class MavenVersionRangeCalculatorTest {
 
-    private MavenVersionRangeCalculator versionRangeCalculator = new MavenVersionRangeCalculator();
-
     @Test
     public void getMajorUpdateVersionRange() {
         VersionSpecification range = MavenVersionRangeCalculator

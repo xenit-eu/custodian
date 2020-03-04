@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import java.util.ArrayList  ;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -48,10 +48,14 @@ public class DefaultMavenModuleDependency implements MavenModuleDependency {
 
     @Override
     public Set<MavenArtifactSpecification> getArtifactSpecs() {
-        return Collections.singleton(new DefaultMavenArtifactSpecification(
+        return Collections.singleton(this.getArtifact());
+    }
+
+    private MavenArtifactSpecification getArtifact() {
+        return new DefaultMavenArtifactSpecification(
                 this.getModuleId(), this.getVersionSpec(), this.getExtension(),
                 this.getClassifier(), this.getType()
-        ));
+        );
     }
 
     private String getExtension() {
@@ -66,5 +70,11 @@ public class DefaultMavenModuleDependency implements MavenModuleDependency {
             default:
                 throw new UnsupportedOperationException("TODO map artifact type '" + this.getType() + "' to extension");
         }
+    }
+
+    @Override
+    public String toString() {
+        return MavenModuleDependency.class.getSimpleName()
+                + "[" + this.getArtifact().toString() + " scope=" + this.getScope() + "]";
     }
 }

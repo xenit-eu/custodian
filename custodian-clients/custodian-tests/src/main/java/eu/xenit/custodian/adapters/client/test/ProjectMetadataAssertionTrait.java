@@ -1,9 +1,9 @@
 package eu.xenit.custodian.adapters.client.test;
 
-import eu.xenit.custodian.domain.metadata.ProjectMetadata;
-import eu.xenit.custodian.domain.ProjectMetadataAssert;
+import eu.xenit.custodian.ports.api.ProjectMetadata;
+import eu.xenit.custodian.domain.metadata.ProjectMetadataAssert;
 import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.ports.api.ProjectReference;
 import java.util.Objects;
 import org.assertj.core.api.AssertProvider;
 

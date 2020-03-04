@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 
 /**
  * A {@code ModuleDependency} is a {@link Dependency} on a module outside the current project.
+ *
+ * This implies it could be a child/parent/sibling/linked project.
  */
 public interface ModuleDependency extends Dependency {
 
@@ -13,12 +15,7 @@ public interface ModuleDependency extends Dependency {
     ModuleIdentifier getModuleId();
     VersionSpecification getVersionSpec();
 
-
-    @Deprecated
-    default ModuleIdentifier getId() {
-        return this.getModuleId();
+    default String getId() {
+        return this.getModuleId().getId();
     }
-
-//    ArtifactSpecification artifact(Consumer<? super ArtifactSpecification> configureAction);
-
 }

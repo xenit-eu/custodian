@@ -5,8 +5,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import eu.xenit.custodian.domain.project.ProjectHandle;
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectReference;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzer;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;

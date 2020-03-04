@@ -1,9 +1,9 @@
 package eu.xenit.custodian.domain;
 
-import eu.xenit.custodian.domain.metadata.ProjectMetadata;
+import eu.xenit.custodian.ports.api.ProjectMetadata;
 import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
-import eu.xenit.custodian.domain.project.ProjectHandle;
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectReference;
 import org.springframework.util.Assert;
 
 public class ProjectMetadataAnalysisResult implements ProjectMetadata {

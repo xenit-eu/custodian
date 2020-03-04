@@ -2,7 +2,7 @@ package eu.xenit.custodian.domain.changes;
 
 import java.util.stream.Stream;
 
-public interface ChangeSetCollection {
+public interface LogicalChangeSet {
 
-    Stream<ChangeSet> changes();
+    Stream<LogicalChange> changes();
 }

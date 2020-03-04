@@ -21,7 +21,7 @@ public class BaseIntegrationTest {
         return new CustodianTestClient(custodian);
     }
 
-    protected GradleProjectBuilder gradleBuild() {
+    protected GradleProjectBuilder newGradleBuild() {
         return GradleProjectBuilder.create();
     }
 

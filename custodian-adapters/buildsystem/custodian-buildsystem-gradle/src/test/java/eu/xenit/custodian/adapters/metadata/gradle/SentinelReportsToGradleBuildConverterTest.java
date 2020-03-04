@@ -73,7 +73,7 @@ public class SentinelReportsToGradleBuildConverterTest {
 //                )
                 .satisfies(gradle -> GradleDependencyContainerAsserts.assertThat(gradle.dependencies())
                         .isNotNull()
-                        .hasDependency(GradleNotationFormatter.format(MavenModuleIdentifierFixtures.junit())));
+                        .hasDependency( GradleNotationFormatter.format(MavenModuleIdentifierFixtures.junit())));
 
 
     }

@@ -1,7 +1,6 @@
 package eu.xenit.custodian.adapters.metadata.gradle;
 
 
-import eu.xenit.custodian.adapters.buildsystem.maven.MavenRepository;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuild;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleModuleDependency;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleVersionSpecification;
@@ -10,6 +9,7 @@ import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.Dependency;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.Report;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.RepositoryDto;
 import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
+import eu.xenit.custodian.domain.buildsystem.Repository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class SentinelReportsToGradleBuildConverter {
         return gradleBuild;
     }
 
-    private Collection<MavenRepository> collectRepositories(List<RepositoryDto> repositories) {
+    private Collection<Repository> collectRepositories(List<RepositoryDto> repositories) {
         RepositoryFactory factory = new RepositoryFactory();
         return repositories.stream().map(factory::from).collect(Collectors.toList());
     }

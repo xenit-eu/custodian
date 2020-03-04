@@ -1,11 +1,12 @@
 package eu.xenit.custodian.domain;
 
-import eu.xenit.custodian.domain.changes.ChangeSetCollection;
-import eu.xenit.custodian.domain.metadata.ProjectMetadata;
-import eu.xenit.custodian.domain.project.ProjectHandle;
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.domain.changes.LogicalChangeSet;
+import eu.xenit.custodian.ports.api.ProjectMetadata;
+import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectReference;
 import eu.xenit.custodian.domain.project.ProjectReferenceParser;
 import eu.xenit.custodian.ports.api.Custodian;
+import eu.xenit.custodian.ports.api.ProjectUpdateResult;
 import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzer;
@@ -27,7 +28,7 @@ public class CustodianImpl implements Custodian {
     }
 
     @Override
-    public ProjectReference createReference(String projectReference){
+    public ProjectReference createReference(String projectReference) {
         return ProjectReferenceParser.from(projectReference);
     }
 
@@ -44,12 +45,13 @@ public class CustodianImpl implements Custodian {
     }
 
     @Override
-    public ChangeSetCollection getChangeSets(ProjectMetadata metadata) {
-        return new DefaultChangeSetCollection(this.channel.getChangeSets(metadata));
+    public LogicalChangeSet getChanges(ProjectMetadata metadata) {
+        return new DefaultLogicalChangeSet(this.channel.getChanges(metadata));
     }
 
     @Override
     public ProjectUpdateResult run(ProjectReference projectReference) {
-        return new ProjectUpdateResult();
+        return new ProjectUpdateResult() {
+        };
     }
 }

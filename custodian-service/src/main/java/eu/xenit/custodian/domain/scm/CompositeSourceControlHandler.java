@@ -1,18 +1,15 @@
 package eu.xenit.custodian.domain.scm;
 
-import eu.xenit.custodian.domain.project.ProjectHandle;
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectReference;
 import eu.xenit.custodian.ports.spi.scm.UnsupportedProjectReference;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.springframework.beans.factory.ObjectProvider;
 
 public class CompositeSourceControlHandler implements SourceControlHandler {
 

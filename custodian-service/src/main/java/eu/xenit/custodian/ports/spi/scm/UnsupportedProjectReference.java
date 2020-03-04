@@ -1,6 +1,6 @@
 package eu.xenit.custodian.ports.spi.scm;
 
-import eu.xenit.custodian.domain.project.ProjectReference;
+import eu.xenit.custodian.ports.api.ProjectReference;
 
 public class UnsupportedProjectReference extends RuntimeException {
 

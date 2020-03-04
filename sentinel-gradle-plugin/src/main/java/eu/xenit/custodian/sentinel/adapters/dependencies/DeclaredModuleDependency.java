@@ -2,11 +2,9 @@ package eu.xenit.custodian.sentinel.adapters.dependencies;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.ExternalModuleDependency;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier;
-import sun.security.pkcs11.Secmod.Module;
 
 
 @RequiredArgsConstructor

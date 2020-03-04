@@ -5,9 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuildSystem;
-import eu.xenit.custodian.domain.metadata.ProjectMetadata;
+import eu.xenit.custodian.ports.api.ProjectMetadata;
 import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
-import eu.xenit.custodian.domain.project.ProjectHandle;
+import eu.xenit.custodian.ports.api.ProjectHandle;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import java.nio.file.Paths;
 import org.junit.Test;

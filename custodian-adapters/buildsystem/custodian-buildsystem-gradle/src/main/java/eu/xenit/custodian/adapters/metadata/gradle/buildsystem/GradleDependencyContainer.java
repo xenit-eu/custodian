@@ -1,6 +1,5 @@
 package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
 
-import eu.xenit.custodian.adapters.metadata.gradle.notation.GradleStringNotationParser;
 import eu.xenit.custodian.domain.buildsystem.DependencyContainer;
 import eu.xenit.custodian.domain.buildsystem.DependencyMatcher;
 import java.util.Collection;
@@ -37,7 +36,7 @@ public class GradleDependencyContainer implements DependencyContainer<GradleDepe
 
     @Override
     public DependencyMatcher<GradleDependency> matcher(String notation) {
-        return GradleDependencyMatcher.from(notation);
+        return GradleDependencyMatcher.from(null, notation);
     }
 
     @Override

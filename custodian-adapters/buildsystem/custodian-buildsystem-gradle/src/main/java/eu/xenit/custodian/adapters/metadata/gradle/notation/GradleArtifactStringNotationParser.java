@@ -5,7 +5,7 @@ import eu.xenit.custodian.adapters.buildsystem.maven.notation.StringNotationPars
 import eu.xenit.custodian.adapters.buildsystem.maven.notation.NotationParserBuilder;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleArtifactSpecification;
 
-public class GradleStringNotationParser implements StringNotationParser<GradleArtifactSpecification> {
+public class GradleArtifactStringNotationParser implements StringNotationParser<GradleArtifactSpecification> {
 
     private static StringNotationParser<GradleArtifactSpecification> delegate = new NotationParserBuilder()
             .build(new GradleDependencyNotationParserDelegate(), new GradleNotationDependencyConverter());

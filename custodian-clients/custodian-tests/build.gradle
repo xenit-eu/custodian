@@ -20,6 +20,8 @@ dependencies {
     implementation project(':custodian-service-asserts')
     implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle')
 
+    implementation project(':custodian-adapters:channel:custodian-channel-maven-repositories')
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

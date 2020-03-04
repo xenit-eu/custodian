@@ -16,6 +16,7 @@ package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
  * limitations under the License.
  */
 
+import eu.xenit.custodian.domain.buildsystem.Build;
 import eu.xenit.custodian.domain.buildsystem.BuildSystem;
 
 /**
@@ -51,6 +52,8 @@ public final class GradleBuildSystem implements BuildSystem {
         this.dialect = dialect;
     }
 
+
+
     @Override
     public String id() {
         return ID;
@@ -59,6 +62,11 @@ public final class GradleBuildSystem implements BuildSystem {
     @Override
     public String dialect() {
         return this.dialect;
+    }
+
+    @Override
+    public Class<? extends Build> getType() {
+        return GradleBuild.class;
     }
 
     @Override

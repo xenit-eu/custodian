@@ -2,7 +2,7 @@ package eu.xenit.custodian.domain.buildsystem;
 
 import java.util.Collection;
 
-public interface Build<TBuild extends Build, TDependency extends Dependency> {
+public interface Build<TBuild extends Build<TBuild, TDependency>, TDependency extends Dependency> {
 
     BuildSystem buildsystem();
 
