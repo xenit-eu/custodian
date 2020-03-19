@@ -1,10 +1,10 @@
 package eu.xenit.custodian.ports.spi.metadata;
 
-import eu.xenit.custodian.ports.api.ProjectMetadata;
-import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
+import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
 
 public interface ProjectMetadataAnalyzer {
 
-     void analyze(ProjectMetadata result, ProjectHandle handle) throws MetadataAnalyzerException;
+     void analyze(ClonedRepositorySourceMetadata result, SourceRepositoryHandle handle) throws MetadataAnalyzerException;
 
 }

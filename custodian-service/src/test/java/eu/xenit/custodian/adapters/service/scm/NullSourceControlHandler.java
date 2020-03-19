@@ -1,18 +1,18 @@
 package eu.xenit.custodian.adapters.service.scm;
 
-import eu.xenit.custodian.ports.api.ProjectHandle;
-import eu.xenit.custodian.ports.api.ProjectReference;
+import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
+import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 
 public class NullSourceControlHandler implements SourceControlHandler {
 
     @Override
-    public boolean canHandle(ProjectReference reference) {
+    public boolean canHandle(SourceRepositoryReference reference) {
         return false;
     }
 
     @Override
-    public ProjectHandle checkout(ProjectReference reference) {
+    public SourceRepositoryHandle checkout(SourceRepositoryReference reference) {
         return null;
     }
 }

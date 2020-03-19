@@ -1,19 +1,19 @@
 package eu.xenit.custodian.ports.api;
 
-import eu.xenit.custodian.domain.changes.LogicalChangeSet;
+import eu.xenit.custodian.asserts.build.changes.LogicalChangeSet;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import java.io.IOException;
 
 public interface Custodian {
 
-    ProjectReference createReference(String projectReference);
+    SourceRepositoryReference createReference(String repositoryReference);
 
-    ProjectHandle checkoutProject(ProjectReference reference) throws IOException;
+    SourceRepositoryHandle checkoutProject(SourceRepositoryReference reference) throws IOException;
 
-    ProjectMetadata extractMetadata(ProjectHandle projectHandle) throws MetadataAnalyzerException;
+    ClonedRepositorySourceMetadata extractMetadata(SourceRepositoryHandle sourceRepositoryHandle) throws MetadataAnalyzerException;
 
-    LogicalChangeSet getChanges(ProjectMetadata metadata);
+    LogicalChangeSet getChanges(ClonedRepositorySourceMetadata metadata);
 
     // 4. apply selected changes
-    ProjectUpdateResult run(ProjectReference projectReference);
+    ProjectUpdateResult run(SourceRepositoryReference sourceRepositoryReference);
 }

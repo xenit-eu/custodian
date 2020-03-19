@@ -3,7 +3,8 @@ package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
 import static eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleDependencyMatcher.Util.doesNotMatch;
 
 import eu.xenit.custodian.adapters.metadata.gradle.notation.GradleArtifactStringNotationParser;
-import eu.xenit.custodian.domain.buildsystem.DependencyMatcher;
+import eu.xenit.custodian.asserts.build.buildsystem.Dependency;
+import eu.xenit.custodian.asserts.build.buildsystem.DependencyMatcher;
 import lombok.RequiredArgsConstructor;
 
 public interface GradleDependencyMatcher extends DependencyMatcher<GradleDependency> {
@@ -11,6 +12,13 @@ public interface GradleDependencyMatcher extends DependencyMatcher<GradleDepende
     static GradleDependencyMatcher from(String configuration, String notation) {
         GradleArtifactSpecification spec = GradleArtifactStringNotationParser.parse(notation);
         return new GradleArtifactSpecMatcher(configuration, spec);
+    }
+
+    default GradleDependency castedOrNull(Dependency dep) {
+        if (dep instanceof GradleDependency) {
+            return (GradleDependency) dep;
+        }
+        return null;
     }
 
     @RequiredArgsConstructor
@@ -109,6 +117,8 @@ public interface GradleDependencyMatcher extends DependencyMatcher<GradleDepende
 
             return value.toString();
         }
+
+
     }
 
 

@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.service.scm.local;
 
-import eu.xenit.custodian.ports.api.ProjectHandle;
-import eu.xenit.custodian.ports.api.ProjectReference;
+import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
+import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +24,7 @@ public class LocalFolderSourceControlHandler implements SourceControlHandler {
     }
 
     @Override
-    public boolean canHandle(ProjectReference reference) {
+    public boolean canHandle(SourceRepositoryReference reference) {
 
         try {
             getPath(reference);
@@ -35,7 +35,7 @@ public class LocalFolderSourceControlHandler implements SourceControlHandler {
     }
 
     @Override
-    public ProjectHandle checkout(ProjectReference reference) throws IOException {
+    public SourceRepositoryHandle checkout(SourceRepositoryReference reference) throws IOException {
         Path input = getPath(reference);
         Path target = this.strategy.getWorkingCopyLocation(input);
 
@@ -43,10 +43,10 @@ public class LocalFolderSourceControlHandler implements SourceControlHandler {
         // who is responsible ?
         this.copyFolder(input, target);
 
-        return new LocalProjectHandle(reference, target);
+        return new LocalSourceRepositoryHandle(reference, target);
     }
 
-    private static Path getPath(ProjectReference reference) {
+    private static Path getPath(SourceRepositoryReference reference) {
         return Paths.get(reference.getUri());
     }
 
@@ -73,19 +73,19 @@ public class LocalFolderSourceControlHandler implements SourceControlHandler {
         }
     }
 
-    class LocalProjectHandle implements ProjectHandle {
+    class LocalSourceRepositoryHandle implements SourceRepositoryHandle {
 
-        private final ProjectReference projectRef;
+        private final SourceRepositoryReference projectRef;
         private final Path location;
 
-        LocalProjectHandle(ProjectReference projectRef, Path location)
+        LocalSourceRepositoryHandle(SourceRepositoryReference projectRef, Path location)
         {
             this.projectRef = projectRef;
             this.location = location;
         }
 
         @Override
-        public ProjectReference getReference() {
+        public SourceRepositoryReference getReference() {
             return this.projectRef;
         }
 

@@ -1,21 +1,22 @@
 package eu.xenit.custodian.adapters.metadata.gradle;
 
 
+import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.DefaultGradleProject;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuild;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleModuleDependency;
+import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleProject;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleVersionSpecification;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.RepositoryFactory;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.Dependency;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.Report;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.RepositoryDto;
-import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
-import eu.xenit.custodian.domain.buildsystem.Repository;
+import eu.xenit.custodian.asserts.build.buildsystem.GroupArtifactModuleIdentifier;
+import eu.xenit.custodian.asserts.build.buildsystem.Repository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -26,11 +27,12 @@ public class SentinelReportsToGradleBuildConverter {
         Map<String, Report> path2report = reports.stream()
                 .collect(Collectors.toMap(r -> r.getProject().getPath(), Function.identity()));
 
-        return convert(":", path2report, null);
+        GradleProject rootProject = convert(":", path2report, null);
+        return new GradleBuild(rootProject);
 
     }
 
-    GradleBuild convert(String name, Map<String, Report> reports, GradleBuild parent) {
+    GradleProject convert(String name, Map<String, Report> reports, GradleProject parent) {
 
         Report report = reports.get(name);
         if (report == null) {
@@ -38,29 +40,25 @@ public class SentinelReportsToGradleBuildConverter {
             throw new IllegalStateException(msg);
         }
 
-        GradleBuild gradleBuild = new GradleBuild(report.getProject().getName(), parent);
-        gradleBuild.repositories().addAll(this.collectRepositories(report.getRepositories()));
-
-
-        Stream<GradleModuleDependency> gradleModuleDependencyStream = report.getDependencies().stream()
-                .flatMap(entry -> entry.getValue().stream().map(dependency -> {
-                    String configuration = entry.getKey();
-                    return createGradleModuleDependency(configuration, dependency);
-                }));
-        gradleBuild.dependencies().add(gradleModuleDependencyStream);
-
+        GradleProject gradleProject = new DefaultGradleProject(report.getProject().getName(), parent);
+        gradleProject.getRepositories().addAll(this.collectRepositories(report.getRepositories()));
+        gradleProject.getDependencies().addAll(
+                report.getDependencies().stream()
+                        .flatMap(entry -> entry.getValue().stream().map(dependency -> {
+                            String configuration = entry.getKey();
+                            return createGradleModuleDependency(configuration, dependency);
+                        })));
 
 //        report.getDependencies()
 //        this.collectDependencies(
 //                report.getConfigurations(), repoId -> gradleBuild.repositories().get(repoId))
 //                .forEach(gradleDep -> gradleBuild.dependencies().add(gradleDep));
 
-
         report.getProject().getSubprojects().values().forEach(subProject -> {
-            convert(subProject.getPath(), reports, gradleBuild);
+            convert(subProject.getPath(), reports, gradleProject);
         });
 
-        return gradleBuild;
+        return gradleProject;
     }
 
     private Collection<Repository> collectRepositories(List<RepositoryDto> repositories) {

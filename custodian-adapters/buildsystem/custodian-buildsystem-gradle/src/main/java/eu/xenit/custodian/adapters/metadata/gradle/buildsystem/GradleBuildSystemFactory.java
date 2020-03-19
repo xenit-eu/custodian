@@ -15,8 +15,8 @@ package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
  * limitations under the License.
  */
 
-import eu.xenit.custodian.domain.buildsystem.BuildSystem;
-import eu.xenit.custodian.domain.buildsystem.BuildSystemFactory;
+import eu.xenit.custodian.ports.spi.build.BuildSystem;
+import eu.xenit.custodian.ports.spi.build.BuildSystemFactory;
 
 /**
  * {@link BuildSystemFactory Factory} for {@link GradleBuildSystem}.

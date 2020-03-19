@@ -2,13 +2,13 @@ package eu.xenit.custodian.adapters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.ports.api.ProjectReference;
-import eu.xenit.custodian.domain.project.ProjectReferenceParser;
+import eu.xenit.custodian.ports.api.SourceRepositoryReference;
+import eu.xenit.custodian.asserts.build.project.ProjectReferenceParser;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Test;
 
-public class ProjectReferenceTest {
+public class SourceRepositoryReferenceTest {
 
     private static String userHome() {
         return System.getProperty("user.home");
@@ -20,7 +20,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testUserHomeReference_fromPath() {
-        ProjectReference projectRef = ProjectReferenceParser.from(userHomePath());
+        SourceRepositoryReference projectRef = ProjectReferenceParser.from(userHomePath());
         assertThat(projectRef)
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("file://" + userHome() + "/");
@@ -28,7 +28,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testUserHomeReference_fromStringWithoutScheme() {
-        ProjectReference projectRef = ProjectReferenceParser.from(userHome());
+        SourceRepositoryReference projectRef = ProjectReferenceParser.from(userHome());
         assertThat(projectRef)
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("file://" + userHome() + "/");
@@ -36,7 +36,7 @@ public class ProjectReferenceTest {
 
     @Test
     public void testUserHomeReference_fromStringWithScheme() {
-        ProjectReference projectRef = ProjectReferenceParser.from("file://" + userHome());
+        SourceRepositoryReference projectRef = ProjectReferenceParser.from("file://" + userHome());
         assertThat(projectRef)
                 .extracting(ref -> ref.getUri().toString())
                 .isEqualTo("file://" + userHome());

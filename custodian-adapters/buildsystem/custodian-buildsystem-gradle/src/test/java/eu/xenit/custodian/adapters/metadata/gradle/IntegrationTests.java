@@ -5,9 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuildSystem;
-import eu.xenit.custodian.ports.api.ProjectMetadata;
-import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
-import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
+import eu.xenit.custodian.asserts.build.buildsystem.BuildSystemsContainer;
+import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import java.nio.file.Paths;
 import org.junit.Test;
@@ -16,11 +16,11 @@ public class IntegrationTests {
     @Test
     public void inception() throws MetadataAnalyzerException {
         SentinelGradleProjectAnalyzer sentinel = new SentinelGradleProjectAnalyzer();
-        ProjectHandle handle = mock(ProjectHandle.class);
+        SourceRepositoryHandle handle = mock(SourceRepositoryHandle.class);
         when(handle.getLocation()).thenReturn(Paths.get("../../.."));
 //        when(handle.getReference()).thenReturn(ProjectReferenceParser.from("."));
 
-        ProjectMetadata project = mock(ProjectMetadata.class);
+        ClonedRepositorySourceMetadata project = mock(ClonedRepositorySourceMetadata.class);
         when(project.buildsystems()).thenReturn(new BuildSystemsContainer());
 
         sentinel.analyze(project, handle);

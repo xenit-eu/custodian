@@ -3,8 +3,8 @@ package eu.xenit.custodian.adapters.metadata.gradle;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuild;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.Project;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.Report;
-import eu.xenit.custodian.ports.api.ProjectMetadata;
-import eu.xenit.custodian.ports.api.ProjectHandle;
+import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
+import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzer;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class SentinelGradleProjectAnalyzer implements ProjectMetadataAnalyzer {
     }
 
     @Override
-    public void analyze(ProjectMetadata project, ProjectHandle handle) throws MetadataAnalyzerException {
+    public void analyze(ClonedRepositorySourceMetadata metadata, SourceRepositoryHandle handle) throws MetadataAnalyzerException {
         Path location = handle.getLocation();
         this.validateLocation(location);
 
@@ -68,7 +68,7 @@ public class SentinelGradleProjectAnalyzer implements ProjectMetadataAnalyzer {
 
             // Convert the sentinel reports and a custodian build
             GradleBuild gradle = this.converter.convert(reports);
-            project.buildsystems().add(gradle);
+            metadata.buildsystems().add(gradle);
 
         } catch (IOException | UnexpectedBuildFailure e) {
             throw new MetadataAnalyzerException(e);

@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
 
-import eu.xenit.custodian.domain.buildsystem.VersionSpecification;
+import eu.xenit.custodian.asserts.build.buildsystem.VersionSpecification;
 
 public interface GradleVersionSpecification extends VersionSpecification {
 

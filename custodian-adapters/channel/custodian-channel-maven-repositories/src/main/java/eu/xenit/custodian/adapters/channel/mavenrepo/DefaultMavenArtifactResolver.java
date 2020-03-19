@@ -33,10 +33,7 @@ public class DefaultMavenArtifactResolver implements MavenArtifactResolver {
     private static final Logger log = LoggerFactory.getLogger(DefaultMavenArtifactResolver.class);
 
     private final RepositorySystem repositorySystem;
-//    private final MavenProperties properties;
     private final List<RemoteRepository> remoteRepositories = new LinkedList<>();
-
-//    public DefaultMavenArtifactResolver(MavenProperties properties) {
 
     public DefaultMavenArtifactResolver() {
 
@@ -65,21 +62,8 @@ public class DefaultMavenArtifactResolver implements MavenArtifactResolver {
 
     private VersionRangeResult getUpdatedVersionsInRange(Artifact artifact) {
         RepositorySystemSession session = newRepositorySystemSession(this.repositorySystem, "/tmp/maven/");
-//        ArtifactResult resolvedArtifact;
 
         try {
-//            List<ArtifactRequest> artifactRequests = new ArrayList<>(2);
-//            if (properties.isResolvePom()) {
-//                artifactRequests.add(new ArtifactRequest(toPomArtifact(resource),
-//                        this.remoteRepositories,
-//                        JavaScopes.RUNTIME));
-//            }
-//            artifactRequests.add(new ArtifactRequest(toJarArtifact(resource),
-//                    this.remoteRepositories,
-//                    JavaScopes.RUNTIME));
-//            List<ArtifactResult> results = this.repositorySystem.resolveArtifacts(session, artifactRequests);
-//            resolvedArtifact = results.get(results.size() - 1);
-
             VersionRangeRequest rangeRequest = new VersionRangeRequest();
             rangeRequest.setArtifact(artifact);
             rangeRequest.setRepositories(this.remoteRepositories);

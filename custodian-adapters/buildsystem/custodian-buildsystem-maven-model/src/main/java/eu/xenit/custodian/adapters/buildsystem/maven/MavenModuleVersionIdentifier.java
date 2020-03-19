@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import eu.xenit.custodian.domain.buildsystem.ModuleVersionIdentifier;
+import eu.xenit.custodian.asserts.build.buildsystem.ModuleVersionIdentifier;
 
 public interface MavenModuleVersionIdentifier extends ModuleVersionIdentifier {
 

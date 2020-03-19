@@ -2,8 +2,8 @@ package eu.xenit.custodian.ports.api;
 
 import java.nio.file.Path;
 
-public interface ProjectHandle {
+public interface SourceRepositoryHandle {
 
-    ProjectReference getReference();
+    SourceRepositoryReference getReference();
     Path getLocation();
 }

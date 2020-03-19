@@ -1,19 +1,19 @@
 package eu.xenit.custodian.ports.spi.scm;
 
-import eu.xenit.custodian.ports.api.ProjectReference;
+import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 
 public class UnsupportedProjectReference extends RuntimeException {
 
-    private final ProjectReference projectReference;
+    private final SourceRepositoryReference sourceRepositoryReference;
 
-    public UnsupportedProjectReference(String message, ProjectReference projectReference)
+    public UnsupportedProjectReference(String message, SourceRepositoryReference sourceRepositoryReference)
     {
         super(message);
-        this.projectReference = projectReference;
+        this.sourceRepositoryReference = sourceRepositoryReference;
     }
 
-    public ProjectReference getProjectReference() {
-        return this.projectReference;
+    public SourceRepositoryReference getSourceRepositoryReference() {
+        return this.sourceRepositoryReference;
     }
 
 }

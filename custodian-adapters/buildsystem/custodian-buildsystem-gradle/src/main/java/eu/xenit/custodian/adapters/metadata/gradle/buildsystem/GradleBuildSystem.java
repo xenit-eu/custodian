@@ -16,8 +16,8 @@ package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
  * limitations under the License.
  */
 
-import eu.xenit.custodian.domain.buildsystem.Build;
-import eu.xenit.custodian.domain.buildsystem.BuildSystem;
+import eu.xenit.custodian.ports.spi.build.Build;
+import eu.xenit.custodian.ports.spi.build.BuildSystem;
 
 /**
  * Gradle {@link BuildSystem}.
@@ -65,7 +65,7 @@ public final class GradleBuildSystem implements BuildSystem {
     }
 
     @Override
-    public Class<? extends Build> getType() {
+    public Class<GradleBuild> getBuildType() {
         return GradleBuild.class;
     }
 

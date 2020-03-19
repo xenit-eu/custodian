@@ -3,7 +3,6 @@ package eu.xenit.custodian.adapters.channel.mavenrepo;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenModuleVersion;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenVersionRangeQueryResult;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenVersionSpecification;
-import eu.xenit.custodian.domain.buildsystem.ModuleVersion;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

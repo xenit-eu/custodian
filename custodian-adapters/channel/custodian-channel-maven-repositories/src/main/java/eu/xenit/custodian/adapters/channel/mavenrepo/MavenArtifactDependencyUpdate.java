@@ -2,29 +2,26 @@ package eu.xenit.custodian.adapters.channel.mavenrepo;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenVersionSpecification;
 import eu.xenit.custodian.adapters.channel.mavenrepo.MavenDependencyUpdateStrategy.MavenDependencyUpdateProposal;
-import eu.xenit.custodian.domain.buildsystem.Build;
-import eu.xenit.custodian.domain.buildsystem.ModuleDependency;
-import eu.xenit.custodian.domain.changes.DependencyUpdate;
-import eu.xenit.custodian.domain.changes.LogicalChangeBase;
+import eu.xenit.custodian.ports.spi.build.Build;
+import eu.xenit.custodian.asserts.build.buildsystem.ModuleDependency;
+import eu.xenit.custodian.asserts.build.changes.DependencyUpdate;
+import eu.xenit.custodian.asserts.build.changes.LogicalChangeBase;
+import eu.xenit.custodian.ports.spi.build.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class MavenArtifactDependencyUpdate extends LogicalChangeBase implements DependencyUpdate {
 
     private final List<MavenDependencyUpdateProposal> proposals = new ArrayList<>();
     private final ModuleDependency dependency;
 
-    MavenArtifactDependencyUpdate(Build build, ModuleDependency dependency) {
-        super(build);
+    MavenArtifactDependencyUpdate(Build build, Project project, ModuleDependency dependency) {
+        super(build, project);
 
-        Objects.requireNonNull(build, "Argument 'build' is required");
-        Objects.requireNonNull(dependency, "Argument 'dependency' is required");
-
-        this.dependency = dependency;
+        this.dependency = Objects.requireNonNull(dependency, "Argument 'dependency' is required");
     }
 
     public MavenArtifactDependencyUpdate addProposal(MavenDependencyUpdateProposal proposal) {
@@ -61,6 +58,6 @@ public class MavenArtifactDependencyUpdate extends LogicalChangeBase implements 
 
     @Override
     public ChangeApplicationResult apply() {
-        throw new NotImplementedException();
+        throw new RuntimeException("not yet implemented");
     }
 }

@@ -2,9 +2,8 @@ package eu.xenit.custodian.adapters.metadata.gradle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.adapters.metadata.gradle.asserts.GradleDependencyContainerAsserts;
+import eu.xenit.custodian.asserts.build.buildsystem.GradleBuildAssert;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuild;
-import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuildSystem;
 import eu.xenit.custodian.adapters.metadata.gradle.notation.GradleNotationFormatter;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.DependencySet;
 import eu.xenit.custodian.adapters.metadata.gradle.sentinel.dto.Dependencies;
@@ -25,7 +24,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.security.auth.login.Configuration;
 import lombok.Data;
 import org.junit.Test;
 
@@ -56,25 +54,19 @@ public class SentinelReportsToGradleBuildConverterTest {
         );
 
         GradleBuild gradleBuild = converter.convert(reports);
-        assertThat(gradleBuild)
-                .isNotNull()
-                .satisfies(gradle -> assertThat(gradle.buildsystem().id()).isEqualTo(GradleBuildSystem.ID))
-                .satisfies(gradle -> assertThat(gradle.name()).isEqualTo("parent"))
-                .satisfies(gradle -> assertThat(gradle.subprojects())
-                        .hasSize(1)
-                        .hasOnlyOneElementSatisfying(subProject -> assertThat(subProject)
-                                .satisfies(sub -> assertThat(sub.name()).isEqualTo("child")))
-                )
-//                .satisfies(gradle -> assertThat(gradle.dependencies().stream().collect(Collectors.toList()))
-//                        .hasSize(2)
-//                        .matches(atLeastOneElement(d -> {
-//                            return d.getId().equals(MavenModuleIdentifierFixtures.junit());
-//                        }))
-//                )
-                .satisfies(gradle -> GradleDependencyContainerAsserts.assertThat(gradle.dependencies())
-                        .isNotNull()
-                        .hasDependency( GradleNotationFormatter.format(MavenModuleIdentifierFixtures.junit())));
 
+        GradleBuildAssert.assertThat(gradleBuild)
+                .isNotNull()
+                .isGradleBuild()
+                .hasName("parent")
+
+                .getRootProject()
+                .hasDependency(GradleNotationFormatter.format(MavenModuleIdentifierFixtures.junit()))
+
+                .withChildProjects(subprojects -> assertThat(subprojects.iterator())
+                        .hasSize(1)
+                        .hasOnlyOneElementSatisfying(subProject -> assertThat(subProject.getName()).isEqualTo("child")))
+        ;
 
     }
 
@@ -106,24 +98,6 @@ public class SentinelReportsToGradleBuildConverterTest {
     private static List<RepositoryDto> repositories(RepositoryDto... repositories) {
         return Arrays.asList(repositories);
     }
-
-//    private static Configuration configuration(String... dependenciesNotation) {
-//        Dependency[] dependencies = Stream.of(dependenciesNotation)
-//                .map(SentinelReportsToGradleBuildConverterTest::dependency)
-//                .toArray(Dependency[]::new);
-//        return configuration(dependencies);
-//    }
-//
-//    private static Configuration configuration(MavenModuleVersionIdentifier... dependencies) {
-//        return configuration(Arrays.stream(dependencies)
-//                .map(Dependency::from)
-//                .toArray(Dependency[]::new));
-//    }
-//    private static Configuration configuration(Dependency... dependencies) {
-//        return Configuration.builder()
-//                .dependencies(Arrays.asList(dependencies))
-//                .build();
-//    }
 
     private static Dependencies dependencies(ConfigurationDependencySet... dependencies) {
         Stream<Entry<String, DependencySet>> entryStream = Stream.of(dependencies).map(set -> set.entry());

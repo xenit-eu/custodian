@@ -1,33 +1,33 @@
 package eu.xenit.custodian.adapters.service.scm;
 
-import eu.xenit.custodian.ports.api.ProjectHandle;
-import eu.xenit.custodian.ports.api.ProjectReference;
+import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
+import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import java.util.function.Predicate;
 
 public class StubbedSourceControlHandler implements SourceControlHandler {
 
-    private final Predicate<ProjectReference> canHandlePredicate;
-    private final ProjectHandle handle;
+    private final Predicate<SourceRepositoryReference> canHandlePredicate;
+    private final SourceRepositoryHandle handle;
 
-    public StubbedSourceControlHandler(ProjectHandle handle)
+    public StubbedSourceControlHandler(SourceRepositoryHandle handle)
     {
         this((projectReference) -> true, handle);
     }
 
-    public StubbedSourceControlHandler(Predicate<ProjectReference> canHandlePredicate, ProjectHandle handle)
+    public StubbedSourceControlHandler(Predicate<SourceRepositoryReference> canHandlePredicate, SourceRepositoryHandle handle)
     {
         this.canHandlePredicate = canHandlePredicate;
         this.handle = handle;
     }
 
     @Override
-    public boolean canHandle(ProjectReference reference) {
+    public boolean canHandle(SourceRepositoryReference reference) {
         return this.canHandlePredicate.test(reference);
     }
 
     @Override
-    public ProjectHandle checkout(ProjectReference reference) {
+    public SourceRepositoryHandle checkout(SourceRepositoryReference reference) {
         return this.handle;
     }
 }

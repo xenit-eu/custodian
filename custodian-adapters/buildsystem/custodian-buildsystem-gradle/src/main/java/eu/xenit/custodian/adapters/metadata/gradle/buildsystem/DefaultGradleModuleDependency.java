@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationDescriptor;
-import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
+import eu.xenit.custodian.asserts.build.buildsystem.GroupArtifactModuleIdentifier;
 import java.util.Set;
 import lombok.Getter;
 

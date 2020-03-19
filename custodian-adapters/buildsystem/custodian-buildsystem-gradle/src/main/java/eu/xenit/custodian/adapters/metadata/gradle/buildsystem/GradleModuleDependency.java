@@ -2,11 +2,9 @@ package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationProvider;
 import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleArtifactSpecification.GradleArtifactSpecificationCustomizer;
-import eu.xenit.custodian.domain.buildsystem.Dependency;
-import eu.xenit.custodian.domain.buildsystem.ExternalModuleDependency;
-import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
-import java.util.Collections;
-import java.util.HashSet;
+import eu.xenit.custodian.asserts.build.buildsystem.Dependency;
+import eu.xenit.custodian.asserts.build.buildsystem.ExternalModuleDependency;
+import eu.xenit.custodian.asserts.build.buildsystem.GroupArtifactModuleIdentifier;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -15,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 /**
  * A Gradle {@link Dependency} on a module outside the project hierarchy.
  *
- * This implies a dependency on the default artifact-type of that module.
- * The requested artifact properties (or multiple artifacts) can be further specified.
+ * This implies a dependency on the default artifact-type of that module. The requested artifact properties (or multiple
+ * artifacts) can be further specified.
  *
  * This dependency can be a Maven or Ivy module.
  */
@@ -26,6 +24,7 @@ public interface GradleModuleDependency extends GradleDependency,
         /*, ArtifactSpecificationDescriptor<IvyArtifactSpecification> */ {
 
     GroupArtifactModuleIdentifier getModuleId();
+
     GradleVersionSpecification getVersionSpec();
 
     Set<GradleArtifactSpecification> getArtifacts();
@@ -39,14 +38,23 @@ public interface GradleModuleDependency extends GradleDependency,
     }
 
 
-    static GradleModuleDependency from(String configuration, GroupArtifactModuleIdentifier module, GradleVersionSpecification version)
-    {
+    static GradleModuleDependency from(String configuration, String group, String module, String version) {
+        return from(
+                configuration,
+                GroupArtifactModuleIdentifier.from(group, module),
+                GradleVersionSpecification.from(version));
+    }
+
+    static GradleModuleDependency from(String configuration, GroupArtifactModuleIdentifier module,
+            GradleVersionSpecification version) {
         return from(configuration, module, version, dependency -> {
             // should we set default artifact specs here ?
             // or is that not our responsibility ?
         });
     }
-    static GradleModuleDependency from(String configuration, GroupArtifactModuleIdentifier module, GradleVersionSpecification version,
+
+    static GradleModuleDependency from(String configuration, GroupArtifactModuleIdentifier module,
+            GradleVersionSpecification version,
             Consumer<GradleModuleDependencyCustomizer> callback) {
         GradleModuleDependencyCustomizer customizer = new GradleModuleDependencyCustomizer(module, version);
         callback.accept(customizer);

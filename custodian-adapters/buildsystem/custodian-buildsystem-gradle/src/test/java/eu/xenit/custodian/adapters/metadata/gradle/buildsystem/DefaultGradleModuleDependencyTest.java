@@ -2,7 +2,7 @@ package eu.xenit.custodian.adapters.metadata.gradle.buildsystem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
+import eu.xenit.custodian.asserts.build.buildsystem.GroupArtifactModuleIdentifier;
 import java.util.Collections;
 import org.junit.Test;
 
@@ -26,12 +26,6 @@ public class DefaultGradleModuleDependencyTest {
 
                     // there are no artifact specs declared, it's all implicit ?
                     assertThat(desc.getArtifactSpecs()).isEmpty();
-//                            .isNotEmpty()
-//                            .hasOnlyOneElementSatisfying(artifact -> {
-//                                assertThat(artifact.getName()).isEqualTo("junit"); // defaults to module-name/artifactId
-//                                assertThat(artifact.getType()).isEqualTo("jar");   // default type
-//
-//                            });
                 });
 
     }

@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import eu.xenit.custodian.domain.buildsystem.ArtifactSpecification;
+import eu.xenit.custodian.asserts.build.buildsystem.ArtifactSpecification;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.Data;

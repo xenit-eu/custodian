@@ -23,6 +23,8 @@ dependencies {
 
     implementation project(':custodian-service')
 
+    implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle')
+
 //    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.assertj:assertj-core'
 }

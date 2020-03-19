@@ -1,9 +1,9 @@
 package eu.xenit.custodian.adapters.client.test;
 
-import eu.xenit.custodian.domain.changes.LogicalChangeSet;
-import eu.xenit.custodian.ports.api.ProjectMetadata;
-import eu.xenit.custodian.ports.api.ProjectHandle;
-import eu.xenit.custodian.ports.api.ProjectReference;
+import eu.xenit.custodian.asserts.build.changes.LogicalChangeSet;
+import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
+import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
+import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import eu.xenit.custodian.ports.api.Custodian;
 import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import java.io.IOException;
@@ -17,23 +17,23 @@ public class CustodianTestClient {
         this.custodian = custodian;
     }
 
-    public ProjectReference createReference(Path location) {
+    public SourceRepositoryReference createReference(Path location) {
         return this.custodian.createReference(location.toString());
     }
 
-    public ProjectMetadataAssertionTrait extractMetadata(Path location) throws IOException, MetadataAnalyzerException {
-        ProjectReference reference = this.createReference(location);
-        ProjectHandle handle = this.custodian.checkoutProject(reference);
+    public ClonedRepositorySourceMetadataAssertionTrait extractMetadata(Path location) throws IOException, MetadataAnalyzerException {
+        SourceRepositoryReference reference = this.createReference(location);
+        SourceRepositoryHandle handle = this.custodian.checkoutProject(reference);
         return this.extractMetadata(handle);
 
     }
 
-    public ProjectMetadataAssertionTrait extractMetadata(ProjectHandle handle) throws MetadataAnalyzerException {
-        ProjectMetadata projectMetadata = this.custodian.extractMetadata(handle);
-        return new ProjectMetadataAssertionTrait(projectMetadata);
+    public ClonedRepositorySourceMetadataAssertionTrait extractMetadata(SourceRepositoryHandle handle) throws MetadataAnalyzerException {
+        ClonedRepositorySourceMetadata clonedRepositorySourceMetadata = this.custodian.extractMetadata(handle);
+        return new ClonedRepositorySourceMetadataAssertionTrait(clonedRepositorySourceMetadata);
     }
 
-    public ChangeSetAssertionTrait getChanges(ProjectMetadata metadata) {
+    public ChangeSetAssertionTrait getChanges(ClonedRepositorySourceMetadata metadata) {
         LogicalChangeSet changes = this.custodian.getChanges(metadata);
         return new ChangeSetAssertionTrait(changes);
     }
