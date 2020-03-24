@@ -16,8 +16,21 @@ public class ProjectInformation implements AnalysisContentPart {
     private final String name;
     private final String path;
     private final String displayName;
-    private final String parent;
+
+    /**
+     * The directory containing the project build file, relative to the root directory
+     */
     private final String projectDir;
+
+    /**
+     * The name of the build script for this project
+     */
+    private final String buildFile;
+
+    /**
+     * The build directory of this project, relative to the project directory
+     */
+    private final String buildDir;
 
     @Default
     private final Map<String, ProjectInformation> subprojects = new HashMap<>();

@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import eu.xenit.custodian.asserts.build.buildsystem.Repository;
+import eu.xenit.custodian.domain.buildsystem.Repository;
 
 public interface MavenRepository extends Repository {
 

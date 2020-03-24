@@ -1,6 +1,7 @@
 package eu.xenit.custodian.sentinel.adapters.gradle;
 
 import eu.xenit.custodian.sentinel.domain.PartialAnalyzer;
+import java.io.File;
 import java.nio.file.Path;
 import org.gradle.api.Project;
 
@@ -15,12 +16,15 @@ public class GradleAnalyzer implements PartialAnalyzer<GradleInfo> {
 
         return GradleInfo.builder()
                 .version(project.getGradle().getGradleVersion())
-                .buildFile(project.getBuildFile().getName())
-                .buildDir(this.getRelativeBuildDir(project).toString())
+                .buildFile(this.relativeToProjectDir(project, project.getBuildFile()))
+                .buildDir(this.relativeToProjectDir(project, project.getBuildDir()))
                 .build();
     }
 
-    private Path getRelativeBuildDir(Project project) {
-        return project.getProjectDir().toPath().relativize(project.getBuildDir().toPath());
+    private String relativeToProjectDir(Project project, File path) {
+        return project.getProjectDir()
+                .toPath()
+                .relativize(path.toPath())
+                .toString();
     }
 }

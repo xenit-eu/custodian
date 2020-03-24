@@ -1,8 +1,8 @@
 package eu.xenit.custodian.adapters.client.test;
 
-import eu.xenit.custodian.asserts.build.changes.LogicalChange;
-import eu.xenit.custodian.asserts.build.changes.LogicalChangeSet;
-import eu.xenit.custodian.asserts.build.changes.LogicalChangeSetAssert;
+import eu.xenit.custodian.domain.changes.LogicalChange;
+import eu.xenit.custodian.domain.changes.LogicalChangeSet;
+import eu.xenit.custodian.domain.changes.LogicalChangeSetAssert;
 import java.util.Objects;
 import java.util.stream.Stream;
 import org.assertj.core.api.AssertProvider;
@@ -17,8 +17,8 @@ public class ChangeSetAssertionTrait implements LogicalChangeSet, AssertProvider
     }
 
     @Override
-    public Stream<LogicalChange> changes() {
-        return this.changeSet.changes();
+    public Stream<LogicalChange> stream() {
+        return this.changeSet.stream();
     }
 
     @Override

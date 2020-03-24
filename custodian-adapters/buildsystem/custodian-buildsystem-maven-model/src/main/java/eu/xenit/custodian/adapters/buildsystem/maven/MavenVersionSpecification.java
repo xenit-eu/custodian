@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.DefaultMavenVersionSpecification.DefaultVersionBounds;
-import eu.xenit.custodian.asserts.build.buildsystem.VersionSpecification;
+import eu.xenit.custodian.domain.buildsystem.VersionSpecification;
 import java.util.List;
 import java.util.Optional;
 

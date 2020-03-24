@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import eu.xenit.custodian.asserts.build.buildsystem.ArtifactSpecificationDescriptor;
-import eu.xenit.custodian.asserts.build.buildsystem.ModuleDependency;
+import eu.xenit.custodian.domain.buildsystem.ArtifactSpecificationDescriptor;
+import eu.xenit.custodian.domain.buildsystem.ModuleDependency;
 import java.util.Set;
 
 public interface MavenArtifactSpecificationDescriptor extends

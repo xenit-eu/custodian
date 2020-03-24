@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.service.scm.local;
 
-import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
+import eu.xenit.custodian.ports.api.ClonedRepositoryHandle;
 import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class LocalFolderSourceControlHandler implements SourceControlHandler {
     }
 
     @Override
-    public SourceRepositoryHandle checkout(SourceRepositoryReference reference) throws IOException {
+    public ClonedRepositoryHandle checkout(SourceRepositoryReference reference) throws IOException {
         Path input = getPath(reference);
         Path target = this.strategy.getWorkingCopyLocation(input);
 
@@ -73,7 +73,7 @@ public class LocalFolderSourceControlHandler implements SourceControlHandler {
         }
     }
 
-    class LocalSourceRepositoryHandle implements SourceRepositoryHandle {
+    class LocalSourceRepositoryHandle implements ClonedRepositoryHandle {
 
         private final SourceRepositoryReference projectRef;
         private final Path location;

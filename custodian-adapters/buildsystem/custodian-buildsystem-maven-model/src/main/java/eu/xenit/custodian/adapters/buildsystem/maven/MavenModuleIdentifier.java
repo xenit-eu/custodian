@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import eu.xenit.custodian.asserts.build.buildsystem.GroupArtifactModuleIdentifier;
-import eu.xenit.custodian.asserts.build.buildsystem.ModuleIdentifier;
+import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
+import eu.xenit.custodian.domain.buildsystem.ModuleIdentifier;
 
 public interface MavenModuleIdentifier extends ModuleIdentifier {
 

@@ -14,9 +14,9 @@ public class GradleJsonReporter implements JsonPartialReporter<GradleInfo> {
 
     private Runnable reportGradle(JsonWriter json, GradleInfo gradle) {
         return json.object(
-                json.property("version", gradle.getVersion()),
-                json.property("buildDir", gradle.getBuildDir()),
-                json.property("buildFile", gradle.getBuildFile())
+                json.property("version", gradle.getVersion())
+//                json.property("buildDir", gradle.getBuildDir()),
+//                json.property("buildFile", gradle.getBuildFile()
         );
     }
 }

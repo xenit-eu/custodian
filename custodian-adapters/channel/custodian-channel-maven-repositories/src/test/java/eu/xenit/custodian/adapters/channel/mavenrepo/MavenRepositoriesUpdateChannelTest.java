@@ -4,12 +4,13 @@ package eu.xenit.custodian.adapters.channel.mavenrepo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenModuleDependency;
-import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.DefaultGradleProject;
-import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleBuild;
-import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleModuleDependency;
-import eu.xenit.custodian.adapters.metadata.gradle.buildsystem.GradleProject;
-import eu.xenit.custodian.asserts.build.changes.LogicalChange;
+import eu.xenit.custodian.adapters.buildsystem.gradle.DefaultGradleProject;
+import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuild;
+import eu.xenit.custodian.adapters.buildsystem.gradle.GradleModuleDependency;
+import eu.xenit.custodian.adapters.buildsystem.gradle.GradleProject;
+import eu.xenit.custodian.domain.changes.LogicalChange;
 import eu.xenit.custodian.ports.spi.build.Build;
+import java.nio.file.Paths;
 import java.util.Optional;
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ public class MavenRepositoriesUpdateChannelTest {
 
         GradleProject project = new DefaultGradleProject("test");
         project.getDependencies().add(DEPENDENCY_APACHE_HTTPCLIENT_GRADLE);
-        Build build = new GradleBuild(project);
+        Build build = new GradleBuild(Paths.get(""), project);
 
         Optional<LogicalChange> optionalChangeSet = channel.getDependencyUpdateChangeSet(build,
                 project, DEPENDENCY_APACHE_HTTPCLIENT_MAVEN);
@@ -40,7 +41,7 @@ public class MavenRepositoriesUpdateChannelTest {
                 .hasValueSatisfying(changeSet -> {
                     assertThat(changeSet)
                             .isNotNull()
-                            .isInstanceOf(MavenArtifactDependencyUpdate.class);
+                            .isInstanceOf(MavenArtifactDependencyVersionUpdate.class);
 
                 });
     }

@@ -1,6 +1,6 @@
 package eu.xenit.custodian.ports.api;
 
-import eu.xenit.custodian.asserts.build.buildsystem.BuildSystemsContainer;
+import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
 
 public interface ClonedRepositorySourceMetadata {
 

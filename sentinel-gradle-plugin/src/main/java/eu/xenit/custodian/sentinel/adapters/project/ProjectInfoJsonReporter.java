@@ -6,21 +6,9 @@ import eu.xenit.custodian.sentinel.reporting.io.JsonWriter;
 
 public class ProjectInfoJsonReporter implements JsonPartialReporter<ProjectInformation> {
 
-//    private final ObjectMapper mapper;
-
-
     public ProjectInfoJsonReporter() {
-//        this.mapper = new ObjectMapper()
-//                // pretty print
-//                .enable(SerializationFeature.INDENT_OUTPUT)
-//
-//                // empty objects are ok
-//                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-//
-//                // skip fields with have 'null' value
-//                // .setSerializationInclusion(Include.NON_NULL)
-//        ;
     }
+
     @Override
     public Runnable report(IndentingWriter writer, ProjectInformation project) {
         JsonWriter json = new JsonWriter(writer);
@@ -32,10 +20,11 @@ public class ProjectInfoJsonReporter implements JsonPartialReporter<ProjectInfor
                 json.property("name", project.getName()),
                 json.property("path", project.getPath()),
                 json.property("projectDir", project.getProjectDir()),
-                json.property("parent", project.getParent()),
+                json.property("buildDir", project.getBuildDir()),
+                json.property("buildFile", project.getBuildFile()),
                 json.property("subprojects", json.object(
                         project.getSubprojects().values().stream()
-                        .map(child -> json.property(child.getName(), report(json, child)))
+                                .map(child -> json.property(child.getName(), report(json, child)))
                 ))
         );
 

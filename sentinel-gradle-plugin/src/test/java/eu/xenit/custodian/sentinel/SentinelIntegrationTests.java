@@ -42,11 +42,14 @@ public class SentinelIntegrationTests {
         System.out.println(json);
 
         new SentinelReportAssert(reportFile)
-                .assertField("project", JsonAssert::isObject)
+                .assertField("project", project -> {
+                    project.isObject();
+                    project.assertField("projectDir", "");
+                    project.assertField("buildDir", "build");
+                    project.assertField("buildFile", "build.gradle");
+                })
                 .assertField("gradle", gradle -> {
                     gradle.assertField("version", "5.6.2");
-                    gradle.assertField("buildDir", "build");
-                    gradle.assertField("buildFile", "build.gradle");
                 })
                 .assertFieldArray("repositories", repositories -> {
                     repositories.hasSize(1);
@@ -120,7 +123,14 @@ public class SentinelIntegrationTests {
         report
                 .assertField("project", project -> {
                     project.assertField("subprojects", subprojects -> {
-                        subprojects.has("subproject-one");
+                        subprojects.assertField("subproject-one", s1 -> {
+                            s1.assertField("name", "subproject-one");
+                            s1.assertField("path", ":subproject-one");
+                            s1.assertField("projectDir", "subproject-one");
+                            s1.assertField("buildDir", "build");
+                            s1.assertField("buildFile", "build.gradle");
+                            s1.assertField("subprojects", JsonNodeAssert::isEmpty);
+                        });
                         subprojects.has("subproject-two");
                     });
                 });

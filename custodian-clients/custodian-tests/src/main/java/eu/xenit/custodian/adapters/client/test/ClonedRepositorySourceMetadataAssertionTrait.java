@@ -1,8 +1,8 @@
 package eu.xenit.custodian.adapters.client.test;
 
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
-import eu.xenit.custodian.asserts.build.metadata.ClonedRepositorySourceMetadataAssert;
-import eu.xenit.custodian.asserts.build.buildsystem.BuildSystemsContainer;
+import eu.xenit.custodian.domain.metadata.ClonedRepositorySourceMetadataAssert;
+import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
 import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import java.util.Objects;
 import org.assertj.core.api.AssertProvider;

@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.service.scm;
 
-import eu.xenit.custodian.ports.api.SourceRepositoryHandle;
+import eu.xenit.custodian.ports.api.ClonedRepositoryHandle;
 import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import java.util.function.Predicate;
@@ -8,14 +8,14 @@ import java.util.function.Predicate;
 public class StubbedSourceControlHandler implements SourceControlHandler {
 
     private final Predicate<SourceRepositoryReference> canHandlePredicate;
-    private final SourceRepositoryHandle handle;
+    private final ClonedRepositoryHandle handle;
 
-    public StubbedSourceControlHandler(SourceRepositoryHandle handle)
+    public StubbedSourceControlHandler(ClonedRepositoryHandle handle)
     {
         this((projectReference) -> true, handle);
     }
 
-    public StubbedSourceControlHandler(Predicate<SourceRepositoryReference> canHandlePredicate, SourceRepositoryHandle handle)
+    public StubbedSourceControlHandler(Predicate<SourceRepositoryReference> canHandlePredicate, ClonedRepositoryHandle handle)
     {
         this.canHandlePredicate = canHandlePredicate;
         this.handle = handle;
@@ -27,7 +27,7 @@ public class StubbedSourceControlHandler implements SourceControlHandler {
     }
 
     @Override
-    public SourceRepositoryHandle checkout(SourceRepositoryReference reference) {
+    public ClonedRepositoryHandle checkout(SourceRepositoryReference reference) {
         return this.handle;
     }
 }

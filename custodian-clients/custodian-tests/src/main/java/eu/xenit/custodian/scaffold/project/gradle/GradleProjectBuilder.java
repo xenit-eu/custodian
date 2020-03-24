@@ -1,28 +1,17 @@
 package eu.xenit.custodian.scaffold.project.gradle;
 
-import io.spring.initializr.generator.buildsystem.DependencyContainer;
 import io.spring.initializr.generator.buildsystem.MavenRepository;
 import io.spring.initializr.generator.buildsystem.MavenRepositoryContainer;
 import io.spring.initializr.generator.buildsystem.gradle.GradleBuild;
-import io.spring.initializr.generator.buildsystem.gradle.GradleBuildWriter;
 import io.spring.initializr.generator.buildsystem.gradle.GradlePluginContainer;
-import io.spring.initializr.generator.buildsystem.gradle.GroovyDslGradleBuildWriter;
-import io.spring.initializr.generator.io.IndentingWriter;
-import io.spring.initializr.generator.io.IndentingWriterFactory;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public class GradleProjectBuilder {
-
 
     private final GradleBuild gradleBuild;
 
     private GradleProjectBuilder(GradleBuild gradleBuild) {
         this.gradleBuild = gradleBuild;
-
     }
 
     public static GradleProjectBuilder create() {
@@ -58,7 +47,5 @@ public class GradleProjectBuilder {
         callback.accept(new DependencyContainerHandler(this.gradleBuild.dependencies()));
         return this;
     }
-
-
 
 }

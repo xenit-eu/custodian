@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import eu.xenit.custodian.asserts.build.buildsystem.ModuleDependency;
+import eu.xenit.custodian.domain.buildsystem.ModuleDependency;
 import java.util.Collections;
 
 public interface MavenModuleDependency extends MavenDependency, ModuleDependency,

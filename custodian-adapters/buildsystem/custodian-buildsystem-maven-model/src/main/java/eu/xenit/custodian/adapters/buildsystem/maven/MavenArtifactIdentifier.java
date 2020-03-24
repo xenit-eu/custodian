@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.maven;
 
-import eu.xenit.custodian.asserts.build.buildsystem.ArtifactIdentifier;
+import eu.xenit.custodian.domain.buildsystem.ArtifactIdentifier;
 
 public interface MavenArtifactIdentifier extends ArtifactIdentifier {
 

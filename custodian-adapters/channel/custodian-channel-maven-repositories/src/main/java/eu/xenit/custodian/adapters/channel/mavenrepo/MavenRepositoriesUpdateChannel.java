@@ -4,7 +4,7 @@ import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationD
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationProvider;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenModuleVersion;
 import eu.xenit.custodian.ports.spi.build.Build;
-import eu.xenit.custodian.asserts.build.changes.LogicalChange;
+import eu.xenit.custodian.domain.changes.LogicalChange;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
 import eu.xenit.custodian.ports.spi.build.Project;
 import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
@@ -78,10 +78,10 @@ public class MavenRepositoriesUpdateChannel implements UpdateChannel {
             return Optional.empty();
         }
 
-        MavenArtifactDependencyUpdate change = this.updateStrategy.options(artifact)
+        MavenArtifactDependencyVersionUpdate change = this.updateStrategy.options(artifact)
                 .map(plan -> plan.execute(this.mavenArtifactResolver, artifact))
-                .reduce(new MavenArtifactDependencyUpdate(build, project, artifact.getDependency()),
-                        MavenArtifactDependencyUpdate::addProposal, (c1, c2) -> {
+                .reduce(new MavenArtifactDependencyVersionUpdate(build, project, artifact.getDependency()),
+                        MavenArtifactDependencyVersionUpdate::addProposal, (c1, c2) -> {
                             throw new UnsupportedOperationException();
                         });
 

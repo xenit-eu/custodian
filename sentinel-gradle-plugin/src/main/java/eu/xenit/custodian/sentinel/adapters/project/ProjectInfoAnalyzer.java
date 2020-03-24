@@ -1,6 +1,7 @@
 package eu.xenit.custodian.sentinel.adapters.project;
 
 import eu.xenit.custodian.sentinel.domain.PartialAnalyzer;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.function.Function;
@@ -15,15 +16,20 @@ public class ProjectInfoAnalyzer implements PartialAnalyzer<ProjectInformation> 
                 .name(project.getName())
                 .path(project.getPath())
                 .displayName(project.getDisplayName())
-                .parent(project.getParent() != null ? project.getParent().getPath() : null)
-                .projectDir(this.getRelativeProjectDir(project).toString())
+
+                .projectDir(this.relativeToProjectDir(project.getRootProject(), project.getProjectDir()))
+                .buildFile(this.relativeToProjectDir(project, project.getBuildFile()))
+                .buildDir(this.relativeToProjectDir(project, project.getBuildDir()))
 
                 .subprojects(this.getChildProjects(project))
                 .build();
     }
 
-    private Path getRelativeProjectDir(Project project) {
-        return project.getRootDir().toPath().relativize(project.getProjectDir().toPath());
+    private String relativeToProjectDir(Project project, File path) {
+        return project.getProjectDir()
+                .toPath()
+                .relativize(path.toPath())
+                .toString();
     }
 
     private Map<String, ProjectInformation> getChildProjects(Project project) {
