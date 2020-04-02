@@ -113,7 +113,7 @@ public class GradleBuild implements TestRule {
 
     }
 
-    private void copyFolder(Path source, Path target) throws IOException {
+    public static void copyFolder(Path source, Path target) throws IOException {
         try (Stream<Path> stream = Files.walk(source)) {
             stream.forEach((child) -> {
                 try {
@@ -124,7 +124,7 @@ public class GradleBuild implements TestRule {
                         Files.copy(child, destination, StandardCopyOption.REPLACE_EXISTING);
                     }
                 }
-                catch (Exception ex) {
+                catch (IOException ex) {
                     throw new IllegalStateException(ex);
                 }
             });

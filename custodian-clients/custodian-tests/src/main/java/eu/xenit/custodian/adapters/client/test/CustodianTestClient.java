@@ -21,11 +21,12 @@ public class CustodianTestClient {
         return this.custodian.createReference(location.toString());
     }
 
-    public ClonedRepositorySourceMetadataAssertionTrait extractMetadata(Path location) throws IOException, MetadataAnalyzerException {
-        SourceRepositoryReference reference = this.createReference(location);
-        ClonedRepositoryHandle handle = this.custodian.checkoutProject(reference);
-        return this.extractMetadata(handle);
+    public ClonedRepositoryHandle checkout(SourceRepositoryReference reference) throws IOException {
+        return this.custodian.checkoutProject(reference);
+    }
 
+    public ClonedRepositoryHandle checkout(Path location) throws IOException {
+        return this.custodian.checkoutProject(this.createReference(location));
     }
 
     public ClonedRepositorySourceMetadataAssertionTrait extractMetadata(ClonedRepositoryHandle handle) throws MetadataAnalyzerException {

@@ -2,10 +2,14 @@ package eu.xenit.custodian.adapters.channel.mavenrepo;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenVersionSpecification;
 import eu.xenit.custodian.adapters.channel.mavenrepo.MavenDependencyUpdateStrategy.MavenDependencyUpdateProposal;
+import eu.xenit.custodian.domain.changes.BuildModificationResult;
+import eu.xenit.custodian.domain.changes.ChangeApplicationResult;
+import eu.xenit.custodian.domain.changes.NoopChangeApplicationResult;
 import eu.xenit.custodian.ports.spi.build.Build;
 import eu.xenit.custodian.domain.buildsystem.ModuleDependency;
 import eu.xenit.custodian.domain.changes.DependencyVersionUpdate;
 import eu.xenit.custodian.domain.changes.LogicalChangeBase;
+import eu.xenit.custodian.ports.spi.build.BuildModification;
 import eu.xenit.custodian.ports.spi.build.Project;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +66,14 @@ public class MavenArtifactDependencyVersionUpdate extends LogicalChangeBase impl
         Optional<MavenVersionSpecification> proposedVersion = this.getProposedVersion();
 
         if (!proposedVersion.isPresent()) {
-            return ChangeApplicationResult.NOOP;
+            return NoopChangeApplicationResult.INSTANCE;
         }
 
-        this.getBuild().modify().updateDependency(this.getProject(), this.getDependency(), dependency -> {
-            dependency.setVersion(proposedVersion.get().getValue());
-        });
+        BuildModification result = this.getBuild().modify()
+                .updateDependency(this.getProject(), this.getDependency(), dependency -> {
+                    dependency.setVersion(proposedVersion.get().getValue());
+                });
 
-        return () -> true;
+        return new BuildModificationResult(result, "Update ");
     }
 }

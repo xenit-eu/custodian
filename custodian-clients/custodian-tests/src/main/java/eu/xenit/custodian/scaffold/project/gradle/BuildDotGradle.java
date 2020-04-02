@@ -23,7 +23,7 @@ public class BuildDotGradle {
         return path;
     }
 
-    public Path getParent() {
+    public Path getDirectory() {
         return this.path.getParent();
     }
 

@@ -1,57 +1,99 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
 import eu.xenit.custodian.domain.buildsystem.ModuleDependency;
+import eu.xenit.custodian.domain.changes.ChangeApplicationResult;
+import eu.xenit.custodian.domain.changes.Patch;
+import eu.xenit.custodian.ports.spi.build.BuildModification;
 import eu.xenit.custodian.ports.spi.build.BuildModifier;
 import eu.xenit.custodian.ports.spi.build.Project;
 import eu.xenit.custodian.ports.spi.build.ProjectModuleDependencyModifier;
 import eu.xenit.custodian.util.Arguments;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class GradleBuildModifier implements BuildModifier {
 
-    private final GradleBuild build;
-
-    public GradleBuildModifier(GradleBuild build) {
-        this.build = build;
+    public GradleBuildModifier() {
     }
 
     @Override
-    public void updateDependency(Project project, ModuleDependency dependency,
+    public BuildModification updateDependency(Project project, ModuleDependency dependency,
             Consumer<ProjectModuleDependencyModifier> callback) {
 
-        ProjectModuleDependencyModifier modifier = new GradleProjectModuleDependencyModifier(
-                build,
+        GradleProjectModuleDependencyModifier modifier = new GradleProjectModuleDependencyModifier(
                 Arguments.isInstanceOf(GradleProject.class, project, "project"),
                 Arguments.isInstanceOf(GradleModuleDependency.class, dependency, "dependency"));
 
         callback.accept(modifier);
 
+        return modifier.getModification();
+
+
+        // so is the build.gradle now modified or not ?
+        // which one ? (=which subproject)
+
         // TODO return change result ?
+
     }
 
 
-    class GradleProjectModuleDependencyModifier implements ProjectModuleDependencyModifier {
+    static class GradleBuildModification implements BuildModification {
 
-        private final GradleBuild build;
+        private final List<Patch> patches = new ArrayList<>();
+
+        @Override
+        public Stream<Patch> getPatches() {
+            return this.patches.stream();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return this.patches.isEmpty();
+        }
+
+        void add(Patch patch) {
+            this.patches.add(Arguments.notNull(patch, "patch"));
+        }
+
+        void addAll(Stream<Patch> patches) {
+            Arguments.notNull(patches, "patches");
+            patches.forEach(this.patches::add);
+        }
+
+    }
+
+    static class GradleProjectModuleDependencyModifier implements ProjectModuleDependencyModifier {
+
         private final GradleProject project;
         private final GradleModuleDependency dependency;
 
-        public GradleProjectModuleDependencyModifier(GradleBuild build, GradleProject project, GradleModuleDependency dependency) {
-            this.build = build;
+        private final GradleBuildModification modification = new GradleBuildModification();
+//        private final List<Patch> patches = new ArrayList<>();
+
+        public GradleProjectModuleDependencyModifier(GradleProject project,
+                GradleModuleDependency dependency) {
             this.project = project;
             this.dependency = dependency;
+        }
+
+        BuildModification getModification() {
+            return this.modification;
         }
 
         @Override
         public void setVersion(String versionSpec) {
 
-            log.warn("Update gradle build dependency {} {} -> {}", dependency.getId(),
+            log.info("Update gradle build dependency {} {} -> {}", dependency.getId(),
                     dependency.getVersionSpec().getValue(), versionSpec);
 
             // find the correct GradleProject
@@ -65,7 +107,11 @@ public class GradleBuildModifier implements BuildModifier {
             // 2. update_files_for_dep_set_change -> wth is a dependencySet ? isn't that gradle internals ?
             // 3. update_version_in_buildfile
 
-            this.updateInlineDependencyVersion(versionSpec);
+            if (this.updateInlineDependencyVersion(versionSpec)) {
+                // succesfully updated build.gradle dependency version
+            } else {
+
+            }
 
         }
 
@@ -73,13 +119,33 @@ public class GradleBuildModifier implements BuildModifier {
             Path buildDotGradlePath = this.project.getBuildFile();
 
             try {
-                List<String> strings = Files.readAllLines(buildDotGradlePath);
-                strings.forEach(log::warn);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                String source = Files.readString(buildDotGradlePath);
+                String matcher = String.format("(%s\\s+'%s:%s):%s(.+)",
+                        dependency.getTargetConfiguration(), dependency.getGroup(),
+                        dependency.getName(), dependency.getVersionSpec().getValue());
+                String replacement = "$1:" + versionSpec + "$2";
 
-            return false;
+                String result = source.replaceFirst(matcher, replacement);
+
+                log.debug(result);
+
+                if (source.equalsIgnoreCase(result)) {
+                    // source and result is unchanged
+                    // no success
+                    return false;
+                }
+
+                // actually write to the file
+                Files.writeString(buildDotGradlePath, result);
+
+                Patch patch = Patch.from(buildDotGradlePath, source);
+                this.modification.add(patch);
+
+                return true;
+
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
         }
     }
 }

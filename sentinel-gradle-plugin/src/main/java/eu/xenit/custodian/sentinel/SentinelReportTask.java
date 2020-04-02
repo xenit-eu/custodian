@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.Task;
+import org.gradle.api.specs.Spec;
+import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 
@@ -29,6 +32,8 @@ public class SentinelReportTask extends DefaultTask {
     public SentinelReportTask() {
         this.setDescription("Create a structured report on project metadata and dependencies");
         this.setGroup("Help");
+
+        this.getOutputs().upToDateWhen(element -> false);
     }
 
 
@@ -44,7 +49,10 @@ public class SentinelReportTask extends DefaultTask {
         return this;
     }
 
-
+//    @InputFile
+//    public File getInput() {
+//        return this.getProject().getBuildFile();
+//    }
 
     @TaskAction
     void report() throws IOException {
@@ -57,14 +65,10 @@ public class SentinelReportTask extends DefaultTask {
         )).analyze(this.getProject());
 
         SentinelReporter reporter = new SentinelJsonReporter();
-//        SentinelReporter reporter = new SentinelJacksonReporter();
 
-//        Writer out = new StringWriter();
         try (IndentingWriter writer = new IndentingWriter(new BufferedWriter(new FileWriter(getOutput())))) {
             reporter.write(writer, result);
         }
-
-//        System.out.println(out.toString());
     }
 
 }

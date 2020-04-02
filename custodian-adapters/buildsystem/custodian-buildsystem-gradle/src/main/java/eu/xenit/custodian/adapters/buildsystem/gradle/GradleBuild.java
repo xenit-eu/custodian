@@ -30,6 +30,6 @@ public class GradleBuild implements Build {
 
     @Override
     public BuildModifier modify() {
-        return new GradleBuildModifier(this);
+        return new GradleBuildModifier();
     }
 }
