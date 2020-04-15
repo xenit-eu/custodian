@@ -17,5 +17,8 @@ include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle'
 
 include 'custodian-adapters:channel:custodian-channel-maven-repositories'
 
-include 'custodian-clients:custodian-cli'
-include 'custodian-clients:custodian-tests'
+
+include 'custodian-drivers:custodian-driver-test'
+
+include 'applications:custodian-github-app'
+include 'applications:custodian-cli'

@@ -1,4 +1,4 @@
-package eu.xenit.custodian.adapters.client.test;
+package eu.xenit.custodian.driver.test;
 
 import eu.xenit.custodian.domain.changes.LogicalChange;
 import eu.xenit.custodian.domain.changes.LogicalChangeSet;

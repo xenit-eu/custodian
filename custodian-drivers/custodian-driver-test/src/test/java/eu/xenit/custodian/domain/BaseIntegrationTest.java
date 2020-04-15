@@ -1,6 +1,6 @@
 package eu.xenit.custodian.domain;
 
-import eu.xenit.custodian.adapters.client.test.CustodianTestClient;
+import eu.xenit.custodian.driver.test.CustodianTestClient;
 import eu.xenit.custodian.ports.api.Custodian;
 import eu.xenit.custodian.scaffold.project.gradle.GradleProjectBuilder;
 import org.junit.Rule;

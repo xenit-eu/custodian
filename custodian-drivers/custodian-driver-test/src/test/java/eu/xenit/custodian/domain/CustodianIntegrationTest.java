@@ -3,9 +3,9 @@ package eu.xenit.custodian.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.adapters.client.test.ChangeSetAssertionTrait;
-import eu.xenit.custodian.adapters.client.test.CustodianTestClient;
-import eu.xenit.custodian.adapters.client.test.ClonedRepositorySourceMetadataAssertionTrait;
+import eu.xenit.custodian.driver.test.ChangeSetAssertionTrait;
+import eu.xenit.custodian.driver.test.CustodianTestClient;
+import eu.xenit.custodian.driver.test.ClonedRepositorySourceMetadataAssertionTrait;
 import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuild;
 import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystem;
 import eu.xenit.custodian.adapters.buildsystem.gradle.GradleDependency;

@@ -7,13 +7,12 @@ import java.io.IOException;
 public interface Custodian {
 
     SourceRepositoryReference createReference(String repositoryReference);
-
     ClonedRepositoryHandle checkoutProject(SourceRepositoryReference reference) throws IOException;
 
     ClonedRepositorySourceMetadata extractMetadata(ClonedRepositoryHandle clonedRepositoryHandle) throws MetadataAnalyzerException;
-
     LogicalChangeSet getChanges(ClonedRepositorySourceMetadata metadata);
 
-    // 4. apply selected changes
-    ProjectUpdateResult run(SourceRepositoryReference sourceRepositoryReference);
+
+    //    createPullRequest(ClonedRepositoryHandle clonedRepositoryHandle);
+//    ProjectUpdateResult run(SourceRepositoryReference sourceRepositoryReference);
 }
