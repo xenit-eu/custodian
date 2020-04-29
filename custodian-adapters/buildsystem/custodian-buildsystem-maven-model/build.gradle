@@ -3,8 +3,6 @@ plugins {
     id 'java'
 }
 
-group = 'eu.xenit.custodian'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -15,7 +13,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation project(':custodian-service')
+    implementation project(':custodian-domain')
 
     implementation "org.apache.maven:maven-artifact:${mavenVersion}"
 //    implementation project(':custodian-service-asserts')

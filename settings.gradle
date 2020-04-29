@@ -9,14 +9,14 @@ rootProject.name = 'custodian'
 
 include 'sentinel-gradle-plugin'
 
-include 'custodian-service'
+include 'custodian-domain'
+include 'custodian-application'
+
 include 'custodian-service-asserts'
 
 include 'custodian-adapters:buildsystem:custodian-buildsystem-maven-model'
 include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle'
-
 include 'custodian-adapters:channel:custodian-channel-maven-repositories'
-
 
 include 'custodian-drivers:custodian-driver-test'
 

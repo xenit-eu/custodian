@@ -3,8 +3,6 @@ plugins {
     id 'java'
 }
 
-group = 'eu.xenit.custodian'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -21,7 +19,7 @@ dependencies {
 
 //    implementation gradleTestKit()
 
-    implementation project(':custodian-service')
+    implementation project(':custodian-domain')
 
     implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle')
 

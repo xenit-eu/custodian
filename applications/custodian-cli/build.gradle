@@ -4,8 +4,6 @@ plugins {
     id 'java'
 }
 
-group = 'eu.xenit.custodian'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -20,7 +18,7 @@ bootRun {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation project(':custodian-service')
+    implementation project(':custodian-domain')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
