@@ -6,21 +6,40 @@ plugins {
 
 group = 'eu.xenit.custodian'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
 }
 
-bootRun {
-    if (project.hasProperty('args')) {
-        args project.args
-    }
+//bootRun {
+//    if (project.hasProperty('args')) {
+//        args project.args
+//    }
+//}
+
+ext {
+    jjwtVersion = '0.11.1'
+    githubApiVersion = '1.110'
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+
     implementation project(':custodian-service')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.kohsuke:github-api:${githubApiVersion}"
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+
+    implementation 'com.budjb:http-requests-core:2.0.6'
+    implementation 'com.budjb:http-requests-jackson:2.0.6'
+
+
+    runtime "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtime "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
