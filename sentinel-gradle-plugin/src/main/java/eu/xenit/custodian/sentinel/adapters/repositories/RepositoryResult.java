@@ -22,4 +22,6 @@ public class RepositoryResult {
     private IvyRepositoryDetails ivy;
     private FlatDirsRepositoryDetails flatDirs;
 
+    public static class RepositoryResultBuilder {}
+
 }

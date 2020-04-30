@@ -6,9 +6,27 @@ plugins {
 allprojects {
     group = 'eu.xenit.custodian'
     version = '0.1.0-SNAPSHOT'
+
+}
+
+subprojects {
+    pluginManager.withPlugin('java-library') {
+
+        sourceCompatibility = '11'
+
+        java {
+            withSourcesJar()
+            withJavadocJar()
+        }
+
+        repositories {
+            mavenCentral()
+        }
+    }
 }
 
 ext {
     mavenVersion = '3.5.0'
     mavenResolverVersion = '1.4.1'
+    lombokVersion = '1.18.8'
 }

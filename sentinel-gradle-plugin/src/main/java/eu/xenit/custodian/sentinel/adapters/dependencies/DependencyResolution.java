@@ -22,4 +22,6 @@ public class DependencyResolution {
 
     private final String failure;
 
+    public static class DependencyResolutionBuilder {}
+
 }
