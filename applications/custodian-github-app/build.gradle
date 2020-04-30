@@ -36,8 +36,8 @@ dependencies {
     implementation 'com.budjb:http-requests-jackson:2.0.6'
 
 
-    runtime "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
-    runtime "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
