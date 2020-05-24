@@ -1,7 +1,7 @@
 package eu.xenit.custodian.ports.api;
 
-import eu.xenit.custodian.domain.changes.LogicalChangeSet;
-import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
+import eu.xenit.custodian.domain.usecases.changes.LogicalChangeSet;
+import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import java.io.IOException;
 
 public interface Custodian {
@@ -9,7 +9,8 @@ public interface Custodian {
     SourceRepositoryReference createReference(String repositoryReference);
     ClonedRepositoryHandle checkoutProject(SourceRepositoryReference reference) throws IOException;
 
-    ClonedRepositorySourceMetadata extractMetadata(ClonedRepositoryHandle clonedRepositoryHandle) throws MetadataAnalyzerException;
+    // we probably want to expose a simplified ProjectModel (especially the Build interface)
+    ProjectModel analyzeProjectModel(ClonedRepositoryHandle clonedRepositoryHandle);
     LogicalChangeSet getChanges(ClonedRepositorySourceMetadata metadata);
 
 

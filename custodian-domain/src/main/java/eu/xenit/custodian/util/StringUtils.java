@@ -1,7 +1,5 @@
 package eu.xenit.custodian.util;
 
-import org.springframework.lang.Nullable;
-
 public final class StringUtils {
 
     private StringUtils() {
@@ -20,7 +18,7 @@ public final class StringUtils {
      *
      * @see Character#isWhitespace
      */
-    public static boolean hasText(@Nullable String str) {
+    public static boolean hasText(String str) {
         return str != null && !str.isEmpty() && containsText(str);
     }
 

@@ -1,11 +1,11 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
 
-import eu.xenit.custodian.adapters.buildsystem.gradle.sentinel.dto.Dependency;
-import eu.xenit.custodian.adapters.buildsystem.gradle.sentinel.dto.Report;
-import eu.xenit.custodian.adapters.buildsystem.gradle.sentinel.dto.RepositoryDto;
+import eu.xenit.custodian.adapters.buildsystem.gradle.api.RemoteRepository;
+import eu.xenit.custodian.adapters.buildsystem.gradle.spi.sentinel.dto.Dependency;
+import eu.xenit.custodian.adapters.buildsystem.gradle.spi.sentinel.dto.Report;
+import eu.xenit.custodian.adapters.buildsystem.gradle.spi.sentinel.dto.RepositoryDto;
 import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
-import eu.xenit.custodian.domain.buildsystem.Repository;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -17,12 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SentinelReportsToGradleBuildConverter {
 
-    public GradleBuild convert(Path location, Collection<Report> reports) {
+    public GradleBuild convert(Path location, Collection<Report> reports, GradleBuildFactory gradleBuildFactory) {
         Map<String, Report> path2report = reports.stream()
                 .collect(Collectors.toMap(r -> r.getProject().getPath(), Function.identity()));
 
         GradleProject rootProject = convert(location, ":", path2report, null);
-        return new GradleBuild(location, rootProject);
+        return gradleBuildFactory.createGradleBuild(location, rootProject);
     }
 
     GradleProject convert(Path rootLocation, String name, Map<String, Report> reports, GradleProject parent) {
@@ -58,9 +58,8 @@ public class SentinelReportsToGradleBuildConverter {
         return gradleProject;
     }
 
-    private Collection<Repository> collectRepositories(List<RepositoryDto> repositories) {
-        RepositoryFactory factory = new RepositoryFactory();
-        return repositories.stream().map(factory::from).collect(Collectors.toList());
+    private Collection<RemoteRepository> collectRepositories(List<RepositoryDto> repositories) {
+        return repositories.stream().map(RemoteRepository::from).collect(Collectors.toList());
     }
 
 //    private List<GradleModuleDependency> collectDependencies(

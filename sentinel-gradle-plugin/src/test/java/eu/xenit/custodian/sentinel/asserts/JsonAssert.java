@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Condition;
 import org.assertj.core.internal.Failures;
-import org.gradle.internal.impldep.aQute.bnd.osgi.resource.FilterParser.Op;
 
 public abstract class JsonAssert<SELF extends JsonAssert<SELF, ACTUAL>, ACTUAL extends JsonNode>
         extends AbstractAssert<SELF, ACTUAL> {

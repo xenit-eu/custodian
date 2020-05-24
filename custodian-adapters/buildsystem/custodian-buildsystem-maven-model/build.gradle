@@ -10,9 +10,7 @@ dependencies {
     implementation project(':custodian-domain')
 
     implementation "org.apache.maven:maven-artifact:${mavenVersion}"
-//    implementation project(':custodian-service-asserts')
 
-//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'junit:junit'
     testImplementation 'org.assertj:assertj-core'
 }

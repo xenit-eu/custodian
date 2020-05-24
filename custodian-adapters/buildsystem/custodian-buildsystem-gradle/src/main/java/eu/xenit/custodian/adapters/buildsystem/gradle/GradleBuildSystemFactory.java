@@ -15,15 +15,15 @@ package eu.xenit.custodian.adapters.buildsystem.gradle;
  * limitations under the License.
  */
 
-import eu.xenit.custodian.ports.spi.build.BuildSystem;
-import eu.xenit.custodian.ports.spi.build.BuildSystemFactory;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildSystem;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemFactory;
 
 /**
  * {@link BuildSystemFactory Factory} for {@link GradleBuildSystem}.
  *
  * @author Andy Wilkinson
  */
-class GradleBuildSystemFactory implements BuildSystemFactory {
+public class GradleBuildSystemFactory implements BuildSystemFactory {
 
     @Override
     public BuildSystem createBuildSystem(String id) {

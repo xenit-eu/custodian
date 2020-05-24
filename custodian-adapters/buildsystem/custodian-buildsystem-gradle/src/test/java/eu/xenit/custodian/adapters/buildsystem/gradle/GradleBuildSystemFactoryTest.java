@@ -2,9 +2,8 @@ package eu.xenit.custodian.adapters.buildsystem.gradle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystem;
-import eu.xenit.custodian.ports.spi.build.BuildSystem;
-import org.junit.Test;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildSystem;
+import org.junit.jupiter.api.Test;
 
 public class GradleBuildSystemFactoryTest {
 

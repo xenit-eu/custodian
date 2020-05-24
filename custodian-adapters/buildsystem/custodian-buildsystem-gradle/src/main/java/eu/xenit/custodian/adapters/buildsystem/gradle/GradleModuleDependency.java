@@ -1,6 +1,7 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationProvider;
+//import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationProvider;
+
 import eu.xenit.custodian.adapters.buildsystem.gradle.GradleArtifactSpecification.GradleArtifactSpecificationCustomizer;
 import eu.xenit.custodian.domain.buildsystem.Dependency;
 import eu.xenit.custodian.domain.buildsystem.ExternalModuleDependency;
@@ -18,11 +19,11 @@ import lombok.RequiredArgsConstructor;
  *
  * This dependency can be a Maven or Ivy module.
  */
-public interface GradleModuleDependency extends GradleDependency,
-        ExternalModuleDependency,
-        MavenArtifactSpecificationProvider
+public interface GradleModuleDependency extends GradleDependency, ExternalModuleDependency
+//        MavenArtifactSpecificationProvider
         /*, ArtifactSpecificationDescriptor<IvyArtifactSpecification> */ {
 
+    // TODO replace by our own GradleModuleIdentifier
     GroupArtifactModuleIdentifier getModuleId();
 
     GradleVersionSpecification getVersionSpec();
@@ -59,6 +60,10 @@ public interface GradleModuleDependency extends GradleDependency,
         GradleModuleDependencyCustomizer customizer = new GradleModuleDependencyCustomizer(module, version);
         callback.accept(customizer);
         return new DefaultGradleModuleDependency(configuration, module, version, customizer.getArtifacts());
+    }
+
+    static GradleModuleDependency implementation(GroupArtifactModuleIdentifier module, String version) {
+        return from("implementation", module, GradleVersionSpecification.from(version));
     }
 
 

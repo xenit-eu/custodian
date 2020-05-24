@@ -2,13 +2,12 @@ package eu.xenit.custodian.adapters.buildsystem.gradle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.adapters.buildsystem.gradle.sentinel.SentinelGradleProjectAnalayzerFactory;
-import eu.xenit.custodian.adapters.buildsystem.gradle.sentinel.SentinelGradleProjectAnalyzer;
-import eu.xenit.custodian.domain.CustodianFactory;
-import eu.xenit.custodian.asserts.domain.CustodianFactoryAssert;
-import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzerFactory;
-import org.junit.Test;
-import org.springframework.core.io.support.SpringFactoriesLoader;
+import eu.xenit.custodian.application.CustodianFactory;
+import eu.xenit.custodian.application.CustodianFactoryAssert;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPortFactory;
+import java.util.ServiceLoader;
+import java.util.ServiceLoader.Provider;
+import org.junit.jupiter.api.Test;
 
 
 public class GradleAnalyzerDefaultSettingsTester {
@@ -16,10 +15,9 @@ public class GradleAnalyzerDefaultSettingsTester {
     @Test
     public void testSpringLoadedFactories() {
 
-        assertThat(SpringFactoriesLoader.loadFactories(
-                ProjectMetadataAnalyzerFactory.class,
-                ProjectMetadataAnalyzerFactory.class.getClassLoader())
-        ).hasAtLeastOneElementOfType(SentinelGradleProjectAnalayzerFactory.class);
+        var services = ServiceLoader.load(BuildSystemPortFactory.class).stream().map(Provider::get);
+        assertThat(services).hasOnlyOneElementSatisfying(factory ->
+                assertThat(factory).isInstanceOf(GradleBuildSystemAdaptorFactory.class));
     }
 
     @Test
@@ -27,7 +25,7 @@ public class GradleAnalyzerDefaultSettingsTester {
         CustodianFactory factory = CustodianFactory.withDefaultSettings();
 
         CustodianFactoryAssert.assertThat(factory)
-                .hasMetadataAnalyzer(SentinelGradleProjectAnalyzer.class);
+                .hasBuildSystem(GradleBuildSystemAdapter.class);
     }
 
 }

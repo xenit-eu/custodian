@@ -12,13 +12,18 @@ include 'sentinel-gradle-plugin'
 include 'custodian-domain'
 include 'custodian-application'
 
-include 'custodian-service-asserts'
+include 'custodian-application-test'
 
-include 'custodian-adapters:buildsystem:custodian-buildsystem-maven-model'
+// deprecated
+//include 'custodian-adapters:buildsystem:custodian-buildsystem-maven-model'
+
 include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle'
-include 'custodian-adapters:channel:custodian-channel-maven-repositories'
+include 'custodian-adapters:buildsystem:custodian-maven-resolver'
 
-include 'custodian-drivers:custodian-driver-test'
+// deprecated
+//include 'custodian-adapters:channel:custodian-channel-maven-repositories'
+
+//include 'custodian-drivers:custodian-driver-test'
 
 include 'applications:custodian-github-app'
 include 'applications:custodian-cli'

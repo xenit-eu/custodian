@@ -1,19 +1,16 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
 import eu.xenit.custodian.domain.buildsystem.ModuleDependency;
-import eu.xenit.custodian.domain.changes.ChangeApplicationResult;
-import eu.xenit.custodian.domain.changes.Patch;
-import eu.xenit.custodian.ports.spi.build.BuildModification;
-import eu.xenit.custodian.ports.spi.build.BuildModifier;
-import eu.xenit.custodian.ports.spi.build.Project;
-import eu.xenit.custodian.ports.spi.build.ProjectModuleDependencyModifier;
+import eu.xenit.custodian.domain.usecases.changes.Patch;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildModification;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildModifier;
+import eu.xenit.custodian.ports.spi.buildsystem.Project;
+import eu.xenit.custodian.ports.spi.buildsystem.ProjectModuleDependencyModifier;
 import eu.xenit.custodian.util.Arguments;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;

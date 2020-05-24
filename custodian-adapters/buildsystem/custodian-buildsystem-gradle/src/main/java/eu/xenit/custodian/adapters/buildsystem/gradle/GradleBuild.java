@@ -1,21 +1,27 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.ports.spi.build.*;
-import eu.xenit.custodian.ports.spi.build.BuildSystem;
+import eu.xenit.custodian.adapters.buildsystem.gradle.spi.updates.GradleBuildUpdatePort;
+import eu.xenit.custodian.ports.spi.buildsystem.*;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildSystem;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import lombok.Getter;
 
 public class GradleBuild implements Build {
 
     @Getter
-    private final GradleProject project;
+    private final GradleProject rootProject;
 
     @Getter
     private final Path location;
 
-    public GradleBuild(Path location, GradleProject rootProject) {
+    private final Collection<GradleBuildUpdatePort> updatePorts;
+
+    GradleBuild(Path location, GradleProject rootProject, Collection<GradleBuildUpdatePort> updatePorts) {
         this.location = location;
-        project = rootProject;
+        this.rootProject = rootProject;
+        this.updatePorts = List.copyOf(updatePorts);
     }
 
     @Override
@@ -25,11 +31,16 @@ public class GradleBuild implements Build {
 
     @Override
     public String name() {
-        return this.getProject().getName();
+        return this.getRootProject().getName();
     }
 
     @Override
     public BuildModifier modify() {
         return new GradleBuildModifier();
+    }
+
+    @Override
+    public BuildUpdates updates() {
+        return new GradleBuildUpdates(this, updatePorts);
     }
 }

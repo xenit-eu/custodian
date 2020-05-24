@@ -1,6 +1,8 @@
 package eu.xenit.custodian.domain.changes;
 
-import eu.xenit.custodian.ports.spi.build.BuildModification;
+import eu.xenit.custodian.domain.usecases.changes.ChangeApplicationResult;
+import eu.xenit.custodian.domain.usecases.changes.Patch;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildModification;
 import java.util.stream.Stream;
 
 public class BuildModificationResult implements ChangeApplicationResult {

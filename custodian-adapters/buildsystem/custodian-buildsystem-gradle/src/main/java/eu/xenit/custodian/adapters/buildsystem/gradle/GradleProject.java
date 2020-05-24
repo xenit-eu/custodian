@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.ports.spi.build.Project;
+import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -13,9 +13,14 @@ public interface GradleProject extends Project {
     GradleProjectContainer getChildProjects();
 
     @Override
+    GradleProjectContainer getAllProjects();
+
+    @Override
     Optional<GradleProject> getParent();
 
     GradleDependencyContainer getDependencies();
+
+    // TODO fix container type
     GradleRepositoryContainer getRepositories();
 
     Path getProjectDir();

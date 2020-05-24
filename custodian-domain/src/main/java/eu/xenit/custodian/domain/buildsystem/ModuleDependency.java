@@ -16,4 +16,7 @@ public interface ModuleDependency extends Dependency {
     default String getId() {
         return this.getModuleId().getId();
     }
+
+
 }
+

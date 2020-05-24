@@ -1,8 +1,5 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle.notation;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.InvalidDependencyNotationException;
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.NotationParserDelegate;
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.ParsedDependencyNotation;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

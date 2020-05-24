@@ -1,6 +1,6 @@
 package eu.xenit.custodian.domain.buildsystem;
 
-import eu.xenit.custodian.ports.spi.build.Project;
+import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Stream;

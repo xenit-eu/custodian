@@ -1,7 +1,5 @@
 package eu.xenit.custodian.util;
 
-import org.springframework.lang.Nullable;
-
 public final class Arguments {
 
     private Arguments() {
@@ -15,7 +13,7 @@ public final class Arguments {
      * @param name the name of the argument, that will be used in the exception message if the object is null.
      * @throws IllegalArgumentException if the argument is {@code null}
      */
-    public static <T> T notNull(@Nullable T object, String name) {
+    public static <T> T notNull(T object, String name) {
         if (object == null) {
             String message = String.format("Argument '%s' is required", name);
             throw new IllegalArgumentException(message);
@@ -32,7 +30,7 @@ public final class Arguments {
      * @param name is the name of the argument, to be used in the exception message
      * @throws IllegalArgumentException if the object is not an instance of type
      */
-    public static <T> T isInstanceOf(Class<T> type, @Nullable Object argument, String name) {
+    public static <T> T isInstanceOf(Class<T> type, Object argument, String name) {
         if (!type.isInstance(argument)) {
             String className = (argument != null ? argument.getClass().getName() : "null");
             String msg = String.format("Argument '%s' of class [%s] must be an instance of %s",

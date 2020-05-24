@@ -1,0 +1,31 @@
+plugins {
+    id 'java-library'
+}
+
+ext {
+    mavenResolverVersion = '1.4.1'
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "org.apache.maven.resolver:maven-resolver:${mavenResolverVersion}"
+    implementation "org.apache.maven.resolver:maven-resolver-api:${mavenResolverVersion}"
+    implementation "org.apache.maven.resolver:maven-resolver-connector-basic:${mavenResolverVersion}"
+    implementation "org.apache.maven.resolver:maven-resolver-transport-file:${mavenResolverVersion}"
+    implementation "org.apache.maven.resolver:maven-resolver-transport-http:${mavenResolverVersion}"
+
+    implementation "org.apache.maven:maven-resolver-provider:${mavenVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+
+}
+
+test {
+    useJUnitPlatform()
+}

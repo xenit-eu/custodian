@@ -1,6 +1,5 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationDescriptor;
 import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
 import java.util.Set;
 import lombok.Getter;
@@ -24,11 +23,6 @@ public class DefaultGradleModuleDependency implements GradleModuleDependency {
         this.moduleId = moduleId;
         this.versionSpec = version;
         this.artifacts = artifacts;
-    }
-
-    @Override
-    public MavenArtifactSpecificationDescriptor getMavenArtifactsDescriptor() {
-        return new MavenArtifactSpecificationDescriptorAdaptor(this);
     }
 
 }

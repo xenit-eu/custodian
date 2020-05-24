@@ -1,8 +1,5 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle.notation;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.DependencyNotationConverter;
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.StringNotationParser;
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.NotationParserBuilder;
 import eu.xenit.custodian.adapters.buildsystem.gradle.GradleArtifactSpecification;
 
 public class GradleArtifactStringNotationParser implements StringNotationParser<GradleArtifactSpecification> {

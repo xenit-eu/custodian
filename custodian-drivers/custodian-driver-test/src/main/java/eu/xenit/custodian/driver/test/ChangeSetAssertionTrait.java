@@ -1,7 +1,7 @@
 package eu.xenit.custodian.driver.test;
 
-import eu.xenit.custodian.domain.changes.LogicalChange;
-import eu.xenit.custodian.domain.changes.LogicalChangeSet;
+import eu.xenit.custodian.domain.usecases.changes.LogicalChange;
+import eu.xenit.custodian.domain.usecases.changes.LogicalChangeSet;
 import eu.xenit.custodian.domain.changes.LogicalChangeSetAssert;
 import java.util.Objects;
 import java.util.stream.Stream;

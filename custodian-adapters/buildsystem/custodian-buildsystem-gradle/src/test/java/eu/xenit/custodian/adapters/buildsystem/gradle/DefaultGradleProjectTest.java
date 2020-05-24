@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import eu.xenit.custodian.domain.buildsystem.GradleProjectAssert;
 import java.nio.file.Paths;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefaultGradleProjectTest {
 

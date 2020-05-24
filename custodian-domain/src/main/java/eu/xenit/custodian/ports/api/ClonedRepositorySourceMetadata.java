@@ -2,9 +2,10 @@ package eu.xenit.custodian.ports.api;
 
 import eu.xenit.custodian.domain.buildsystem.BuildSystemsContainer;
 
+@Deprecated
 public interface ClonedRepositorySourceMetadata {
 
-    SourceRepositoryReference getReference();
+//    SourceRepositoryReference getReference();
 
     BuildSystemsContainer buildsystems();
 }

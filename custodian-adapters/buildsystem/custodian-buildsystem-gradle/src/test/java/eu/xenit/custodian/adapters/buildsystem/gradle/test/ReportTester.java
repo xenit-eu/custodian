@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle.test;
 
-import eu.xenit.custodian.adapters.buildsystem.gradle.sentinel.dto.Report;
+import eu.xenit.custodian.adapters.buildsystem.gradle.spi.sentinel.dto.Report;
 
 
 public class ReportTester {

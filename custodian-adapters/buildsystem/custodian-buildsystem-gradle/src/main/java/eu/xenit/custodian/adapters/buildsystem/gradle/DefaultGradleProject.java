@@ -60,4 +60,15 @@ public class DefaultGradleProject implements GradleProject {
         return this.childProjects;
     }
 
+    @Override
+    public GradleProjectContainer getAllProjects() {
+        GradleProjectContainer result = new GradleProjectContainer();
+        result.add(this);
+
+        this.childProjects.stream()
+                .flatMap(child -> child.getAllProjects().stream())
+                .forEach(result::add);
+
+        return result;
+    }
 }

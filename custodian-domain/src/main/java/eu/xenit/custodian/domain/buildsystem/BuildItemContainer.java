@@ -37,10 +37,10 @@ public class BuildItemContainer<I, V> {
     }
 
     /**
-     * Return a {@link Stream} of registered items.
-     * @return a stream of items
+     * Return a {@link Stream} of registered builds.
+     * @return a stream of builds
      */
-    public Stream<V> items() {
+    public Stream<V> builds() {
         return this.items.values().stream();
     }
 

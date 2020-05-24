@@ -79,7 +79,7 @@ public class DefaultMavenArtifactResolver implements MavenArtifactResolver {
         }
     }
 
-    /*
+    /**
      * Aether's components implement {@link org.eclipse.aether.spi.locator.Service} to ease manual wiring.
      * Using the prepopulated {@link DefaultServiceLocator}, we need to register the repository connector
      * and transporter factories

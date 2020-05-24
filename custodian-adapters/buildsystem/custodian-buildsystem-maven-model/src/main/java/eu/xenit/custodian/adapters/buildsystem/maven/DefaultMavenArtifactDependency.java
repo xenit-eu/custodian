@@ -1,6 +1,6 @@
 //package eu.xenit.custodian.adapters.buildsystem.maven;
 //
-//import eu.xenit.custodian.domain.buildsystem.Repository;
+//import eu.xenit.custodian.ports.spi.buildsystem.Repository;
 //import java.util.Collections;
 //import java.util.HashSet;
 //import java.util.Objects;

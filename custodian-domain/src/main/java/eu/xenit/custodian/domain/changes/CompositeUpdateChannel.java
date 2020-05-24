@@ -1,5 +1,6 @@
 package eu.xenit.custodian.domain.changes;
 
+import eu.xenit.custodian.domain.usecases.changes.LogicalChange;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
 import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
 import java.util.Collection;

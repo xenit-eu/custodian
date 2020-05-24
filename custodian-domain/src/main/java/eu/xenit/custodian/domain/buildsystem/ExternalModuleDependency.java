@@ -5,5 +5,9 @@ package eu.xenit.custodian.domain.buildsystem;
  */
 public interface ExternalModuleDependency extends ModuleDependency {
 
-    //
+
+    @Override
+    default boolean isExternal() {
+        return true;
+    }
 }

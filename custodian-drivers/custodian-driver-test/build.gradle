@@ -9,10 +9,12 @@ dependencies {
     implementation 'org.assertj:assertj-core'
 
     implementation project(':custodian-domain')
-    implementation project(':custodian-service-asserts')
+    implementation project(':custodian-application')
+
+    implementation project(':custodian-application-test')
     implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle')
 
-    implementation project(':custodian-adapters:channel:custodian-channel-maven-repositories')
+//    implementation project(':custodian-adapters:channel:custodian-channel-maven-repositories')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

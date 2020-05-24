@@ -1,11 +1,11 @@
 package eu.xenit.custodian.driver.test;
 
-import eu.xenit.custodian.domain.changes.LogicalChangeSet;
+import eu.xenit.custodian.ports.api.Custodian;
+import eu.xenit.custodian.domain.usecases.changes.LogicalChangeSet;
+import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
 import eu.xenit.custodian.ports.api.ClonedRepositoryHandle;
 import eu.xenit.custodian.ports.api.SourceRepositoryReference;
-import eu.xenit.custodian.ports.api.Custodian;
-import eu.xenit.custodian.ports.spi.metadata.MetadataAnalyzerException;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -29,9 +29,10 @@ public class CustodianTestClient {
         return this.custodian.checkoutProject(this.createReference(location));
     }
 
-    public ClonedRepositorySourceMetadataAssertionTrait extractMetadata(ClonedRepositoryHandle handle) throws MetadataAnalyzerException {
-        ClonedRepositorySourceMetadata clonedRepositorySourceMetadata = this.custodian.extractMetadata(handle);
-        return new ClonedRepositorySourceMetadataAssertionTrait(clonedRepositorySourceMetadata);
+    // TODO fix argument
+    public ProjectModelAssertionTrait getProjectModel(ClonedRepositoryHandle handle) {
+        ProjectModel projectModel = this.custodian.analyzeProjectModel(handle);
+        return new ProjectModelAssertionTrait(projectModel);
     }
 
     public ChangeSetAssertionTrait getChanges(ClonedRepositorySourceMetadata metadata) {

@@ -3,10 +3,10 @@ package eu.xenit.custodian.adapters.channel.mavenrepo;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationDescriptor;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationProvider;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenModuleVersion;
-import eu.xenit.custodian.ports.spi.build.Build;
-import eu.xenit.custodian.domain.changes.LogicalChange;
+import eu.xenit.custodian.ports.spi.buildsystem.Build;
+import eu.xenit.custodian.domain.usecases.changes.LogicalChange;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
-import eu.xenit.custodian.ports.spi.build.Project;
+import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +53,7 @@ public class MavenRepositoriesUpdateChannel implements UpdateChannel {
             return Collections.emptyList();
         }
 
-        Project project = build.getProject();
+        Project project = build.getRootProject();
         return project.getDependencies()
                         .stream()
                         .filter(MavenArtifactSpecificationProvider.class::isInstance)
@@ -74,7 +74,7 @@ public class MavenRepositoriesUpdateChannel implements UpdateChannel {
         // This update-channel only supports exact version specs, not version ranges etc
         // There should be another update-channel which is responsible to pin versions from the version-range-spec
         Optional<MavenModuleVersion> optionalPinnedVersion = artifact.getVersionSpec().asPinnedVersion();
-        if (!optionalPinnedVersion.isPresent()) {
+        if (optionalPinnedVersion.isEmpty()) {
             return Optional.empty();
         }
 

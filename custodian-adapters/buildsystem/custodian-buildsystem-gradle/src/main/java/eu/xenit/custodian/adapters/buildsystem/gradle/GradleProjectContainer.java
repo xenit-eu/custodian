@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
 import eu.xenit.custodian.domain.buildsystem.ProjectContainer;
-import eu.xenit.custodian.ports.spi.build.Project;
+import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,22 +1,27 @@
 plugins {
-    id 'java'
-}
-
-sourceCompatibility = '1.8'
-
-repositories {
-    mavenCentral()
+    id 'java-library'
+    id 'io.spring.dependency-management'
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    implementation 'org.springframework.boot:spring-boot-starter'
-//    implementation gradleTestKit()
+    implementation project(':custodian-domain')
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.assertj:assertj-core'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
 
-//    implementation project(':sentinel-gradle-plugin')
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
 }

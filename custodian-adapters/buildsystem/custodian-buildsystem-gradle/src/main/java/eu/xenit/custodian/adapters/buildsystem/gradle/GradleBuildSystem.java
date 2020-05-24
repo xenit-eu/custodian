@@ -16,7 +16,7 @@ package eu.xenit.custodian.adapters.buildsystem.gradle;
  * limitations under the License.
  */
 
-import eu.xenit.custodian.ports.spi.build.BuildSystem;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildSystem;
 
 /**
  * Gradle {@link BuildSystem}.

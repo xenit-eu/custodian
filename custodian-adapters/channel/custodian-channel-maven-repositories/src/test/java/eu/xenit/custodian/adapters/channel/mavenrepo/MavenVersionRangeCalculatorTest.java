@@ -3,6 +3,7 @@ package eu.xenit.custodian.adapters.channel.mavenrepo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenModuleVersion;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.MavenVersionRangeCalculator;
 import eu.xenit.custodian.domain.buildsystem.VersionSpecification;
 import org.junit.Test;
 

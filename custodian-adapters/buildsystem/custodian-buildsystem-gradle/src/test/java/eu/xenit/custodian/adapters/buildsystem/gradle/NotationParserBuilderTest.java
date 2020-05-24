@@ -3,15 +3,15 @@ package eu.xenit.custodian.adapters.buildsystem.gradle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import eu.xenit.custodian.adapters.buildsystem.gradle.notation.DependencyNotationConverter;
 import eu.xenit.custodian.adapters.buildsystem.gradle.notation.GradleDependencyNotationParserDelegate;
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.NotationParserBuilder;
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.DependencyNotationConverter;
-import eu.xenit.custodian.adapters.buildsystem.maven.notation.StringNotationParser;
+import eu.xenit.custodian.adapters.buildsystem.gradle.notation.NotationParserBuilder;
+import eu.xenit.custodian.adapters.buildsystem.gradle.notation.StringNotationParser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.AssertProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NotationParserBuilderTest {
 

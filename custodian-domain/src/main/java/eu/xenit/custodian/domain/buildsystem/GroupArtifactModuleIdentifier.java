@@ -1,5 +1,6 @@
 package eu.xenit.custodian.domain.buildsystem;
 
+@Deprecated
 public interface GroupArtifactModuleIdentifier extends ModuleIdentifier {
 
     /**
