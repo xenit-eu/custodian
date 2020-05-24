@@ -2,9 +2,7 @@ package eu.xenit.custodian.domain.service.scm;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-
 
 import eu.xenit.custodian.adapters.service.scm.NullSourceControlHandler;
 import eu.xenit.custodian.adapters.service.scm.StubbedSourceControlHandler;
@@ -16,7 +14,7 @@ import eu.xenit.custodian.ports.spi.scm.UnsupportedProjectReference;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefaultSourceControlManagementServiceTest {
 

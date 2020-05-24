@@ -2,11 +2,11 @@ package eu.xenit.custodian.adapters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import eu.xenit.custodian.domain.project.ProjectReferenceParser;
+import eu.xenit.custodian.ports.api.SourceRepositoryReference;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SourceRepositoryReferenceTest {
 

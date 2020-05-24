@@ -33,4 +33,5 @@ ext {
     mockitoVersion = '3.3.3'
     assertjVersion = '3.11.1'
     jacksonVersion = '2.9.9'
+    slf4jVersion = '1.7.28'
 }
