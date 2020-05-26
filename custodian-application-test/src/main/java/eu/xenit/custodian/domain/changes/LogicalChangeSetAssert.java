@@ -2,8 +2,8 @@ package eu.xenit.custodian.domain.changes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.domain.buildsystem.Dependency;
-import eu.xenit.custodian.domain.buildsystem.DependencyMatcher;
+import eu.xenit.custodian.ports.spi.buildsystem.Dependency;
+import eu.xenit.custodian.ports.spi.buildsystem.DependencyMatcher;
 import eu.xenit.custodian.domain.usecases.changes.DependencyVersionUpdate;
 import eu.xenit.custodian.domain.usecases.changes.LogicalChangeSet;
 import java.util.Optional;
@@ -46,8 +46,8 @@ public class LogicalChangeSetAssert extends AbstractAssert<LogicalChangeSetAsser
                 .hasValueSatisfying(updateVersion ->
                         assertThat(updateVersion.getValue())
                                 .as("Dependency update %s:%s -> %s",
-                                        dependencyUpdate.get().getDependency().getModuleId().getId(),
-                                        dependencyUpdate.get().getDependency().getVersionSpec(), targetVersion)
+                                        dependencyUpdate.get().getDependency().getId(),
+                                        dependencyUpdate.get().getCurrentVersion(), targetVersion)
                                 .isEqualTo(targetVersion));
 
         return myself;

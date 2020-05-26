@@ -19,25 +19,3 @@ public interface GetProjectUpdateProposalsUseCase extends UseCase<GetUpdatePropo
     }
 }
 
-class DefaultGetProjectUpdateProposalsUseCase implements GetProjectUpdateProposalsUseCase {
-
-    private final GetProjectModelUseCase projectModelUseCase;
-
-    public DefaultGetProjectUpdateProposalsUseCase(GetProjectModelUseCase projectModelUseCase) {
-        this.projectModelUseCase = projectModelUseCase;
-    }
-
-    @Override
-    public LogicalChangeSet handle(GetUpdateProposalsCommand getUpdateProposalsCommand) {
-        GetProjectModelCommand command = new GetProjectModelCommand(getUpdateProposalsCommand.getLocation());
-        ProjectModel projectModel = this.projectModelUseCase.handle(command);
-
-        projectModel.buildsystems().builds().forEach(build -> {
-//            build.updates().
-        });
-
-        throw new UnsupportedOperationException();
-
-
-    }
-}

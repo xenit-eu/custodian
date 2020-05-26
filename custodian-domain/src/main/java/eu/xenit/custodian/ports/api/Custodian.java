@@ -11,7 +11,7 @@ public interface Custodian {
 
     // we probably want to expose a simplified ProjectModel (especially the Build interface)
     ProjectModel analyzeProjectModel(ClonedRepositoryHandle clonedRepositoryHandle);
-    LogicalChangeSet getChanges(ClonedRepositorySourceMetadata metadata);
+    LogicalChangeSet getChanges(ProjectModel projectModel);
 
 
     //    createPullRequest(ClonedRepositoryHandle clonedRepositoryHandle);

@@ -1,15 +1,12 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.domain.buildsystem.ArtifactSpecification;
-import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-public interface GradleArtifactSpecification extends ArtifactSpecification {
+public interface GradleArtifactSpecification {
 
-    GroupArtifactModuleIdentifier getModuleId();
-
+    GradleModuleIdentifier getModuleId();
     GradleVersionSpecification getVersionSpec();
 
     /**
@@ -25,13 +22,13 @@ public interface GradleArtifactSpecification extends ArtifactSpecification {
 
     String getClassifier();
 
-    static GradleArtifactSpecification from(GroupArtifactModuleIdentifier moduleId,
+    static GradleArtifactSpecification from(GradleModuleIdentifier moduleId,
             GradleVersionSpecification version) {
         return new DefaultGradleArtifactSpecification(moduleId, version, null, null, null, null);
     }
 
     static GradleArtifactSpecification from(String group, String name, String version) {
-        return from(GroupArtifactModuleIdentifier.from(group, name), GradleVersionSpecification.from(version));
+        return from(GradleModuleIdentifier.from(group, name), GradleVersionSpecification.from(version));
     }
 
 
@@ -52,7 +49,7 @@ public interface GradleArtifactSpecification extends ArtifactSpecification {
     @AllArgsConstructor
     class GradleArtifactSpecificationCustomizer {
 
-        private final GroupArtifactModuleIdentifier moduleId;
+        private final GradleModuleIdentifier moduleId;
         private final GradleVersionSpecification versionSpec;
 
         private String name;

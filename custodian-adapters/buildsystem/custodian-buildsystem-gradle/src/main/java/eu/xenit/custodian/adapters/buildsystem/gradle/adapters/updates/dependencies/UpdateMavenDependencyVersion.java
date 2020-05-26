@@ -42,7 +42,7 @@ public class UpdateMavenDependencyVersion implements DependencyUpdatePort {
                 .map(artifact -> ResolverArtifact.from(artifact.getClassifier(), artifact.getExtension()))
                 .collect(Collectors.toSet());
 
-        var repositories = project.getRepositories().builds()
+        var repositories = project.getRepositories().items()
                 .map(repo -> ResolverMavenRepository.from(repo.getId(), repo.getUrl()))
                 .collect(Collectors.toList());
 

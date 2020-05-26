@@ -30,11 +30,6 @@ public class GradleBuild implements Build {
     }
 
     @Override
-    public String name() {
-        return this.getRootProject().getName();
-    }
-
-    @Override
     public BuildModifier modify() {
         return new GradleBuildModifier();
     }

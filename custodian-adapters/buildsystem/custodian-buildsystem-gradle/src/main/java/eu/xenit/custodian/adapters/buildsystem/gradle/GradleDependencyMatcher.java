@@ -3,8 +3,8 @@ package eu.xenit.custodian.adapters.buildsystem.gradle;
 import static eu.xenit.custodian.adapters.buildsystem.gradle.GradleDependencyMatcher.Util.doesNotMatch;
 
 import eu.xenit.custodian.adapters.buildsystem.gradle.notation.GradleArtifactStringNotationParser;
-import eu.xenit.custodian.domain.buildsystem.Dependency;
-import eu.xenit.custodian.domain.buildsystem.DependencyMatcher;
+import eu.xenit.custodian.ports.spi.buildsystem.Dependency;
+import eu.xenit.custodian.ports.spi.buildsystem.DependencyMatcher;
 import lombok.RequiredArgsConstructor;
 
 public interface GradleDependencyMatcher extends DependencyMatcher<GradleDependency> {

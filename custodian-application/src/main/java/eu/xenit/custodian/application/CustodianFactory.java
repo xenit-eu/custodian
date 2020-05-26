@@ -1,11 +1,10 @@
 package eu.xenit.custodian.application;
 
 import eu.xenit.custodian.ports.api.Custodian;
+import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPort;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPortFactory;
 import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
 import eu.xenit.custodian.ports.spi.channel.UpdateChannelFactory;
-import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPort;
-import eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzerFactory;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandlerFactory;
 import java.util.Collections;

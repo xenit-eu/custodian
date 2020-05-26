@@ -1,6 +1,9 @@
 package eu.xenit.custodian.domain.buildsystem;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import eu.xenit.custodian.ports.spi.buildsystem.Project;
+import eu.xenit.custodian.ports.spi.buildsystem.ProjectContainer;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.assertj.core.api.AbstractAssert;
@@ -32,6 +35,11 @@ public class ProjectAssert<SELF extends ProjectAssert<SELF,ACTUAL>, ACTUAL exten
 
     public ProjectAssert<SELF,ACTUAL> hasParent(Consumer<Optional<? extends Project>> callback) {
         callback.accept(this.actual.getParent());
+        return myself;
+    }
+
+    public ProjectAssert<SELF,ACTUAL> hasName(String custodian) {
+        assertThat(this.actual.getName()).isEqualTo(custodian);
         return myself;
     }
 

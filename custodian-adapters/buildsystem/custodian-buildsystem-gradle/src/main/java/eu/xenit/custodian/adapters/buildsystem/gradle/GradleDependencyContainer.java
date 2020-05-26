@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.domain.buildsystem.DependencyContainer;
-import eu.xenit.custodian.domain.buildsystem.DependencyMatcher;
+import eu.xenit.custodian.ports.spi.buildsystem.DependencyContainer;
+import eu.xenit.custodian.ports.spi.buildsystem.DependencyMatcher;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

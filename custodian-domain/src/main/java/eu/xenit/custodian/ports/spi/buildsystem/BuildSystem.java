@@ -57,8 +57,6 @@ public interface BuildSystem {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(
                         "Unrecognized build system id '" + id + "' and dialect '" + dialect + "'"));
-
-//        ServiceLoader.load(BuildSystemFactory.class)
     }
 
 }

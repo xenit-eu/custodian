@@ -1,5 +1,7 @@
 package eu.xenit.custodian.domain.buildsystem;
 
+import eu.xenit.custodian.ports.spi.buildsystem.Dependency;
+import eu.xenit.custodian.ports.spi.buildsystem.DependencyContainer;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.assertj.core.api.AbstractAssert;

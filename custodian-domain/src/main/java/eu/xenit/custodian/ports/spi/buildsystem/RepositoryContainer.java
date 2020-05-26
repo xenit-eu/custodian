@@ -1,6 +1,6 @@
-package eu.xenit.custodian.domain.buildsystem;
+package eu.xenit.custodian.ports.spi.buildsystem;
 
-import eu.xenit.custodian.ports.spi.buildsystem.Repository;
+import eu.xenit.custodian.domain.buildsystem.BuildItemContainer;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Objects;

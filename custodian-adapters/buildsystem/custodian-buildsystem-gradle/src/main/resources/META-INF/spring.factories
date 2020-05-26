@@ -1,8 +1,0 @@
-eu.xenit.custodian.ports.spi.metadata.ProjectMetadataAnalyzerFactory=\
-eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystemAdaptorFactory
-
-eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPortFactory=\
-eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystemAdaptorFactory
-
-eu.xenit.custodian.ports.spi.buildsystem.BuildSystemFactory=\
-eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystemFactory

@@ -1,9 +1,9 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.domain.buildsystem.ModuleDependency;
 import eu.xenit.custodian.domain.usecases.changes.Patch;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildModification;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildModifier;
+import eu.xenit.custodian.ports.spi.buildsystem.Dependency;
 import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import eu.xenit.custodian.ports.spi.buildsystem.ProjectModuleDependencyModifier;
 import eu.xenit.custodian.util.Arguments;
@@ -24,7 +24,7 @@ public class GradleBuildModifier implements BuildModifier {
     }
 
     @Override
-    public BuildModification updateDependency(Project project, ModuleDependency dependency,
+    public BuildModification updateDependency(Project project, Dependency dependency,
             Consumer<ProjectModuleDependencyModifier> callback) {
 
         GradleProjectModuleDependencyModifier modifier = new GradleProjectModuleDependencyModifier(

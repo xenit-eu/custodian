@@ -1,5 +1,6 @@
 package eu.xenit.custodian.domain.changes;
 
+import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import eu.xenit.custodian.domain.usecases.changes.LogicalChange;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
 import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
@@ -17,9 +18,9 @@ public class CompositeUpdateChannel implements UpdateChannel {
     }
 
     @Override
-    public Collection<LogicalChange> getChanges(ClonedRepositorySourceMetadata metadata) {
+    public Collection<LogicalChange> getChanges(ProjectModel projectModel) {
         return channels.stream()
-                .flatMap(channel -> channel.getChanges(metadata).stream())
+                .flatMap(channel -> channel.getChanges(projectModel).stream())
                 .collect(Collectors.toList());
     }
 }

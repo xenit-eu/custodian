@@ -5,7 +5,6 @@ import eu.xenit.custodian.adapters.buildsystem.gradle.api.RemoteRepository;
 import eu.xenit.custodian.adapters.buildsystem.gradle.spi.sentinel.dto.Dependency;
 import eu.xenit.custodian.adapters.buildsystem.gradle.spi.sentinel.dto.Report;
 import eu.xenit.custodian.adapters.buildsystem.gradle.spi.sentinel.dto.RepositoryDto;
-import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -111,7 +110,7 @@ public class SentinelReportsToGradleBuildConverter {
         log.warn("TODO - NOT IMPLEMENTED - dropped repo information, resolution state, resolved version, .... !!!");
 
         return GradleModuleDependency.from(configurationName,
-                GroupArtifactModuleIdentifier.from(d.getGroup(), d.getArtifact()),
+                GradleModuleIdentifier.from(d.getGroup(), d.getArtifact()),
                 GradleVersionSpecification.from(d.getVersion()),
                 module -> {
                     // TODO what if a module defines multipe artifacts ?!

@@ -1,6 +1,9 @@
 package eu.xenit.custodian.domain.metadata;
 
+import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuild;
+import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystem;
 import eu.xenit.custodian.domain.buildsystem.BuildAssert;
+import eu.xenit.custodian.domain.buildsystem.GradleBuildAssert;
 import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import eu.xenit.custodian.ports.spi.buildsystem.Build;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
@@ -54,23 +57,9 @@ public class ProjectModelAssert extends
 
     }
 
-    public ProjectModelAssert hasBuildSystem(String id) {
-        return this.hasBuildSystem(id, build -> {
+    public ProjectModelAssert assertGradleBuild(Consumer<GradleBuildAssert> callback) {
+        return this.hasBuildSystem(GradleBuildSystem.ID, GradleBuild.class, gradleBuild -> {
+            callback.accept(new GradleBuildAssert(gradleBuild));
         });
-    }
-
-    public ProjectModelAssert hasBuildSystem(String id, Consumer<BuildAssert> callback) {
-        Objects.requireNonNull(id, "Argument 'id' can not be null");
-
-        Build build = this.actual.buildsystems().get(id);
-
-        if (Objects.isNull(build)) {
-            failWithMessage("Expected project to contain build system <%s> but was: <%s>", id,
-                    this.actual.buildsystems().ids().collect(Collectors.joining(", ")));
-        }
-
-        callback.accept(new BuildAssert(build));
-
-        return this;
     }
 }

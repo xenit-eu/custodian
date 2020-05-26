@@ -1,7 +1,5 @@
 package eu.xenit.custodian.ports.spi.buildsystem;
 
-import eu.xenit.custodian.domain.buildsystem.DependencyContainer;
-import eu.xenit.custodian.domain.buildsystem.ProjectContainer;
 import java.util.Optional;
 
 public interface Project {

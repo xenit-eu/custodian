@@ -1,6 +1,6 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.domain.buildsystem.Dependency;
+import eu.xenit.custodian.ports.spi.buildsystem.Dependency;
 
 public interface GradleDependency extends Dependency {
 

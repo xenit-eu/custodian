@@ -15,7 +15,7 @@ public class GradleBuildAssert extends BuildAssert<GradleBuildAssert, GradleBuil
     }
 
     @Override
-    public GradleProjectAssert getRootProject() {
+    public GradleProjectAssert assertRootProject() {
         return new GradleProjectAssert(this.actual.getRootProject());
     }
 
@@ -24,8 +24,4 @@ public class GradleBuildAssert extends BuildAssert<GradleBuildAssert, GradleBuil
         return this.myself;
     }
 
-    public GradleBuildAssert hasName(String name) {
-        Assertions.assertThat(this.actual.name()).isEqualToIgnoringWhitespace(name);
-        return this.myself;
-    }
 }

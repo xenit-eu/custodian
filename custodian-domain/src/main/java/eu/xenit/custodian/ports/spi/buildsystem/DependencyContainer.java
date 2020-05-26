@@ -1,6 +1,5 @@
-package eu.xenit.custodian.domain.buildsystem;
+package eu.xenit.custodian.ports.spi.buildsystem;
 
-import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import java.util.stream.Stream;
 
 public interface DependencyContainer {

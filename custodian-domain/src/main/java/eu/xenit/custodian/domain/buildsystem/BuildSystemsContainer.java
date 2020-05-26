@@ -3,6 +3,7 @@ package eu.xenit.custodian.domain.buildsystem;
 import eu.xenit.custodian.domain.entities.buildsystem.BuildSystemsCollection;
 import eu.xenit.custodian.ports.spi.buildsystem.Build;
 import java.util.LinkedHashMap;
+import java.util.stream.Stream;
 
 public class BuildSystemsContainer extends BuildItemContainer<String, Build> implements BuildSystemsCollection {
 
@@ -18,4 +19,8 @@ public class BuildSystemsContainer extends BuildItemContainer<String, Build> imp
         add(build.buildsystem().id(), build);
     }
 
+    @Override
+    public Stream<Build> builds() {
+        return this.items();
+    }
 }

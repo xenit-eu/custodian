@@ -12,4 +12,5 @@ public class GradleProjectAssert extends ProjectAssert<GradleProjectAssert, Grad
         return new GradleProjectAssert(project);
     }
 
+
 }

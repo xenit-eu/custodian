@@ -1,6 +1,5 @@
 package eu.xenit.custodian.adapters.buildsystem.gradle;
 
-import eu.xenit.custodian.domain.buildsystem.GroupArtifactModuleIdentifier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class DefaultGradleArtifactSpecification implements GradleArtifactSpecification {
 
-    private final GroupArtifactModuleIdentifier moduleId;
+    private final GradleModuleIdentifier moduleId;
     private final GradleVersionSpecification versionSpec;
     private final String name;
     private final String type;
