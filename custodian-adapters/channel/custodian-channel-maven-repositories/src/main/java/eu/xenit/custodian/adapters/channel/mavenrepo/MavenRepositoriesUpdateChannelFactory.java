@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.channel.mavenrepo;
 
-import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
-import eu.xenit.custodian.ports.spi.channel.UpdateChannelFactory;
+import eu.xenit.custodian.ports.spi.updates.UpdateChannel;
+import eu.xenit.custodian.ports.spi.updates.UpdateChannelFactory;
 
 public class MavenRepositoriesUpdateChannelFactory implements UpdateChannelFactory {
 

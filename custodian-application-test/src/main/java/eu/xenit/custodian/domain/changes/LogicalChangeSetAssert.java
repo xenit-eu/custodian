@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import eu.xenit.custodian.ports.spi.buildsystem.Dependency;
 import eu.xenit.custodian.ports.spi.buildsystem.DependencyMatcher;
-import eu.xenit.custodian.domain.usecases.changes.DependencyVersionUpdate;
-import eu.xenit.custodian.domain.usecases.changes.LogicalChangeSet;
+import eu.xenit.custodian.domain.usecases.updates.DependencyVersionUpdate;
+import eu.xenit.custodian.domain.usecases.updates.LogicalChangeSet;
 import java.util.Optional;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;

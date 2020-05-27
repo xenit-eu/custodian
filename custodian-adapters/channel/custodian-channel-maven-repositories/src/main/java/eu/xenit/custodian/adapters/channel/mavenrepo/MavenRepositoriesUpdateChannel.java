@@ -4,10 +4,10 @@ import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationD
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenArtifactSpecificationProvider;
 import eu.xenit.custodian.adapters.buildsystem.maven.MavenModuleVersion;
 import eu.xenit.custodian.ports.spi.buildsystem.Build;
-import eu.xenit.custodian.domain.usecases.changes.LogicalChange;
+import eu.xenit.custodian.domain.usecases.updates.LogicalChange;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
 import eu.xenit.custodian.ports.spi.buildsystem.Project;
-import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
+import eu.xenit.custodian.ports.spi.updates.UpdateChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

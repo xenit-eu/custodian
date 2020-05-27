@@ -1,6 +1,6 @@
 package eu.xenit.custodian.ports.spi.buildsystem;
 
-import eu.xenit.custodian.domain.usecases.changes.Patch;
+import eu.xenit.custodian.domain.usecases.updates.Patch;
 import java.util.stream.Stream;
 
 public interface BuildModification {

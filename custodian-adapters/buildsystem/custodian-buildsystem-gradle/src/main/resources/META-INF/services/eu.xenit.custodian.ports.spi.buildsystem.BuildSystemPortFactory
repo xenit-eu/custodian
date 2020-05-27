@@ -1,1 +1,1 @@
-eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystemAdaptorFactory
+eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuildSystemAdaptorFactory

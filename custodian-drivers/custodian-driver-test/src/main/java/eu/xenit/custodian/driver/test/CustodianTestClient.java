@@ -1,7 +1,7 @@
 package eu.xenit.custodian.driver.test;
 
 import eu.xenit.custodian.ports.api.Custodian;
-import eu.xenit.custodian.domain.usecases.changes.LogicalChangeSet;
+import eu.xenit.custodian.domain.usecases.updates.LogicalChangeSet;
 import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
 import eu.xenit.custodian.ports.api.ClonedRepositoryHandle;

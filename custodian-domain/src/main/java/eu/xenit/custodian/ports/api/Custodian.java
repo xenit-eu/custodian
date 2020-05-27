@@ -1,6 +1,6 @@
 package eu.xenit.custodian.ports.api;
 
-import eu.xenit.custodian.domain.usecases.changes.LogicalChangeSet;
+import eu.xenit.custodian.domain.usecases.updates.LogicalChangeSet;
 import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import java.io.IOException;
 

@@ -1,7 +1,7 @@
 package eu.xenit.custodian.domain.buildsystem;
 
-import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuild;
-import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystem;
+import eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuild;
+import eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuildSystem;
 import org.assertj.core.api.Assertions;
 
 public class GradleBuildAssert extends BuildAssert<GradleBuildAssert, GradleBuild> {

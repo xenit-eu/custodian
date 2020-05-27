@@ -3,8 +3,8 @@ package eu.xenit.custodian.application;
 import eu.xenit.custodian.ports.api.Custodian;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPort;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPortFactory;
-import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
-import eu.xenit.custodian.ports.spi.channel.UpdateChannelFactory;
+import eu.xenit.custodian.ports.spi.updates.UpdatePort;
+import eu.xenit.custodian.ports.spi.updates.UpdateChannelFactory;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandlerFactory;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class CustodianFactory {
 
     private final Set<SourceControlHandler> scm;
 
-    private final Set<UpdateChannel> channels;
+    private final Set<UpdatePort> channels;
 
     private CustodianFactory(FactorySettings settings) {
         this.scm = Collections.unmodifiableSet(settings.scm);
@@ -92,9 +92,9 @@ public class CustodianFactory {
     /**
      * Get registered update channels
      *
-     * @return the registered {@link UpdateChannel}s
+     * @return the registered {@link UpdatePort}s
      */
-    Set<UpdateChannel> getUpdateChannels() {
+    Set<UpdatePort> getUpdateChannels() {
         return channels;
     }
 
@@ -106,7 +106,7 @@ public class CustodianFactory {
         private final Set<BuildSystemPort> buildSystems = new LinkedHashSet<>();
 
         private final Set<SourceControlHandler> scm = new LinkedHashSet<>();
-        private final Set<UpdateChannel> updateChannels = new LinkedHashSet<>();
+        private final Set<UpdatePort> updateChannels = new LinkedHashSet<>();
 
         private FactorySettings() {
 
@@ -170,7 +170,7 @@ public class CustodianFactory {
             return this;
         }
 
-        public FactorySettings withUpdateChannel(UpdateChannel updateChannel) {
+        public FactorySettings withUpdateChannel(UpdatePort updateChannel) {
             Objects.requireNonNull(updateChannel, "updateChannel can not be null");
             this.updateChannels.add(updateChannel);
             return this;

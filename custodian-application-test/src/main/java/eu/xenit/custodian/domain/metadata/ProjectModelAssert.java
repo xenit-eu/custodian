@@ -1,16 +1,13 @@
 package eu.xenit.custodian.domain.metadata;
 
-import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuild;
-import eu.xenit.custodian.adapters.buildsystem.gradle.GradleBuildSystem;
-import eu.xenit.custodian.domain.buildsystem.BuildAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuild;
+import eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuildSystem;
 import eu.xenit.custodian.domain.buildsystem.GradleBuildAssert;
 import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import eu.xenit.custodian.ports.spi.buildsystem.Build;
-import eu.xenit.custodian.ports.api.ClonedRepositorySourceMetadata;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystem;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 

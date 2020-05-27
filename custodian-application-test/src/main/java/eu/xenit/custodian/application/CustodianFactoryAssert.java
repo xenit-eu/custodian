@@ -1,7 +1,7 @@
 package eu.xenit.custodian.application;
 
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemPort;
-import eu.xenit.custodian.ports.spi.channel.UpdateChannel;
+import eu.xenit.custodian.ports.spi.updates.UpdatePort;
 import eu.xenit.custodian.ports.spi.scm.SourceControlHandler;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
@@ -40,7 +40,7 @@ public class CustodianFactoryAssert extends AbstractAssert<CustodianFactoryAsser
         return myself;
     }
 
-    public CustodianFactoryAssert hasUpdateChannel(Class<? extends UpdateChannel> updateChannel) {
+    public CustodianFactoryAssert hasUpdateChannel(Class<? extends UpdatePort> updateChannel) {
         Assertions.assertThat(this.actual.getUpdateChannels())
                 .hasAtLeastOneElementOfType(updateChannel);
 

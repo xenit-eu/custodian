@@ -1,6 +1,6 @@
 package eu.xenit.custodian.domain.buildsystem;
 
-import eu.xenit.custodian.adapters.buildsystem.gradle.GradleProject;
+import eu.xenit.custodian.adapters.gradle.buildsystem.GradleProject;
 
 public class GradleProjectAssert extends ProjectAssert<GradleProjectAssert, GradleProject> {
 

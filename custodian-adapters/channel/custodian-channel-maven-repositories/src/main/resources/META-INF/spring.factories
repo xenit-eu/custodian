@@ -1,2 +1,2 @@
-eu.xenit.custodian.ports.spi.channel.UpdateChannelFactory=\
+eu.xenit.custodian.ports.spi.updates.UpdateChannelFactory=\
 eu.xenit.custodian.adapters.channel.mavenrepo.MavenRepositoriesUpdateChannelFactory
