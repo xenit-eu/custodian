@@ -1,5 +1,14 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem;
 
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.MavenResolverStub;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.aether.RepositorySystemStub;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.stubs.MinorUpdateResolverStub;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.MavenResolverApi;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.ResolverArtifactSpecification;
+import java.util.stream.Stream;
+import org.gradle.api.artifacts.ModuleIdentifier;
+
 public interface Fixtures {
 
     interface Modules {
@@ -15,12 +24,55 @@ public interface Fixtures {
 
     interface Dependency {
 
+        static GradleModuleDependency apacheHttpClient(String version) {
+            return GradleModuleDependency.implementation(Modules.apacheHttpClient(), version);
+        }
+
         static GradleModuleDependency apacheHttpClient() {
-            return GradleModuleDependency.implementation(Modules.apacheHttpClient(), "4.5.10");
+            return apacheHttpClient("4.5.10");
         }
 
         static GradleModuleDependency junit() {
             return GradleModuleDependency.implementation(Modules.junit(), "4.12");
+        }
+    }
+
+    interface MavenResolver {
+
+        static MavenResolverApi emptyRepository() {
+            return new MavenResolverStub(ResolverMavenRepository.mavenCentral(), Stream.empty());
+        }
+
+        static MavenResolverApi minorUpgrade() {
+            return new eu.xenit.custodian.adapters.buildsystem.maven.resolver.MavenResolver(new MinorUpdateResolverStub());
+        }
+
+        static MavenResolverApi mavenCentralStub() {
+            return new MavenResolverStub(
+                    ResolverMavenRepository.mavenCentral(),
+                    Stream.of("4.5.0", "4.5.1", "4.5.2", "4.5.3", "4.5.4", "4.6.0", "4.6.1").map(v ->  artifact(Dependency.apacheHttpClient(v)))
+            );
+        }
+
+        static ResolverArtifactSpecification artifact(GradleModuleDependency dependency) {
+            return dependency
+
+                    // First see if there are (optional) artifacts specified
+                    .getArtifacts().stream()
+                    .map(spec -> ResolverArtifactSpecification.from(
+                            spec.getModuleId().getGroup(),
+                            spec.getModuleId().getName(),
+                            spec.getVersionSpec().getValue(),
+                            spec.getClassifier(),
+                            spec.getExtension()))
+                    .findFirst()
+
+                    // else use module-id + version + default classifier/extension
+                    .orElse(ResolverArtifactSpecification.from(
+                            dependency.getGroup(),
+                            dependency.getId(),
+                            dependency.getVersionSpec().getValue()));
+
         }
     }
 

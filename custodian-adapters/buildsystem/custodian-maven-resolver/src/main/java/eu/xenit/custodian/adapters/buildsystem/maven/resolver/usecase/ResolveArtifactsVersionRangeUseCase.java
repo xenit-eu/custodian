@@ -1,11 +1,10 @@
 package eu.xenit.custodian.adapters.buildsystem.maven.resolver.usecase;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArtifact;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.GroupArtifactVersionSpecification;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverGroupArtifact;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverMavenRepository;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverVersionSpecification;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.VersionRangeQueryResult;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.VersionRangeQueryResult;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.MavenResolverPort;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.ResolverArtifactSpecification;
 import java.util.Collection;

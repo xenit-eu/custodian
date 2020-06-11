@@ -3,9 +3,8 @@ package eu.xenit.custodian.adapters.buildsystem.maven.resolver.usecase;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.aether.MavenResolverAdapter;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.GroupArtifactVersionSpecification;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverGroupArtifact;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverMavenRepository;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverVersionSpecification;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.usecase.ResolveArtifactsVersionRangeUseCase.ResolveArtifactsCommand;
 import java.util.Arrays;

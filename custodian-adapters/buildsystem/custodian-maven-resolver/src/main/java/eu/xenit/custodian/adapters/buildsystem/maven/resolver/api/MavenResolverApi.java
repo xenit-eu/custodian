@@ -3,9 +3,7 @@ package eu.xenit.custodian.adapters.buildsystem.maven.resolver.api;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArtifact;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.GroupArtifactVersionSpecification;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverGroupArtifact;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverMavenRepository;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverVersionSpecification;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.VersionRangeQueryResult;
 import java.util.Collection;
 import java.util.Set;
 

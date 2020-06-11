@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UpdateDependencies implements GradleBuildUpdatePort {
 
     private final Collection<DependencyUpdatePort> updates;
-
+    
     public UpdateDependencies(DependencyUpdatePort ... updates) {
         this(List.of(updates));
     }

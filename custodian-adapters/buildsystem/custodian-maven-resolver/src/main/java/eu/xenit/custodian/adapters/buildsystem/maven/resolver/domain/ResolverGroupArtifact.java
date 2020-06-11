@@ -1,6 +1,5 @@
 package eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.GroupArtifactVersionSpecification.DefaultGroupArtifactVersionSpecification;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

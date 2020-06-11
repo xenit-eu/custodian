@@ -2,7 +2,6 @@ package eu.xenit.custodian.adapters.gradle.buildsystem;
 
 import eu.xenit.custodian.util.Arguments;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,10 +26,6 @@ public class DefaultGradleProject implements GradleProject {
 
     @Getter @Setter
     private Path buildFile;
-
-    public DefaultGradleProject(String name) {
-        this(Paths.get("."), name, null);
-    }
 
     public DefaultGradleProject(Path projectDir, String name, GradleProject parent) {
         Arguments.notNull(projectDir, "projectDir");

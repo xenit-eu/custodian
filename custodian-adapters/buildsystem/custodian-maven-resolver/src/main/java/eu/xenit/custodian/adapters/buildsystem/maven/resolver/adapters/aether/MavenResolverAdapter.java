@@ -1,8 +1,8 @@
 package eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.aether;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverMavenRepository;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.ResolverArtifactSpecification;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.VersionRangeQueryResult;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.VersionRangeQueryResult;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.MavenResolverPort;
 import java.util.Collection;
 import java.util.List;

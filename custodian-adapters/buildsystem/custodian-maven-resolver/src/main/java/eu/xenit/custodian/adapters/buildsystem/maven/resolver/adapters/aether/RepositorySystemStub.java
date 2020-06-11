@@ -1,14 +1,16 @@
 package eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.aether;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.stub.MavenRepositoryStub;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.MavenRepositoryStub;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArtifactVersion;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverMavenRepository;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.ResolverArtifactSpecification;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.SyncContext;
@@ -52,8 +54,16 @@ public class RepositorySystemStub implements RepositorySystem {
 
     private final Collection<MavenRepositoryStub> repositories;
 
+    public RepositorySystemStub(ResolverMavenRepository repo, Stream<ResolverArtifactSpecification> artifacts) {
+        this(new MavenRepositoryStub(repo, artifacts));
+    }
+
     public RepositorySystemStub(MavenRepositoryStub... repositories) {
-        this.repositories = List.of(repositories);
+        this(Stream.of(repositories));
+    }
+
+    public RepositorySystemStub(Stream<MavenRepositoryStub> repositories) {
+        this.repositories = repositories.collect(Collectors.toList());
     }
 
     @Override
@@ -66,6 +76,10 @@ public class RepositorySystemStub implements RepositorySystem {
 
         // resolve from each repository and collect in the versionIndex
         this.repositories.stream()
+                .peek(repo -> {
+                    // resolving artifact from 'repo'
+                    // QUESTION do we need to filter the repositories from the request ?
+                })
                 .map(repo -> {
                     var versions = repo.resolveVersionRange(spec);
                     return versions.collect(Collectors.toMap(v -> v, v -> repo));

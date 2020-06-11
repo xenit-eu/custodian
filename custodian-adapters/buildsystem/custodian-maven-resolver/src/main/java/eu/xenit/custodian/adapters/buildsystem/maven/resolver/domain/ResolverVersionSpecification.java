@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.Restriction;
 import org.apache.maven.artifact.versioning.VersionRange;
@@ -185,7 +186,7 @@ class DefaultResolverVersionSpecification implements ResolverVersionSpecificatio
         }
 
         // Spec contains an explicit version
-        return Optional.of(new DefaultResolvedVersion(recommendedVersion));
+        return Optional.of(new DefaultResolverArtifactVersion(recommendedVersion.toString()));
     }
 
     @Data
@@ -198,9 +199,9 @@ class DefaultResolverVersionSpecification implements ResolverVersionSpecificatio
         private final boolean upperBoundInclusive;
 
         DefaultVersionBounds(Restriction r) {
-            this.lowerBound = r.getLowerBound() == null ? null : new DefaultResolvedVersion(r.getLowerBound());
+            this.lowerBound = r.getLowerBound() == null ? null : new DefaultResolverArtifactVersion(r.getLowerBound().toString());
             this.lowerBoundInclusive = r.isLowerBoundInclusive();
-            this.upperBound = r.getUpperBound() == null ? null : new DefaultResolvedVersion(r.getUpperBound());
+            this.upperBound = r.getUpperBound() == null ? null : new DefaultResolverArtifactVersion(r.getUpperBound().toString());
             this.upperBoundInclusive = r.isUpperBoundInclusive();
         }
 

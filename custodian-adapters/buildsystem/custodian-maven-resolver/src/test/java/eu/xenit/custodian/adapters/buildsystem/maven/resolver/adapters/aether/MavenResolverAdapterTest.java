@@ -6,10 +6,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.stub.MavenRepositoryStub;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.VersionRangeQueryResult;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArtifactVersion;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverMavenRepository;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.VersionRangeQueryResult;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.ResolverArtifactSpecification;
 import java.util.Collections;
 import java.util.stream.Stream;
@@ -65,12 +64,10 @@ class MavenResolverAdapterTest {
     @Test
     public void testStub() {
         var apacheClient = ResolverArtifactSpecification.from("org.apache.httpcomponents", "httpclient", "4.5.0");
-        MavenRepositoryStub repoStub = new MavenRepositoryStub(ResolverMavenRepository.mavenCentral(),
-                Stream.of("4.5.0", "4.5.1", "4.5.2", "4.5.3", "4.5.4", "4.6.0", "4.6.1")
-                        .map(v -> apacheClient.customize(c -> c.setVersion(v)))
+        RepositorySystemStub repositorySystem = new RepositorySystemStub(
+                ResolverMavenRepository.mavenCentral(),
+                Stream.of("4.5.0", "4.5.1", "4.5.2", "4.5.3", "4.5.4", "4.6.0", "4.6.1").map(v -> apacheClient.customize(c -> c.setVersion(v)))
         );
-
-        RepositorySystemStub repositorySystem = new RepositorySystemStub(repoStub);
         MavenResolverAdapter mavenResolverAdapter = new MavenResolverAdapter(repositorySystem);
         VersionRangeQueryResult result = mavenResolverAdapter.resolveVersionRange(
                 Collections.singletonList(ResolverMavenRepository.mavenCentral()),

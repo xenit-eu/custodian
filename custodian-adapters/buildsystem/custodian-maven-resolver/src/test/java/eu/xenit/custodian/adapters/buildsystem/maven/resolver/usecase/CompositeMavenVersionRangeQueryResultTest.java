@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.DefaultVersionRangeQueryResult;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArtifactVersion;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverVersionSpecification;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.VersionRangeQueryResult;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.VersionRangeQueryResult;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 

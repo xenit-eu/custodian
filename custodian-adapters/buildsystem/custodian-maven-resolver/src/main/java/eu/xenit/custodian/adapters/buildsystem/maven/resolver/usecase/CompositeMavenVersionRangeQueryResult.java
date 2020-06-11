@@ -2,7 +2,7 @@ package eu.xenit.custodian.adapters.buildsystem.maven.resolver.usecase;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArtifactVersion;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverVersionSpecification;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.VersionRangeQueryResult;
+import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.VersionRangeQueryResult;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
