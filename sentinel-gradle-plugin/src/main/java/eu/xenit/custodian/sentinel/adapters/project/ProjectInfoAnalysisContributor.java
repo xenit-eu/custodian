@@ -16,7 +16,7 @@ public class ProjectInfoAnalysisContributor implements SentinelAnalysisContribut
     private final ReporterFormattingFactory<ProjectInformation> reporting;
 
     public ProjectInfoAnalysisContributor() {
-        this(new ProjectInfoAnalyzer());
+        this(new ProjectInfoAnalyzer(true));
     }
 
     public ProjectInfoAnalysisContributor(PartialAnalyzer<ProjectInformation> analyzer) {

@@ -39,7 +39,7 @@ public class MinorUpdateResolverStub implements MavenResolverPort {
 
         // bump the minor version
         var newVersion = ResolverArtifactVersion
-                .from(lowerBound.getMajorVersion() + "." + (lowerBound.getMinorVersion() + 1));
+                .from(lowerBound.getMajorVersion() + "." + (lowerBound.getMinorVersion() + 1) + ".0");
 
         if (!versionSpec.matches(newVersion)) {
             // the new version does not match the provided spec ?

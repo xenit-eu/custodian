@@ -18,6 +18,10 @@ include 'custodian-application-test'
 //include 'custodian-adapters:buildsystem:custodian-buildsystem-maven-model'
 
 include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle'
+include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle-test'
+include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle-sentinel-model'
+include 'custodian-adapters:buildsystem:custodian-buildsystem-gradle-sentinel-plugin'
+
 include 'custodian-adapters:buildsystem:custodian-maven-resolver'
 
 // deprecated

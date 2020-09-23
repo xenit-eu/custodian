@@ -1,8 +1,8 @@
 package eu.xenit.custodian.domain.metadata;
 
-import eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuild;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleBuild;
 import eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuildSystem;
-import eu.xenit.custodian.domain.buildsystem.GradleBuildAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model.GradleBuildAssert;
 import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import eu.xenit.custodian.ports.spi.buildsystem.Build;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystem;

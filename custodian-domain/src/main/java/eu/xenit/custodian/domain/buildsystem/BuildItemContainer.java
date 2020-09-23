@@ -59,7 +59,7 @@ public class BuildItemContainer<I, V> {
      * @param id the id of the item
      * @param item the item to register
      */
-    public void add(I id, V item) {
+    protected void add(I id, V item) {
         this.items.put(id, item);
     }
 
@@ -68,7 +68,7 @@ public class BuildItemContainer<I, V> {
      * @param id the id of the item to remove
      * @return {@code true} if such an item was registered, {@code false} otherwise
      */
-    public boolean remove(I id) {
+    protected boolean remove(I id) {
         return this.items.remove(id) != null;
     }
 

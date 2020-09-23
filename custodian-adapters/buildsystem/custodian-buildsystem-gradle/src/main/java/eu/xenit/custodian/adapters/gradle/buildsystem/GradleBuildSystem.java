@@ -16,7 +16,11 @@ package eu.xenit.custodian.adapters.gradle.buildsystem;
  * limitations under the License.
  */
 
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleBuild;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.builder.GradleBuilder;
+import eu.xenit.custodian.adapters.gradle.buildsystem.impl.builder.DefaultGradleBuilder;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystem;
+import java.nio.file.Path;
 
 /**
  * Gradle {@link BuildSystem}.
@@ -71,5 +75,9 @@ public final class GradleBuildSystem implements BuildSystem {
     @Override
     public String toString() {
         return id();
+    }
+
+    public GradleBuilder builder() {
+        return new DefaultGradleBuilder();
     }
 }

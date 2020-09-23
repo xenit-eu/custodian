@@ -16,7 +16,7 @@ public class BuildSystemsContainer extends BuildItemContainer<String, Build> imp
      * @param build the build to register
      */
     public void add(Build build) {
-        add(build.buildsystem().id(), build);
+        add(build.buildSystem().id(), build);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package eu.xenit.custodian.adapters.gradle.updates.impl.dependencies;
 
-import eu.xenit.custodian.adapters.gradle.buildsystem.GradleBuild;
-import eu.xenit.custodian.adapters.gradle.buildsystem.GradleModuleDependency;
-import eu.xenit.custodian.adapters.gradle.buildsystem.GradleProject;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleBuild;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleProject;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.MavenResolverApi;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.MavenVersionRange;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArtifact;
@@ -10,11 +10,11 @@ import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverArt
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverGroupArtifact;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.domain.ResolverVersionSpecification;
-import eu.xenit.custodian.ports.spi.buildsystem.BuildUpdateProposal;
+import eu.xenit.custodian.adapters.gradle.updates.usecases.ports.GradleBuildUpdateProposal;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class UpdateMavenDependencyVersion implements DependencyUpdatePort {
+public class UpdateMavenDependencyVersion implements GradleDependencyUpdatePort {
 
     private final MavenResolverApi mavenResolver;
 
@@ -23,7 +23,7 @@ public class UpdateMavenDependencyVersion implements DependencyUpdatePort {
     }
 
     @Override
-    public Optional<BuildUpdateProposal> apply(GradleBuild build,
+    public Optional<GradleBuildUpdateProposal> apply(GradleBuild build,
             GradleProject project, GradleModuleDependency dependency) {
 
         // convert gradle-artifact-specs to maven-resolver-artifact-specs
@@ -60,9 +60,7 @@ public class UpdateMavenDependencyVersion implements DependencyUpdatePort {
                 .resolveVersionRange(coords, minorVersionRange, artifacts, repositories);
 
         return versionRangeQueryResult.getHighestVersion()
-                .map(newVersion -> {
-                    return new DependencyVersionUpdate(build, project, dependency, newVersion);
-                });
+                .map(newVersion -> new DependencyVersionUpdateProposal(build, project, dependency, newVersion));
 
     }
 }

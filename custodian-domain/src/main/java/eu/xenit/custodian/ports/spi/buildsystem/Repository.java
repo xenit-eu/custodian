@@ -4,4 +4,6 @@ public interface Repository {
 
     String getId();
     String getUrl();
+
+    String getName();
 }

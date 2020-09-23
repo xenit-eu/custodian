@@ -23,6 +23,7 @@ public class DependenciesAnalyzer implements PartialAnalyzer<DependenciesContain
     private static final Logger logger = Logging.getLogger(DependenciesAnalyzer.class);
 
     public DependenciesContainer analyze(Project project) {
+
         DependenciesContainer result = new DependenciesContainer();
 
         project.getConfigurations()

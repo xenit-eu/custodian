@@ -1,13 +1,14 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem;
 
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.MavenResolverStub;
-import eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.aether.RepositorySystemStub;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.adapters.stubs.MinorUpdateResolverStub;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.MavenResolverApi;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.api.ResolverMavenRepository;
 import eu.xenit.custodian.adapters.buildsystem.maven.resolver.spi.ResolverArtifactSpecification;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleIdentifier;
+import eu.xenit.custodian.adapters.gradle.buildsystem.impl.DefaultGradleModuleDependency;
 import java.util.stream.Stream;
-import org.gradle.api.artifacts.ModuleIdentifier;
 
 public interface Fixtures {
 
@@ -25,7 +26,7 @@ public interface Fixtures {
     interface Dependency {
 
         static GradleModuleDependency apacheHttpClient(String version) {
-            return GradleModuleDependency.implementation(Modules.apacheHttpClient(), version);
+            return DefaultGradleModuleDependency.implementation(Modules.apacheHttpClient(), version);
         }
 
         static GradleModuleDependency apacheHttpClient() {
@@ -33,7 +34,7 @@ public interface Fixtures {
         }
 
         static GradleModuleDependency junit() {
-            return GradleModuleDependency.implementation(Modules.junit(), "4.12");
+            return DefaultGradleModuleDependency.implementation(Modules.junit(), "4.12");
         }
     }
 
@@ -43,7 +44,7 @@ public interface Fixtures {
             return new MavenResolverStub(ResolverMavenRepository.mavenCentral(), Stream.empty());
         }
 
-        static MavenResolverApi minorUpgrade() {
+        static MavenResolverApi minorBumpFixture() {
             return new eu.xenit.custodian.adapters.buildsystem.maven.resolver.MavenResolver(new MinorUpdateResolverStub());
         }
 

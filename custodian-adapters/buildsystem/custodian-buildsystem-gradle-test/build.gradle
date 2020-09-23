@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+//    implementation 'io.spring.initializr:initializr-generator:0.8.0.RELEASE'
+
+    implementation project(':custodian-domain')
+//    implementation project(':custodian-application-test')
+    implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle')
+
+    implementation "org.assertj:assertj-core:${assertjVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
+//    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}

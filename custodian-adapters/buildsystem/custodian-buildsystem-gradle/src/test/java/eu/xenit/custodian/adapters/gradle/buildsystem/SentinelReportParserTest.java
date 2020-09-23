@@ -2,7 +2,9 @@ package eu.xenit.custodian.adapters.gradle.buildsystem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.adapters.gradle.buildsystem.spi.sentinel.dto.Report;
+import eu.xenit.custodian.adapters.gradle.buildsystem.infrastructure.model.sentinel.JacksonSentinelReportParser;
+import eu.xenit.custodian.adapters.gradle.buildsystem.infrastructure.model.sentinel.SentinelGradleBuildReaderAdapter;
+import eu.xenit.custodian.adapters.gradle.buildsystem.infrastructure.model.sentinel.dto.Report;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +18,7 @@ public class SentinelReportParserTest {
     private JacksonSentinelReportParser parser = new JacksonSentinelReportParser();
 
     private InputStream getSampleReportInputStream() {
-        String path = "sample/" + GradleBuildSystemAdapter.SENTINEL_REPORT_OUTPUT;
+        String path = "sample/" + SentinelGradleBuildReaderAdapter.SENTINEL_REPORT_OUTPUT;
         return this.getClass().getClassLoader().getResourceAsStream(path);
     }
 

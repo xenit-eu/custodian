@@ -3,16 +3,23 @@ package eu.xenit.custodian.domain.usecases.updates;
 import eu.xenit.custodian.domain.usecases.UseCase;
 import eu.xenit.custodian.domain.usecases.analysis.ports.ProjectModel;
 import eu.xenit.custodian.domain.usecases.updates.GetProjectUpdateProposalsUseCase.GetUpdateProposalsCommand;
+import eu.xenit.custodian.domain.usecases.updates.GetProjectUpdateProposalsUseCase.GetUpdateProposalsResult;
 import lombok.Data;
+import lombok.Value;
 
-public interface GetProjectUpdateProposalsUseCase extends UseCase<GetUpdateProposalsCommand, LogicalChangeSet> {
+public interface GetProjectUpdateProposalsUseCase extends UseCase<GetUpdateProposalsCommand, GetUpdateProposalsResult> {
 
     @Override
-    LogicalChangeSet handle(GetUpdateProposalsCommand getUpdateProposalsCommand);
+    GetUpdateProposalsResult handle(GetUpdateProposalsCommand getUpdateProposalsCommand);
 
-    @Data
+    @Value
     class GetUpdateProposalsCommand {
-        private final ProjectModel projectModel;
+        final ProjectModel projectModel;
+    }
+
+    @Value
+    class GetUpdateProposalsResult {
+        LogicalChangeSet changeSet;
     }
 }
 

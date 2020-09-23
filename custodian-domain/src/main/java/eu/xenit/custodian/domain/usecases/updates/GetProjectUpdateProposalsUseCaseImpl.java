@@ -13,7 +13,7 @@ class GetProjectUpdateProposalsUseCaseImpl implements GetProjectUpdateProposalsU
     }
 
     @Override
-    public LogicalChangeSet handle(GetUpdateProposalsCommand command) {
+    public GetUpdateProposalsResult handle(GetUpdateProposalsCommand command) {
         ProjectModel projectModel = command.getProjectModel();
 
         var changes = this.updateChannels.stream().flatMap(channel -> {
@@ -21,6 +21,6 @@ class GetProjectUpdateProposalsUseCaseImpl implements GetProjectUpdateProposalsU
             return proposals.stream();
         });
 
-        return new DefaultLogicalChangeSet(changes);
+        return new GetUpdateProposalsResult(new DefaultLogicalChangeSet(changes));
     }
 }

@@ -1,0 +1,16 @@
+initscript {
+    repositories {
+//        maven {
+//            url new File('../repo').toURI().toURL()
+//        }
+        mavenLocal()
+//        mavenCentral()
+    }
+    dependencies {
+        classpath 'eu.xenit.custodian:custodian-buildsystem-gradle-sentinel-plugin:0.1.0-SNAPSHOT'
+    }
+}
+
+allprojects {
+    apply plugin: eu.xenit.custodian.gradle.sentinel.plugin.SentinelToolingApiModelPlugin
+}

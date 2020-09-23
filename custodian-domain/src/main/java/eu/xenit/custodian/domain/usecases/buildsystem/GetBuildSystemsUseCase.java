@@ -37,33 +37,3 @@ public interface GetBuildSystemsUseCase extends UseCase<GetBuildSystemsCommand, 
     }
 }
 
-@Slf4j
-class DefaultGetBuildSystemsUseCase implements GetBuildSystemsUseCase {
-
-    private final List<BuildSystemPort> buildSystemPorts;
-
-    DefaultGetBuildSystemsUseCase(List<BuildSystemPort> buildSystemPorts) {
-        Arguments.notNull(buildSystemPorts, "buildSystemPorts");
-        this.buildSystemPorts = List.copyOf(buildSystemPorts);
-    }
-
-    @Override
-    public Collection<Build> handle(GetBuildSystemsCommand command) {
-        return this.buildSystemPorts.stream()
-                .map(buildSystemPort -> {
-                    try {
-                        return buildSystemPort.getBuild(command.getLocation());
-                    } catch (BuildSystemException e) {
-                        BiConsumer<BuildSystem, BuildSystemException> callback = command.getExceptionCallback();
-                        if (callback != null) {
-                            callback.accept(buildSystemPort.id(), e);
-                        }
-
-                        return Optional.ofNullable((Build) null);
-                    }
-                })
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
-    }
-}

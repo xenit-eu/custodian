@@ -3,10 +3,10 @@ package eu.xenit.custodian.adapters.gradle.buildsystem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.adapters.gradle.buildsystem.notation.DependencyNotationConverter;
-import eu.xenit.custodian.adapters.gradle.buildsystem.notation.GradleDependencyNotationParserDelegate;
-import eu.xenit.custodian.adapters.gradle.buildsystem.notation.NotationParserBuilder;
-import eu.xenit.custodian.adapters.gradle.buildsystem.notation.StringNotationParser;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.notation.DependencyNotationConverter;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.notation.GradleDependencyNotationParserDelegate;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.notation.NotationParserBuilder;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.notation.StringNotationParser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.assertj.core.api.AbstractAssert;

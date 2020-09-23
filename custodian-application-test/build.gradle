@@ -16,8 +16,8 @@ dependencies {
     implementation project(':custodian-application')
     implementation project(':custodian-domain')
 
-    // TODO everything that depends on a specific adaptor, might need to move to another project ?
     implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle')
+    implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle-test')
 
 //    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.assertj:assertj-core'
