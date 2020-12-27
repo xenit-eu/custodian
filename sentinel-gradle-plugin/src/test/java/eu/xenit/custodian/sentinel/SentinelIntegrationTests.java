@@ -5,10 +5,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import eu.xenit.custodian.sentinel.asserts.JsonAssert;
 import eu.xenit.custodian.sentinel.asserts.JsonNodeAssert;
 import eu.xenit.custodian.sentinel.asserts.SentinelReportAssert;
-import eu.xenit.custodian.sentinel.asserts.condition.Conditions;
 import eu.xenit.custodian.sentinel.asserts.condition.Repository;
 import eu.xenit.custodian.sentinel.gradle.testkit.GradleBuild;
 import java.io.File;

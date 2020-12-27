@@ -4,12 +4,18 @@ plugins {
 }
 
 dependencies {
-    implementation gradleApi()
+//    implementation gradleApi()
 }
 
 publishing {
     repositories {
-        mavenLocal()
+        repositories {
+//            maven {
+//                name "localPlugin"
+//                url "$rootProject.projectDir/build/repo"
+//            }
+            mavenLocal()
+        }
     }
 
     publications {

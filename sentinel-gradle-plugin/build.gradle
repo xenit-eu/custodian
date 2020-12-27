@@ -5,10 +5,6 @@ plugins {
     // id 'eu.xenit.custodian.sentinel' version '0.0.1'
 }
 
-repositories {
-    mavenCentral()
-}
-
 gradlePlugin {
     plugins {
         sentinel {

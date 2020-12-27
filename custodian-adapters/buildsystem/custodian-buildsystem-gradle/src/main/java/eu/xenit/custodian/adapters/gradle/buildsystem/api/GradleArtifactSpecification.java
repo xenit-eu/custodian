@@ -11,11 +11,7 @@ public interface GradleArtifactSpecification {
     GradleModuleIdentifier getModuleId();
     GradleVersionSpecification getVersionSpec();
 
-    /**
-     * Returns the name of this artifact.
-     *
-     * TODO Is this only relevant for Ivy dependencies ?
-     */
+    // only relevant for Ivy dependencies ?
     String getName();
 
     String getType();

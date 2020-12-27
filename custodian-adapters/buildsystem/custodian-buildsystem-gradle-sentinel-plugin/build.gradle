@@ -1,21 +1,53 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'java-gradle-plugin'
 }
 
 dependencies {
     implementation gradleApi()
     implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle-sentinel-model')
+    implementation("io.github.azagniotov:ant-style-path-matcher:1.0.0")
+
+    // implementation 'org.springframework:spring-core:5.1.9.RELEASE'
+
+    // temp for debugging
+
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+}
+
+gradlePlugin {
+    plugins {
+        sentinel {
+            id = 'eu.xenit.custodian.sentinel'
+            implementationClass = 'eu.xenit.custodian.gradle.sentinel.plugin.SentinelToolingApiModelPlugin'
+        }
+    }
 }
 
 publishing {
     repositories {
-        mavenLocal()
-    }
-
-    publications {
-        maven(MavenPublication) {
-            from components.java
+        repositories {
+//            maven {
+//                name "localPlugin"
+//                url "$rootProject.projectDir/build/repo"
+//            }
+            mavenLocal()
         }
     }
+
+//    publications {
+//        maven(MavenPublication) {
+//            from components.java
+//        }
+//    }
+}
+
+test {
+    useJUnitPlatform()
 }

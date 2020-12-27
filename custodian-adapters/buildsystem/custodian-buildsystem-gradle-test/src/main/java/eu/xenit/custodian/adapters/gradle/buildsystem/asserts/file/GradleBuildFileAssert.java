@@ -1,6 +1,8 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file;
 
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.GradleBuildProjectAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.PluginsAssert;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,7 +10,8 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import org.assertj.core.api.AbstractStringAssert;
 
-public class GradleBuildFileAssert extends AbstractStringAssert<GradleBuildFileAssert> {
+public class GradleBuildFileAssert extends AbstractStringAssert<GradleBuildFileAssert>
+        implements GradleBuildProjectAssert<GradleBuildFileAssert> {
 
     public GradleBuildFileAssert(Path buildDotGradle) throws IOException {
         this(Files.readString(buildDotGradle));
@@ -17,48 +20,37 @@ public class GradleBuildFileAssert extends AbstractStringAssert<GradleBuildFileA
         super(content, GradleBuildFileAssert.class);
     }
 
-    public GradleBuildFileAssert hasPlugin(String plugin) {
-        this.getPluginAssert().hasPlugin(plugin);
-        return myself;
+    @Override
+    public GradleBuildFileAssert assertPlugins(Consumer<PluginsAssert> callback) {
+        var plugins = GradlePluginsStringAssert.from(this.actual);
+        callback.accept(plugins);
+        return this.myself;
     }
 
-    public GradleBuildFileAssert hasPlugin(String plugin, String version) {
-        this.getPluginAssert().hasPlugin(plugin, version);
-        return myself;
-    }
-
-    public GradleBuildFileAssert hasJavaPlugin() {
-        this.hasPlugin("java");
-        return myself;
-    }
-
-    public GradleBuildFileAssert doesNotHavePlugin(String plugin) {
-        this.getPluginAssert().doesNotHavePlugin(plugin);
-        return myself;
-    }
-
-    @Getter(lazy=true)
-    private final PluginAssert pluginAssert = PluginAssert.from(this.actual);
-
+    @Override
     public GradleBuildFileAssert hasVersion(String version) {
         return this.contains("version = '" + version + "'");
     }
 
+    @Override
     public GradleBuildFileAssert hasJavaVersion(String javaVersion) {
         return this.contains("sourceCompatibility = '" + javaVersion + "'");
     }
 
+    @Override
     public GradleBuildFileAssert hasMavenCentralRepository() {
         this.assertRepositories(GradleRepositoriesAssert::hasMavenCentral);
         return myself;
     }
 
 
+    @Override
     public GradleBuildFileAssert assertRepositories(Consumer<GradleRepositoriesAssert> callback) {
         callback.accept(GradleRepositoriesAssert.from(this.actual));
         return this;
     }
 
+    @Override
     public GradleBuildFileAssert hasProperties(String... values) {
         StringBuilder builder = new StringBuilder(String.format("ext {%n"));
         if (values.length % 2 == 1) {
@@ -73,11 +65,13 @@ public class GradleBuildFileAssert extends AbstractStringAssert<GradleBuildFileA
         }
     }
 
+    @Override
     public GradleBuildFileAssert hasDependency(String configuration, String dependency) {
         this.getDependencies().hasDependency(configuration, dependency);
         return myself;
     }
 
+    @Override
     public GradleBuildFileAssert hasDependency(GradleModuleDependency dependency) {
         DependenciesAssert.from(this.actual).hasDependency(dependency);
         return myself;
@@ -86,6 +80,7 @@ public class GradleBuildFileAssert extends AbstractStringAssert<GradleBuildFileA
     @Getter(lazy=true)
     private final DependenciesAssert dependencies = DependenciesAssert.from(this.actual);
 
+    @Override
     public GradleBuildFileAssert assertDependencies(Consumer<DependenciesAssert> callback) {
         callback.accept(this.getDependencies());
         return myself;

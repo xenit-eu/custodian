@@ -8,6 +8,7 @@ import eu.xenit.custodian.gradle.sentinel.model.GradleBuildModel;
 import eu.xenit.custodian.gradle.sentinel.model.ProjectModel;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
+import org.gradle.internal.impldep.com.esotericsoftware.minlog.Log;
 
 public class GradleToolingApiModelConverter {
 
@@ -27,7 +28,11 @@ public class GradleToolingApiModelConverter {
                     .name(project.getName())
                     .path(project.getPath())
                     .buildFile(project.getBuildFile())
-                    .projectDir(project.getProjectDir());
+                    .projectDir(project.getProjectDir())
+
+                    .withPlugins(plugins -> {
+                        project.getPlugins().all().forEach(plugins::addPlugin);
+                    });
 
         };
     }

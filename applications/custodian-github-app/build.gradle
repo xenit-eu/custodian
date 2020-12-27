@@ -25,7 +25,6 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-
     implementation project(':custodian-domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'

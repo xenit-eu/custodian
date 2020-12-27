@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '4.12'
+}
+
+dependencies {
+    implementation 'org.apache.httpcomponents:httpclient:4.5.1'
+
+    testImplementation "junit:junit:${junitVersion}"
+}
+
+project.getBuildscript().getConfigurations().forEach {
+    println "config: ${it}"
+}
+
+//println "1: " + project.getBuildscript().getConfigurations().getAt(":classpath")
+def resolvedConfig = project.getBuildscript().getConfigurations().getAt("classpath").getResolvedConfiguration()
+println resolvedConfig.getFirstLevelModuleDependencies()

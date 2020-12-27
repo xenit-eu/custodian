@@ -1,0 +1,17 @@
+plugins {
+    id 'eu.xenit.custodian.sentinel'
+}
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '4.12'
+}
+
+dependencies {
+
+}

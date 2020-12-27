@@ -7,4 +7,6 @@ public interface ProjectModel {
     String getProjectDir();
     String getBuildDir();
     String getBuildFile();
+
+    PluginContainer getPlugins();
 }

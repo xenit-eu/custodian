@@ -47,8 +47,10 @@ class GetGradleBuildUpdateProposalsUseCaseImplTest {
                 .materialize(tempFolder);
 
         GradleBuildAssert.assertThat(build)
-                .assertRootProject()
-                .hasDependency("org.apache.httpcomponents:httpclient:4.5.6");
+                .assertRootProject(project -> {
+                    project.hasDependency("org.apache.httpcomponents:httpclient:4.5.6");
+                });
+
 
         var command = new GetGradleBuildUpdateProposalsCommand(build);
         var result = gradleBuildUpdateProposals.handle(command);

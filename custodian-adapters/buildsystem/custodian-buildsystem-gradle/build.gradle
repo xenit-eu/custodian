@@ -14,9 +14,12 @@ dependencies {
 
     implementation gradleTestKit()
 
-    implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle-sentinel-model')
     implementation project(':custodian-domain')
     implementation project(':custodian-adapters:buildsystem:custodian-maven-resolver')
+
+    // this should be resolved using maven coordinates, so we can actually load this from mavenLocal() for testing ?
+    implementation project(':custodian-adapters:buildsystem:custodian-buildsystem-gradle-sentinel-model')
+
 
     testImplementation project(':custodian-application')
     testImplementation project(':custodian-application-test')
@@ -33,5 +36,8 @@ dependencies {
 }
 
 test {
+    dependsOn ':custodian-adapters:buildsystem:custodian-buildsystem-gradle-sentinel-model:publish'
+    dependsOn ':custodian-adapters:buildsystem:custodian-buildsystem-gradle-sentinel-plugin:publish'
     useJUnitPlatform()
+
 }

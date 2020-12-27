@@ -11,6 +11,8 @@ public class DefaultProjectModel implements ProjectModel, Serializable {
     private String buildDir;
     private String buildFile;
 
+    private final PluginContainer plugins = new DefaultPluginContainer();
+
     public DefaultProjectModel(String path) {
         this.path = path;
     }
@@ -50,6 +52,11 @@ public class DefaultProjectModel implements ProjectModel, Serializable {
     @Override
     public String getBuildFile() {
         return buildFile;
+    }
+
+    @Override
+    public PluginContainer getPlugins() {
+        return this.plugins;
     }
 
     public void setBuildFile(String buildScript) {

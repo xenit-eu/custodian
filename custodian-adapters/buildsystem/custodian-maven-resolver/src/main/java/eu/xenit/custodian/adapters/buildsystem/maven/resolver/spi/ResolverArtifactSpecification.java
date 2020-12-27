@@ -64,6 +64,7 @@ public interface ResolverArtifactSpecification {
      * Create a new artifact specification with the specified module and artifact coordinates
      *
      * @param coords The maven groupId and artifactId
+     * @param versionSpec The version specification
      * @param artifact The artifact details.
      * @return the artifact specification
      */

@@ -104,7 +104,6 @@ public class GradleRunnerStub extends GradleRunner {
         return this;
     }
 
-    @Nullable
     @Override
     public Map<String, String> getEnvironment() {
         return null;

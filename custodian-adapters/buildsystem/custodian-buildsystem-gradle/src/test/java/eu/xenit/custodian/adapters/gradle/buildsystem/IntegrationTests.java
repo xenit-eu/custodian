@@ -24,7 +24,7 @@ public class IntegrationTests {
 
         GradleBuildAssert.assertThat(build.get())
                 .isNotNull()
-                .assertRootProject().hasName("custodian");
+                .assertRootProject(project -> project.hasName("custodian"));
 
     }
 }
