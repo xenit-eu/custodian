@@ -13,10 +13,6 @@ initscript {
 }
 
 allprojects {
-    project.plugins.whenPluginAdded {
-        println "-- whenPluginAdded: ${it}"
-    }
-
     println "classpath: " + System.getProperty("java.class.path")
 
     apply plugin: eu.xenit.custodian.gradle.sentinel.plugin.SentinelToolingApiModelPlugin

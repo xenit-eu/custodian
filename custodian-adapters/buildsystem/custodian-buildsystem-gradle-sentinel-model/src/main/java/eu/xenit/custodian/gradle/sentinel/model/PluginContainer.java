@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PluginContainer {
 
-    void add(String plugin);
+    void add(String plugin, String implClass, String version);
 
-    List<String> all();
+    List<PluginModel> all();
 }

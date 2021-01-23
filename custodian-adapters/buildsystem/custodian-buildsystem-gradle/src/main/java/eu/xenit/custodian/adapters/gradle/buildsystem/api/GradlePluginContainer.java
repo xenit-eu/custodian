@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
+import lombok.NonNull;
 
 public class GradlePluginContainer {
 
@@ -22,20 +23,31 @@ public class GradlePluginContainer {
     /**
      * Check if this container contains a plugin with the specified id.
      *
+     * Unqualified plugin ids - like @{code 'java'} - are implicitly converted to
+     * qualified plugin ids - like @{code 'org.gradle.java'}.
+     *
      * @param id the gradle plugin id
      * @return {@code true} if the container has a plugin with the specified id {@code id}
      */
     public boolean has(String id) {
-        return this.plugins.containsKey(id);
+        return this.plugins.containsKey(toQualifiedPluginId(id));
     }
 
     public Optional<GradlePlugin> get(String id) {
-        return Optional.ofNullable(this.plugins.get(id));
+        return Optional.ofNullable(this.plugins.get(toQualifiedPluginId(id)));
     }
-
 
     public Stream<GradlePlugin> stream() {
         return this.plugins.values().stream();
+    }
+
+
+
+    private static String toQualifiedPluginId(@NonNull String id) {
+        if (id.contains(".")) {
+            return id;
+        }
+        return "org.gradle."+id;
     }
 
 }

@@ -1,26 +1,15 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem.infrastructure.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleBuild;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model.GradleBuildAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.infrastructure.model.toolingapi.GradleToolingBuildReaderAdapter;
 import eu.xenit.custodian.adapters.gradle.buildsystem.spi.model.GradleBuildReaderPort;
 import eu.xenit.custodian.ports.spi.buildsystem.BuildSystemException;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
-import org.gradle.groovy.scripts.StringScriptSource;
-import org.gradle.plugin.use.internal.PluginRequestCollector;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
-import org.junit.jupiter.params.provider.ArgumentsSource;
 
 public class GradleBuildReaderFixturesSimple {
 
@@ -42,14 +31,6 @@ public class GradleBuildReaderFixturesSimple {
 //    void testSimpleFixture(GradleBuildReaderPort reader) throws BuildSystemException {
 
     @Test
-    void testPluginsFromScriptSource() throws IOException {
-        Path location = Paths.get("src/test/resources/fixtures/simple/build.gradle");
-        String content = Files.readString(location);
-        StringScriptSource source = new StringScriptSource("build.gradle", content);
-        PluginRequestCollector pluginRequestCollector = new PluginRequestCollector(source);
-    }
-
-    @Test
     void testSimpleFixture() throws BuildSystemException {
         GradleBuildReaderPort reader = new GradleToolingBuildReaderAdapter();
         Path location = Paths.get("src/test/resources/fixtures/simple");
@@ -60,6 +41,7 @@ public class GradleBuildReaderFixturesSimple {
         GradleBuildAssert.assertThat(build)
                 .assertRootProject(project -> {
                     project.hasJavaPlugin();
+                    // project.hasImplementationDependency("org.apache.httpcomponents:httpclient:4.5.1");
                 });
 
 //        new SentinelReportAssert(reportFile)
@@ -103,7 +85,10 @@ public class GradleBuildReaderFixturesSimple {
         GradleBuildAssert.assertThat(build)
                 .assertRootProject(project -> {
                     project.hasJavaPlugin();
+                    project.hasPlugin("org.springframework.boot", "2.1.7.RELEASE");
+                    project.hasPlugin("io.spring.dependency-management", "1.0.8.RELEASE");
                 });
     }
+
 
 }

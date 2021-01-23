@@ -1,10 +1,12 @@
 package eu.xenit.custodian.gradle.sentinel.plugin.service;
 
+// import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.gradle.sentinel.plugin.service.PluginRegistrationLookup.PluginRegistration;
-import eu.xenit.custodian.gradle.sentinel.plugin.support.ClassLoaderResourceResolver;
 import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.URL;
 import org.gradle.api.plugins.JavaPlugin;
 import org.junit.jupiter.api.Test;
 
@@ -29,4 +31,17 @@ class PluginRegistrationLookupTest {
         assertThat(registry.lookupPluginByClass(JavaPlugin.class))
                 .hasValueSatisfying(plugin -> assertThat(plugin.getId()).isEqualTo("org.gradle.java"));
     }
+
+    @Test
+    void getScalaPluginVersionFromManifest() throws IOException {
+        URL propertiesUrl = this.getClass().getClassLoader().getResource("META-INF/gradle-plugins/org.gradle.scala.properties");
+        assertThat(propertiesUrl).isNotNull();
+        assertThat(propertiesUrl.getProtocol()).isEqualTo("jar");
+        assertThat(propertiesUrl.toString()).startsWith("jar:file");
+
+        // open jar-url-connection
+        var connection = (JarURLConnection) propertiesUrl.openConnection();
+        var manifest = connection.getManifest();
+    }
+
 }

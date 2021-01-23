@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem.asserts;
 
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
-import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.DependenciesAssert;
+//import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.DependenciesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleBuildFileAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleRepositoriesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model.GradleProjectAssert;
@@ -38,6 +38,10 @@ public interface GradleBuildProjectAssert<ASSERT> {
     ASSERT hasProperties(String... values);
 
     ASSERT hasDependency(String configuration, String dependency);
+
+    default ASSERT hasImplementationDependency(String dependency) {
+        return this.hasDependency("implementation", dependency);
+    }
 
     ASSERT hasDependency(GradleModuleDependency dependency);
 

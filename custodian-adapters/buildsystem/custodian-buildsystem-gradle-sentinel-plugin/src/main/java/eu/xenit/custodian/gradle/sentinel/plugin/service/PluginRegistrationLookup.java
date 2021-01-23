@@ -5,8 +5,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.jar.Attributes;
 import java.util.stream.Collectors;
 import org.gradle.api.Plugin;
 import org.slf4j.Logger;
@@ -17,24 +24,22 @@ public class PluginRegistrationLookup {
     private static final Logger log = LoggerFactory.getLogger(PluginRegistrationLookup.class);
 
     private Map<String, PluginRegistration> implClassLookup = new LinkedHashMap<>();
-    private Map<String, PluginRegistration> pluginIdLookup = new LinkedHashMap<>();
+    private Map<String, PluginRegistration> pluginCache = new LinkedHashMap<>();
 
     public PluginRegistrationLookup() {
 
     }
 
     public PluginRegistrationLookup loadPlugins(ClassLoader classLoader) {
-        log.warn("!! loadPlugins with classloader: " + classLoader);
         try {
             var pluginResolver = new ClassLoaderResourceResolver(classLoader);
             var resources = pluginResolver.getResources("META-INF/gradle-plugins/*.properties")
                     .collect(Collectors.toList());
 
-            log.warn("-- found "+resources.size()+" gradle plugin property files");
-            resources.stream().map(this::loadPluginFromProperties)
+            resources.stream().map(url -> this.loadPluginFromProperties(url, classLoader))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
-                    .forEach(this::register);
+                    .forEach(this::cache);
 
             return this;
         } catch (IOException e) {
@@ -42,16 +47,7 @@ public class PluginRegistrationLookup {
         }
     }
 
-//    Optional<PluginRegistration> loadPluginFromProperties(String pluginId) {
-//
-//        String path = "META-INF/gradle-plugins/" + pluginId + ".properties";
-//        URL url = PluginRegistrationLookup.class.getClassLoader().getResource(path);
-//        return loadPluginFromProperties(url);
-//    }
-
-    Optional<PluginRegistration> loadPluginFromProperties(URL pluginPropertiesURL) {
-
-        log.warn("loadPluginFromProperties("+pluginPropertiesURL+")");
+    Optional<PluginRegistration> loadPluginFromProperties(URL pluginPropertiesURL, ClassLoader classLoader) {
         try (InputStream stream = pluginPropertiesURL.openStream()) {
 
             Properties properties = new Properties();
@@ -63,18 +59,57 @@ public class PluginRegistrationLookup {
                 pluginId = pluginId.substring(0, pluginId.length() - ".properties".length());
             }
 
-            return Optional.of(new PluginRegistration(pluginId, implementation));
+            String version = getPluginVersion(classLoader, implementation, pluginPropertiesURL);
+            return Optional.of(new PluginRegistration(pluginId, implementation, version));
 
         } catch (IOException e) {
-            log.warn("Loading plugin from "+pluginPropertiesURL+" failed, skipping: " +  e.getMessage());
+            log.warn("Loading plugin from " + pluginPropertiesURL + " failed, skipping: " + e.getMessage());
             return Optional.empty();
         }
     }
 
-    public void register(PluginRegistration registration) {
-        log.warn("-- building plugin index for plugin '"+registration.getImplementationClass()+"'");
-        implClassLookup.put(registration.getImplementationClass(), registration);
-        pluginIdLookup.put(registration.getId(), registration);
+    private String getPluginVersion(ClassLoader classLoader, String implementation, URL propertiesUrl) {
+        // try to load version from Package
+        try {
+            Package pluginPackage = classLoader.loadClass(implementation).getPackage();
+            if (pluginPackage != null && pluginPackage.getImplementationVersion() != null) {
+                return pluginPackage.getImplementationVersion();
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // fallback to searching .jar META-INF/MANIFEST.MF
+
+        try {
+            log.trace("Trying to load META-INF/MANIFEST.MF for " + implementation + " from " + propertiesUrl+" protocol: "+propertiesUrl.getProtocol());
+            if (ClassLoaderResourceResolver.isJarURL(propertiesUrl)) {
+
+                var connection = (JarURLConnection) propertiesUrl.openConnection();
+                var manifest = connection.getManifest();
+                String version = manifest.getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION);
+                if (version != null) {
+                    log.trace("Version from manually loading .jar manifest: "+version);
+                    return version;
+                }
+            }
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        log.warn("Version for " + implementation + " not found -> "+propertiesUrl);
+        return null;
+    }
+
+    private void cache(PluginRegistration registration) {
+        PluginRegistration old = implClassLookup.putIfAbsent(registration.getImplementationClass(), registration);
+        if (old == null) {
+            pluginCache.put(registration.getId(), registration);
+            log.debug("Caching '" + registration.getId() + "' implementation " + registration.getImplementationClass());
+        } else {
+            log.debug("Plugin " + old.getId() + " was already cached");
+        }
     }
 
     public Optional<PluginRegistration> lookupPluginId(Plugin<?> plugin) {
@@ -82,9 +117,48 @@ public class PluginRegistrationLookup {
     }
 
     public Optional<PluginRegistration> lookupPluginByClass(Class<?> implementationClass) {
-        return this.lookupPluginByClass(implementationClass.getName());
+        if (implementationClass == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
 
+        Optional<PluginRegistration> optional = this.lookupPluginByClass(implementationClass.getName());
+        if (optional.isEmpty()) {
+            try {
+                // not found in lookup cache
+                ClassLoader classLoader = implementationClass.getClassLoader();
+                log.trace("lookupPluginByClass(" + implementationClass.getName()
+                        + ") not found - resolve from classloader: " + classLoader);
+
+                var pluginResolver = new ClassLoaderResourceResolver(classLoader);
+                var resources = pluginResolver.getResources("META-INF/gradle-plugins/*.properties")
+                        .collect(Collectors.toList());
+
+                String implClassName = implementationClass.getName();
+                return resources.stream()
+                        //.peek(url -> log.warn("-- found " + url))
+                        .map(url -> this.loadPluginFromProperties(url, classLoader))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+
+                        // cache the lookups for all the plugin-registrations we found
+                        .peek(this::cache)
+
+                        // terminal operation to consume the stream fully,
+                        // so all found plugin-registrations get cached
+                        .collect(Collectors.toList()).stream()
+
+                        // filter out the plugin that matches the implementationClass
+                        .filter(plugin -> plugin.getImplementationClass().equals(implClassName))
+
+                        // and return the matching plugin
+                        .findAny();
+            } catch (IOException ioe) {
+                throw new UncheckedIOException(ioe);
+            }
+        }
+        return optional;
     }
+
     public Optional<PluginRegistration> lookupPluginByClass(String implementationClassName) {
         return Optional.ofNullable(this.implClassLookup.get(implementationClassName));
 
@@ -94,10 +168,12 @@ public class PluginRegistrationLookup {
 
         private final String id;
         private final String implementationClass;
+        private final String version;
 
-        PluginRegistration(String id, String implementationClass) {
+        PluginRegistration(String id, String implementationClass, String version) {
             this.id = id;
             this.implementationClass = implementationClass;
+            this.version = version;
         }
 
         public String getId() {
@@ -106,6 +182,10 @@ public class PluginRegistrationLookup {
 
         public String getImplementationClass() {
             return implementationClass;
+        }
+
+        public String getVersion() {
+            return version;
         }
     }
 

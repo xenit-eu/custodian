@@ -1,6 +1,7 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file;
 
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.DependenciesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.GradleBuildProjectAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.PluginsAssert;
 import java.io.IOException;
@@ -73,12 +74,12 @@ public class GradleBuildFileAssert extends AbstractStringAssert<GradleBuildFileA
 
     @Override
     public GradleBuildFileAssert hasDependency(GradleModuleDependency dependency) {
-        DependenciesAssert.from(this.actual).hasDependency(dependency);
+        DependenciesFileAssert.from(this.actual).hasDependency(dependency);
         return myself;
     }
 
     @Getter(lazy=true)
-    private final DependenciesAssert dependencies = DependenciesAssert.from(this.actual);
+    private final DependenciesFileAssert dependencies = DependenciesFileAssert.from(this.actual);
 
     @Override
     public GradleBuildFileAssert assertDependencies(Consumer<DependenciesAssert> callback) {

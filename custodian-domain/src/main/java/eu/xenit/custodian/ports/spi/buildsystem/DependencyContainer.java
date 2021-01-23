@@ -17,11 +17,11 @@ public interface DependencyContainer {
         return this.stream().filter(matcher);
     }
 
-    default Stream<? extends Dependency> matches(String notation) {
-        DependencyMatcher<? extends Dependency> matcher = this.matcher(notation);
+    default Stream<? extends Dependency> matches(String configuration, String notation) {
+        DependencyMatcher<? extends Dependency> matcher = this.matcher(configuration, notation);
         return this.stream().filter(matcher::testUncasted);
     }
 
-    DependencyMatcher<? extends Dependency> matcher(String notation);
+    DependencyMatcher<? extends Dependency> matcher(String configuration, String notation);
 
 }

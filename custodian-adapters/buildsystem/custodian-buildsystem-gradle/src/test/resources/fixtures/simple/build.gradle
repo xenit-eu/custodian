@@ -15,11 +15,3 @@ dependencies {
 
     testImplementation "junit:junit:${junitVersion}"
 }
-
-project.getBuildscript().getConfigurations().forEach {
-    println "config: ${it}"
-}
-
-//println "1: " + project.getBuildscript().getConfigurations().getAt(":classpath")
-def resolvedConfig = project.getBuildscript().getConfigurations().getAt("classpath").getResolvedConfiguration()
-println resolvedConfig.getFirstLevelModuleDependencies()

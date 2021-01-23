@@ -45,7 +45,7 @@ public class GradleDependencyContainer implements DependencyContainer {
     }
 
     @Override
-    public DependencyMatcher<GradleDependency> matcher(String notation) {
-        return GradleDependencyMatcher.from(null, notation);
+    public DependencyMatcher<GradleDependency> matcher(String configuration, String notation) {
+        return GradleDependencyMatcher.from(configuration, notation);
     }
 }

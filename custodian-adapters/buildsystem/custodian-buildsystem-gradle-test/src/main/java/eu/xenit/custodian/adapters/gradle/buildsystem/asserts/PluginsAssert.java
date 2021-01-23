@@ -9,6 +9,6 @@ public interface PluginsAssert {
     PluginsAssert doesNotHavePlugin(String plugin);
 
     default PluginsAssert hasJavaPlugin() {
-        return this.hasPlugin("org.gradle.java");
+        return this.hasPlugin("java");
     }
 }

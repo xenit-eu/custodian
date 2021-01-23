@@ -111,6 +111,10 @@ public class ClassLoaderResourceResolver {
     private LinkedHashSet<URL> addAllClassLoaderJarRoots(ClassLoader classLoader) {
         LinkedHashSet<URL> result;
 
+        if (log.isTraceEnabled()) {
+            log.trace("Collecting roots from class-loader " + classLoader.getName() + " [class:" + classLoader.getClass().getName() + " is-url-cl:" + (classLoader instanceof URLClassLoader) + "]");
+        }
+
         // gather URLs from parent classloader
         var parent = classLoader.getParent();
         if (parent != null) {
@@ -124,6 +128,7 @@ public class ClassLoaderResourceResolver {
             URL[] urls = ((URLClassLoader) classLoader).getURLs();
             for (URL url : urls) {
                 if (urlResourceExists(url)) {
+                    log.trace("-- found .jar "+url+" in cl "+classLoader.getName() + " [class:"+classLoader.getClass().getName()+"]");
                     result.add(url);
                 }
             }
@@ -149,6 +154,7 @@ public class ClassLoaderResourceResolver {
         try {
 
             String javaClassPathProperty = System.getProperty("java.class.path");
+            log.trace("searching java.class.path for .jar references: "+javaClassPathProperty);
             for (String path : javaClassPathProperty.split(System.getProperty("path.separator"))) {
 //                try {
                 File file = new File(path).getAbsoluteFile();
@@ -195,9 +201,7 @@ public class ClassLoaderResourceResolver {
     private Stream<URL> findPatternMatchingResources(String locationPattern) throws IOException {
         // find all classloader roots
         return this.findClassPathResources("")
-                .peek(rootDirUrl -> {
-                    log.warn("Looking at "+rootDirUrl+" to find "+locationPattern);
-                })
+
                 // try to enumerate everything under the root, retain what matches the location pattern
                 .flatMap(rootDirUrl -> {
                     if (isJarURL(rootDirUrl) /* normal url-class-loader use case */
@@ -211,6 +215,11 @@ public class ClassLoaderResourceResolver {
     }
 
     private Stream<URL> findPathMatchingJarResources(URL jarRootUrl, String locationPattern) {
+
+        if (log.isTraceEnabled()) {
+            log.trace("-- looking for '" + locationPattern + "' in " + jarRootUrl.toString());
+        }
+
         URLConnection con = null;
         JarFile jarFile = null;
         try {
@@ -325,7 +334,7 @@ public class ClassLoaderResourceResolver {
         }
     }
 
-    private static boolean isJarURL(URL url) {
+    public static boolean isJarURL(URL url) {
         String protocol = url.getProtocol();
         return ("jar".equals(protocol) || "war".equals(protocol) || "zip".equals(protocol));
     }

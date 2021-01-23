@@ -2,12 +2,13 @@ package eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleDependencyContainer;
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradlePluginContainer;
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleProject;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.GradleBuildProjectAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.PluginsAssert;
-import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.DependenciesAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.DependenciesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleRepositoriesAssert;
 import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import eu.xenit.custodian.ports.spi.buildsystem.ProjectContainer;
@@ -28,19 +29,6 @@ public class GradleProjectAssert extends AbstractAssert<GradleProjectAssert, Gra
     }
 
 
-    public GradleProjectAssert hasDependency(String notation) {
-        this.isNotNull();
-
-        return this.withDependencies(dependencies -> {
-            dependencies.hasDependency(notation);
-        });
-    }
-
-    public GradleProjectAssert withDependencies(Consumer<GradleDependencyContainerAsserts> callback) {
-        this.isNotNull();
-        callback.accept(new GradleDependencyContainerAsserts(this.actual.getDependencies()));
-        return this.myself;
-    }
 
     public GradleProjectAssert withChildProjects(Consumer<ProjectContainer> consumer) {
         consumer.accept(this.actual.getChildProjects());
@@ -82,10 +70,7 @@ public class GradleProjectAssert extends AbstractAssert<GradleProjectAssert, Gra
         return null;
     }
 
-    @Override
-    public GradleProjectAssert hasDependency(String configuration, String dependency) {
-        return null;
-    }
+
 
     @Override
     public GradleProjectAssert hasDependency(GradleModuleDependency dependency) {
@@ -93,9 +78,25 @@ public class GradleProjectAssert extends AbstractAssert<GradleProjectAssert, Gra
     }
 
     @Override
-    public GradleProjectAssert assertDependencies(Consumer<DependenciesAssert> callback) {
-        return null;
+    public GradleProjectAssert hasDependency(String configuration, String dependency) {
+        return this.assertDependencies(dependencies -> {
+            dependencies.hasDependency(configuration, dependency);
+        });
     }
+
+    @Override
+    public GradleProjectAssert assertDependencies(Consumer<DependenciesAssert> callback) {
+        return this.withDependencies(dependencies -> {
+            callback.accept(new GradleDependencyContainerAsserts(dependencies));
+        });
+    }
+
+    public GradleProjectAssert withDependencies(Consumer<GradleDependencyContainer> callback) {
+        this.isNotNull();
+        callback.accept(this.actual.getDependencies());
+        return this.myself;
+    }
+
 
     public GradleProjectAssert withPlugins(Consumer<GradlePluginContainer> callback) {
         this.isNotNull();

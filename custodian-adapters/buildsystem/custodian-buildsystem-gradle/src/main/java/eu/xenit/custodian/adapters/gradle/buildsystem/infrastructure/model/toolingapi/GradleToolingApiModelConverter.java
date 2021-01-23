@@ -31,7 +31,9 @@ public class GradleToolingApiModelConverter {
                     .projectDir(project.getProjectDir())
 
                     .withPlugins(plugins -> {
-                        project.getPlugins().all().forEach(plugins::addPlugin);
+                        project.getPlugins().all().forEach(plugin -> {
+                            plugins.addPlugin(plugin.getId(), plugin.getVersion(), plugin.isApplied());
+                        });
                     });
 
         };

@@ -48,7 +48,7 @@ class GetGradleBuildUpdateProposalsUseCaseImplTest {
 
         GradleBuildAssert.assertThat(build)
                 .assertRootProject(project -> {
-                    project.hasDependency("org.apache.httpcomponents:httpclient:4.5.6");
+                    project.hasDependency("implementation", "org.apache.httpcomponents:httpclient:4.5.6");
                 });
 
 
