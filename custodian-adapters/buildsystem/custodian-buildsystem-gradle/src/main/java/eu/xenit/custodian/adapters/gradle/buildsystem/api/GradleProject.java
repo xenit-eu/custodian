@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface GradleProject extends Project {
 
     String getPath();
+    String getGroup();
 
     GradleDsl getDsl();
 

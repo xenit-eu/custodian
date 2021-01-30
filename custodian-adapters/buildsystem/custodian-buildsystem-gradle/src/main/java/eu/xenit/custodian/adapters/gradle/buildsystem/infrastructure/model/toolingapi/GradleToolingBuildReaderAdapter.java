@@ -61,18 +61,7 @@ public class GradleToolingBuildReaderAdapter implements GradleBuildReaderPort {
 
             log.warn("TOOLING API:");
             log.warn(new String(stdoutBuffer.toByteArray()));
-//            boolean hasJava = model.hasPlugin(JavaPlugin.class);
 
-//            ModelBuilder<GradleProject> builder = connection.model(GradleProject.class);
-//            //if you want to listen to the progress events:
-//            builder.addProgressListener(
-//                    (ProgressListener) event -> System.out.println("status changed: " + event.getDescription()));
-//
-//            //get the model:
-//            GradleProject project = builder.get();
-//
-//            //query the model for information:
-//            System.out.println("Available tasks: " + project.getTasks());
             return GradleToolingApiModelConverter.convert(model);
         }
     }

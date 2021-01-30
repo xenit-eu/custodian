@@ -3,19 +3,17 @@ package eu.xenit.custodian.gradle.sentinel.plugin;
 import eu.xenit.custodian.gradle.sentinel.model.DefaultGradleBuildModel;
 import eu.xenit.custodian.gradle.sentinel.model.DefaultProjectModel;
 import eu.xenit.custodian.gradle.sentinel.model.GradleBuildModel;
+import eu.xenit.custodian.gradle.sentinel.model.PluginContainer;
 import eu.xenit.custodian.gradle.sentinel.model.ProjectModel;
 import eu.xenit.custodian.gradle.sentinel.plugin.service.PluginRegistrationLookup;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.LenientConfiguration;
-import org.gradle.api.artifacts.ResolvedDependency;
+import org.gradle.api.artifacts.ExternalModuleDependency;
 import org.gradle.tooling.provider.model.ToolingModelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 class SentinelToolingModelBuilder implements ToolingModelBuilder {
@@ -57,19 +55,30 @@ class SentinelToolingModelBuilder implements ToolingModelBuilder {
         DefaultProjectModel model = new DefaultProjectModel(project.getPath());
 
         model.setName(project.getName());
+        model.setGroup(project.getGroup().toString());
+        model.setVersion(project.getVersion().toString());
+
         model.setProjectDir(project.getProjectDir().toString());
         model.setBuildDir(project.getBuildDir().toString());
         model.setBuildFile(project.getBuildFile().toString());
 
-        Configuration pluginClasspath = project.getBuildscript().getConfigurations().getAt("classpath");
-        LenientConfiguration lenientConfig = pluginClasspath.getResolvedConfiguration().getLenientConfiguration();
-        Set<ResolvedDependency> dependencies = lenientConfig.getFirstLevelModuleDependencies();
+        this.buildPluginModel(project, model.getPlugins());
+        this.buildDependenciesModel(project, model);
+
+        return model;
+    }
 
 
-        log.warn("DEPENDENCIES: " + dependencies.size());
-        dependencies.forEach(dep -> {
-            log.warn(dep.getModuleGroup() + ":" + dep.getModuleName() + ":" + dep.getModuleVersion());
-        });
+
+    void buildPluginModel(Project project, PluginContainer pluginContainer) {
+//        Configuration pluginClasspath = project.getBuildscript().getConfigurations().getAt("classpath");
+//        LenientConfiguration lenientConfig = pluginClasspath.getResolvedConfiguration().getLenientConfiguration();
+//        Set<ResolvedDependency> dependencies = lenientConfig.getFirstLevelModuleDependencies();
+//
+//        log.warn("DEPENDENCIES: " + dependencies.size());
+//        dependencies.forEach(dep -> {
+//            log.warn(dep.getModuleGroup() + ":" + dep.getModuleName() + ":" + dep.getModuleVersion());
+//        });
 
         project.getPlugins().stream()
                 .peek(plugin -> log.debug("looking up plugin for implementation class "+plugin.getClass().getName()))
@@ -84,9 +93,21 @@ class SentinelToolingModelBuilder implements ToolingModelBuilder {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(plugin -> {
-                        model.getPlugins().add(plugin.getId(), plugin.getImplementationClass(), plugin.getVersion());
+                    pluginContainer.add(plugin.getId(), plugin.getImplementationClass(), plugin.getVersion());
                 });
+    }
 
-        return model;
+    void buildDependenciesModel(Project project, DefaultProjectModel model) {
+        project.getConfigurations().stream()
+                .peek(config -> log.warn("get dependencies from "+config.getName()))
+                .forEach(config -> config.getDependencies().stream().forEach(dependency -> {
+                    log.warn("-- "+config.getName()+" - "+dependency);
+
+                    if (dependency instanceof ExternalModuleDependency) {
+                        model.getDependencies().addExternalModule(config.getName(), dependency.getGroup(), dependency.getName(), dependency.getVersion());
+                    } else {
+                        log.warn("Dependency {} of type {} skipped ...", dependency, dependency.getClass().getName());
+                    }
+                }));
     }
 }

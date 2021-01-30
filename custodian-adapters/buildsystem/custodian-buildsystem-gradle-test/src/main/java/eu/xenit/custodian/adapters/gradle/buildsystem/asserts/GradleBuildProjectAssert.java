@@ -1,11 +1,11 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem.asserts;
 
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
-//import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.DependenciesAssert;
-import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleBuildFileAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleRepositoriesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model.GradleProjectAssert;
+import java.nio.file.Path;
 import java.util.function.Consumer;
+import org.assertj.core.api.AbstractPathAssert;
 
 public interface GradleBuildProjectAssert<ASSERT> {
 
@@ -27,6 +27,8 @@ public interface GradleBuildProjectAssert<ASSERT> {
         return this.assertPlugins(plugins -> plugins.doesNotHavePlugin(plugin));
     }
 
+    ASSERT hasGroup(String group);
+
     ASSERT hasVersion(String version);
 
     ASSERT hasJavaVersion(String javaVersion);
@@ -43,7 +45,16 @@ public interface GradleBuildProjectAssert<ASSERT> {
         return this.hasDependency("implementation", dependency);
     }
 
+    default ASSERT hasTestImplementationDependency(String dependency) {
+        return this.hasDependency("testImplementation", dependency);
+    }
+
     ASSERT hasDependency(GradleModuleDependency dependency);
 
     ASSERT assertDependencies(Consumer<DependenciesAssert> callback);
+
+    ASSERT hasPath(String path);
+
+    ASSERT hasProjectDir(Path projectDir);
+    ASSERT assertProjectDir(Consumer<AbstractPathAssert<?>> callback);
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 public interface Project {
 
     String getName();
+    String getVersion();
 
     DependencyContainer getDependencies();
 

@@ -8,7 +8,7 @@ import java.nio.file.Path;
 class BuildRootDirectory implements PathResolver {
 
     /**
-     * The roto directory for the Grald build. The default is a fake in-memory filesystem root.
+     * The root directory for the Gralde build. The default is a fake in-memory filesystem root.
      *
      * That is because Gradle model we are building here, is possibly only conceptual (just the model)
      * and not materialized (no real files on disk)

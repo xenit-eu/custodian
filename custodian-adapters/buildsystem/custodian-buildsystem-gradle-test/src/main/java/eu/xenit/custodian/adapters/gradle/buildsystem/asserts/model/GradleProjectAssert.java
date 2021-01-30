@@ -9,12 +9,16 @@ import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleProject;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.GradleBuildProjectAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.PluginsAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.DependenciesAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleBuildFileAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleRepositoriesAssert;
 import eu.xenit.custodian.ports.spi.buildsystem.Project;
 import eu.xenit.custodian.ports.spi.buildsystem.ProjectContainer;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.AbstractPathAssert;
 import org.assertj.core.api.Assertions;
 
 public class GradleProjectAssert extends AbstractAssert<GradleProjectAssert, GradleProject>
@@ -46,8 +50,15 @@ public class GradleProjectAssert extends AbstractAssert<GradleProjectAssert, Gra
     }
 
     @Override
+    public GradleProjectAssert hasGroup(String group) {
+        Assertions.assertThat(this.actual.getGroup()).isEqualTo(group);
+        return myself;
+    }
+
+    @Override
     public GradleProjectAssert hasVersion(String version) {
-        return null;
+        Assertions.assertThat(this.actual.getVersion()).isEqualTo(version);
+        return myself;
     }
 
     @Override
@@ -89,6 +100,34 @@ public class GradleProjectAssert extends AbstractAssert<GradleProjectAssert, Gra
         return this.withDependencies(dependencies -> {
             callback.accept(new GradleDependencyContainerAsserts(dependencies));
         });
+    }
+
+    @Override
+    public GradleProjectAssert hasPath(String path) {
+        Assertions.assertThat(this.actual.getPath()).isEqualTo(path);
+        return this.myself;
+    }
+
+    public GradleProjectAssert assertProjectDir(Consumer<AbstractPathAssert<?>> callback) {
+        callback.accept(Assertions.assertThat(this.actual.getProjectDir()));
+        return this.myself;
+    }
+
+    /**
+     * Assert that the tested project has the expected project directory {@link Path}.
+     *
+     * The expected project directory provided will be converted to an absolute path
+     * with  {@link Path#toAbsolutePath()} and normalized with {@link Path#normalize()}
+     * before performing the actual test.
+     *
+     * @param projectDir the expected path of the project
+     * @return self
+     */
+    @Override
+    public GradleProjectAssert hasProjectDir(Path projectDir) {
+        Assertions.assertThat(this.actual.getProjectDir())
+                .isEqualByComparingTo(projectDir.toAbsolutePath().normalize());
+        return this.myself;
     }
 
     public GradleProjectAssert withDependencies(Consumer<GradleDependencyContainer> callback) {

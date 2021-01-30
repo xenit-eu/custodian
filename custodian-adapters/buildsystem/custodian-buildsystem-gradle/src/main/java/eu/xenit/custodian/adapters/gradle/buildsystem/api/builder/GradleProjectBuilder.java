@@ -8,6 +8,9 @@ import java.util.function.Consumer;
 public interface GradleProjectBuilder {
 
     GradleProjectBuilder name(String name);
+    GradleProjectBuilder group(String group);
+    GradleProjectBuilder version(String version);
+
     GradleProjectBuilder path(String path);
 
     GradleProjectBuilder dsl(GradleDsl dsl);

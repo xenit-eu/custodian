@@ -27,6 +27,9 @@ public class DefaultGradleProjectBuilder implements GradleProjectBuilder {
     private String path = ":";
 
     private String name;
+    private String group;
+    private String version;
+
     private GradleProject parent;
 
     private String projectDir = ".";

@@ -1,7 +1,3 @@
-plugins {
-    id 'eu.xenit.custodian.sentinel'
-}
-
 repositories {
     mavenCentral()
 }

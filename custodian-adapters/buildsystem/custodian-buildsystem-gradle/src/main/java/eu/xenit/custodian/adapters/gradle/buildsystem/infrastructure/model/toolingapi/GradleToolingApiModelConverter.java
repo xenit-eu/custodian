@@ -15,6 +15,7 @@ public class GradleToolingApiModelConverter {
     static GradleBuild convert(GradleBuildModel buildModel) {
 
         GradleBuilder builder = new GradleBuildSystem().builder();
+        builder.workingDirectory(Paths.get(buildModel.getRootDirectory()));
 
         buildModel.getAllProjects()
                 .forEach(project -> builder.addProject(convertProject(project)));
@@ -26,6 +27,9 @@ public class GradleToolingApiModelConverter {
         return projectBuilder -> {
             projectBuilder
                     .name(project.getName())
+                    .group(project.getGroup())
+                    .version(project.getVersion())
+
                     .path(project.getPath())
                     .buildFile(project.getBuildFile())
                     .projectDir(project.getProjectDir())
@@ -33,6 +37,15 @@ public class GradleToolingApiModelConverter {
                     .withPlugins(plugins -> {
                         project.getPlugins().all().forEach(plugin -> {
                             plugins.addPlugin(plugin.getId(), plugin.getVersion(), plugin.isApplied());
+                        });
+                    })
+
+                    .withDependencies(dependencies -> {
+                        project.getDependencies().all().forEach((configuration, dependencySet) -> {
+                            dependencySet.forEach(dependency -> {
+                                dependencies.add(configuration, dependency.getGroup(), dependency.getName(),
+                                        dependency.getVersion());
+                            });
                         });
                     });
 

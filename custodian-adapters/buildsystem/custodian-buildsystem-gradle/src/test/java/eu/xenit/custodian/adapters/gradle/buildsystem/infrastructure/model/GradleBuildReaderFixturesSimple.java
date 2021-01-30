@@ -40,8 +40,14 @@ public class GradleBuildReaderFixturesSimple {
 
         GradleBuildAssert.assertThat(build)
                 .assertRootProject(project -> {
+                    project.hasName("simple");
+                    project.hasProjectDir(location);
                     project.hasJavaPlugin();
-                    // project.hasImplementationDependency("org.apache.httpcomponents:httpclient:4.5.1");
+
+                    project.hasMavenCentralRepository();
+
+                    project.hasImplementationDependency("org.apache.httpcomponents:httpclient:4.5.1");
+                    project.hasTestImplementationDependency("junit:junit:4.12");
                 });
 
 //        new SentinelReportAssert(reportFile)
@@ -84,9 +90,22 @@ public class GradleBuildReaderFixturesSimple {
 
         GradleBuildAssert.assertThat(build)
                 .assertRootProject(project -> {
+                    project.hasName("starter");
+                    project.hasGroup("com.example");
+                    project.hasVersion("0.0.1-SNAPSHOT");
+                    // sourceCompatibility = '11'
+
                     project.hasJavaPlugin();
-                    project.hasPlugin("org.springframework.boot", "2.1.7.RELEASE");
-                    project.hasPlugin("io.spring.dependency-management", "1.0.8.RELEASE");
+                    project.hasPlugin("org.springframework.boot", "2.4.2");
+                    project.hasPlugin("io.spring.dependency-management", "1.0.11.RELEASE");
+
+                    project.assertDependencies(dependencies -> {
+                        dependencies.hasImplementation("org.springframework.boot:spring-boot-starter-security");
+                        dependencies.hasImplementation("org.springframework.boot:spring-boot-starter-web");
+
+                        dependencies.hasTestImplementation("org.springframework.boot:spring-boot-starter-test");
+                        dependencies.hasTestImplementation("org.springframework.security:spring-security-test");
+                    });
                 });
     }
 

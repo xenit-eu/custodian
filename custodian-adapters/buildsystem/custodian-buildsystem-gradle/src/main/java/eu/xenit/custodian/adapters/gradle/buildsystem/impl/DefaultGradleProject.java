@@ -24,6 +24,12 @@ public class DefaultGradleProject implements GradleProject {
     private final String name;
 
     @Getter
+    private final String group;
+
+    @Getter
+    private final String version;
+
+    @Getter
     private final GradlePluginContainer plugins;
 
     @Getter
@@ -36,6 +42,7 @@ public class DefaultGradleProject implements GradleProject {
 
     @Getter
     private final GradleDsl dsl;
+
 
 //    @Getter
     private final String projectDirPath;
@@ -58,6 +65,8 @@ public class DefaultGradleProject implements GradleProject {
 
         this.path = builder.path();
         this.name = builder.name();
+        this.group = builder.group();
+        this.version = builder.version();
         this.projectDirPath = builder.projectDir();
         this.buildFileName = builder.buildFile();
 
