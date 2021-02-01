@@ -1,7 +1,7 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem.asserts;
 
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
-import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleRepositoriesAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.RepositoriesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model.GradleProjectAssert;
 import java.nio.file.Path;
 import java.util.function.Consumer;
@@ -35,7 +35,7 @@ public interface GradleBuildProjectAssert<ASSERT> {
 
     ASSERT hasMavenCentralRepository();
 
-    ASSERT assertRepositories(Consumer<GradleRepositoriesAssert> callback);
+    ASSERT assertRepositories(Consumer<RepositoriesAssert> callback);
 
     ASSERT hasProperties(String... values);
 

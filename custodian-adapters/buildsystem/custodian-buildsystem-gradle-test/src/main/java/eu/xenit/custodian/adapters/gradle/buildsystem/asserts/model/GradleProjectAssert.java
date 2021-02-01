@@ -2,13 +2,11 @@ package eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleDependencyContainer;
-import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency;
-import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradlePluginContainer;
-import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleProject;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.*;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.GradleBuildProjectAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.PluginsAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.DependenciesAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.RepositoriesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleBuildFileAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.file.GradleRepositoriesAssert;
 import eu.xenit.custodian.ports.spi.buildsystem.Project;
@@ -67,12 +65,20 @@ public class GradleProjectAssert extends AbstractAssert<GradleProjectAssert, Gra
     }
 
     @Override
-    public GradleProjectAssert hasMavenCentralRepository() {
-        return null;
+    public GradleProjectAssert withRepositories(Consumer<GradleRepositoryContainer> callback) {
+        callback.accept(this.actual.getRepositories());
+        return this.myself;
     }
 
     @Override
-    public GradleProjectAssert assertRepositories(Consumer<GradleRepositoriesAssert> callback) {
+    public GradleProjectAssert assertRepositories(Consumer<RepositoriesAssert> callback) {
+        return this.withRepositories(repositories -> {
+            callback.accept(new GradleRepositoriesModelAssert(repositories));
+        });
+    }
+
+    @Override
+    public GradleProjectAssert hasMavenCentralRepository() {
         return null;
     }
 

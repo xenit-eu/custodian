@@ -4,6 +4,7 @@ import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleModuleDependency
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.DependenciesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.GradleBuildProjectAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.PluginsAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.RepositoriesAssert;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model.GradleProjectAssert;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -53,13 +54,13 @@ public class GradleBuildFileAssert extends AbstractStringAssert<GradleBuildFileA
 
     @Override
     public GradleBuildFileAssert hasMavenCentralRepository() {
-        this.assertRepositories(GradleRepositoriesAssert::hasMavenCentral);
+        this.assertRepositories(RepositoriesAssert::hasMavenCentral);
         return myself;
     }
 
 
     @Override
-    public GradleBuildFileAssert assertRepositories(Consumer<GradleRepositoriesAssert> callback) {
+    public GradleBuildFileAssert assertRepositories(Consumer<RepositoriesAssert> callback) {
         callback.accept(GradleRepositoriesAssert.from(this.actual));
         return this;
     }
