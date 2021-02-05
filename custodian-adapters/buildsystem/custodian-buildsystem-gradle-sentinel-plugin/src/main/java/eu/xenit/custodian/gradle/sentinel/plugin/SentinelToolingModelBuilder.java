@@ -1,13 +1,18 @@
 package eu.xenit.custodian.gradle.sentinel.plugin;
 
+import eu.xenit.custodian.gradle.sentinel.model.DefaultDependenciesContainer;
 import eu.xenit.custodian.gradle.sentinel.model.DefaultGradleBuildModel;
 import eu.xenit.custodian.gradle.sentinel.model.DefaultProjectModel;
+import eu.xenit.custodian.gradle.sentinel.model.DefaultRepositoriesContainer;
 import eu.xenit.custodian.gradle.sentinel.model.GradleBuildModel;
 import eu.xenit.custodian.gradle.sentinel.model.PluginContainer;
 import eu.xenit.custodian.gradle.sentinel.model.ProjectModel;
 import eu.xenit.custodian.gradle.sentinel.plugin.service.PluginRegistrationLookup;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ExternalModuleDependency;
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
+import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor;
+import org.gradle.api.internal.artifacts.repositories.RepositoryContentDescriptorInternal;
 import org.gradle.tooling.provider.model.ToolingModelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +68,8 @@ class SentinelToolingModelBuilder implements ToolingModelBuilder {
         model.setBuildFile(project.getBuildFile().toString());
 
         this.buildPluginModel(project, model.getPlugins());
-        this.buildDependenciesModel(project, model);
+        this.buildRepositoriesModel(project, model.getRepositories());
+        this.buildDependenciesModel(project, model.getDependencies());
 
         return model;
     }
@@ -97,14 +103,26 @@ class SentinelToolingModelBuilder implements ToolingModelBuilder {
                 });
     }
 
-    void buildDependenciesModel(Project project, DefaultProjectModel model) {
+    void buildRepositoriesModel(Project project, DefaultRepositoriesContainer repositoriesContainer) {
+        project.getRepositories().stream()
+                .peek(repo -> log.warn("repo: "+repo.getName()+ " ["+repo.getClass().getName()+"]"))
+                .forEach(repo -> {
+                    if (repo instanceof MavenArtifactRepository) {
+                        MavenArtifactRepository mavenRepo = (MavenArtifactRepository) repo;
+                        repositoriesContainer.addMavenRepository(mavenRepo.getUrl().normalize().toString(), mavenRepo.getName());
+                    } else {
+                        log.warn("ignoring repo type "+repo.getClass().getName());
+                    }
+                });
+    }
+    void buildDependenciesModel(Project project, DefaultDependenciesContainer dependencyDto) {
         project.getConfigurations().stream()
-                .peek(config -> log.warn("get dependencies from "+config.getName()))
-                .forEach(config -> config.getDependencies().stream().forEach(dependency -> {
-                    log.warn("-- "+config.getName()+" - "+dependency);
+                .peek(config -> log.debug("get dependencies from "+config.getName()))
+                .forEach(config -> config.getDependencies().forEach(dependency -> {
+                    log.debug("-- "+config.getName()+" - "+dependency);
 
                     if (dependency instanceof ExternalModuleDependency) {
-                        model.getDependencies().addExternalModule(config.getName(), dependency.getGroup(), dependency.getName(), dependency.getVersion());
+                        dependencyDto.addExternalModule(config.getName(), dependency.getGroup(), dependency.getName(), dependency.getVersion());
                     } else {
                         log.warn("Dependency {} of type {} skipped ...", dependency, dependency.getClass().getName());
                     }

@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 public class MavenRepository implements GradleArtifactRepository {
 
     private static final MavenRepository MAVEN_CENTRAL = MavenRepository
-            .withIdAndUrl("maven-central", "https://repo.maven.apache.org/maven2")
+            .withIdAndUrl("maven-central", "https://repo.maven.apache.org/maven2/")
             .name("Maven Central")
             .build();
 

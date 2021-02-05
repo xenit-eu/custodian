@@ -1,14 +1,10 @@
 package eu.xenit.custodian.adapters.gradle.buildsystem.asserts.model;
 
-import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradlePlugin;
-import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradlePluginContainer;
 import eu.xenit.custodian.adapters.gradle.buildsystem.api.GradleRepositoryContainer;
-import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.PluginsAssert;
+import eu.xenit.custodian.adapters.gradle.buildsystem.api.MavenRepository;
 import eu.xenit.custodian.adapters.gradle.buildsystem.asserts.RepositoriesAssert;
 import org.assertj.core.api.AbstractAssert;
-
-import java.util.Objects;
-import java.util.stream.Collectors;
+import org.assertj.core.api.Assertions;
 
 public class GradleRepositoriesModelAssert
         extends AbstractAssert<GradleRepositoriesModelAssert, GradleRepositoryContainer>
@@ -18,19 +14,19 @@ public class GradleRepositoriesModelAssert
         super(actual, GradleRepositoriesModelAssert.class);
     }
 
-    public GradleRepositoriesModelAssert hasRepositoryUrl(String url) {
-        this.actual.has()
+    public GradleRepositoriesModelAssert hasRepository(String url) {
+        Assertions.assertThat(this.actual.urls()).contains(url);
         return this.myself;
     }
 
-
     @Override
-    public PluginsAssert doesNotHavePlugin(String plugin) {
-        return null;
+    public GradleRepositoriesModelAssert doesNotHaveRepository(String url) {
+        Assertions.assertThat(this.actual.urls()).doesNotContain(url);
+        return this.myself;
     }
 
     @Override
-    public RepositoriesAssert hasMavenCentral() {
-        return null;
+    public GradleRepositoriesModelAssert hasMavenCentral() {
+        return this.hasRepository(MavenRepository.mavenCentral().getUrl());
     }
 }

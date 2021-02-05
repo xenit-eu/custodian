@@ -1,35 +1,76 @@
 package eu.xenit.custodian.ports.spi.buildsystem;
 
-import eu.xenit.custodian.domain.buildsystem.BuildItemContainer;
 import eu.xenit.custodian.util.Arguments;
-import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-public class RepositoryContainer<TRepository extends Repository> extends BuildItemContainer<String, TRepository> {
+public class RepositoryContainer<TRepository extends Repository> {
+
+    private final Map<String, TRepository> repositories = new LinkedHashMap<>();
 
     protected RepositoryContainer() {
-        super(new LinkedHashMap<>());
+
     }
 
     protected RepositoryContainer(Stream<TRepository> repositories) {
-        super(new LinkedHashMap<>());
-
         Arguments.notNull(repositories, "repositories");
-        repositories.forEach(repo -> this.add(repo.getId(), repo));
+        repositories.forEach(this::add);
     }
 
-//    public void add(TRepository repository) {
-//        super.add(repository.getId(), repository);
-//    }
-//
-//    public void addAll(Collection<TRepository> collection)
-//    {
-//        Objects.requireNonNull(collection, "collection must not be null");
-//        collection.forEach(repository -> {
-//            Objects.requireNonNull(repository, "item in collection must not be null");
-//            this.add(repository);
-//        });
-//    }
+
+    /**
+     * Specify if this repository container is empty.
+     * @return {@code true} if no repository is registered
+     */
+    public boolean isEmpty() {
+        return this.repositories.isEmpty();
+    }
+
+    /**
+     * Specify if this repository container has an item with the specified url.
+     *
+     * @param url the url of a repository
+     * @return {@code true} if a repository with the specified {@code url} is registered
+     */
+    public boolean hasRepository(String url) {
+        return this.repositories.containsKey(url);
+    }
+
+    /**
+     * Return a {@link Stream} of registered repositories.
+     * @return a stream of repository urls
+     */
+    public Stream<String> urls() {
+        return this.repositories.keySet().stream();
+    }
+
+    /**
+     * Return a {@link Stream} of registered repositories.
+     * @return a stream of items
+     */
+    public Stream<TRepository> items() {
+        return this.repositories.values().stream();
+    }
+
+    /**
+     * Return the repository with the specified {@code url} or {@code null} if no such
+     * repository exists.
+     *
+     * @param url the url of a repository
+     * @return the {@code optional} of repository or {@code Optional.empty()}
+     */
+    public Optional<TRepository> get(String url) {
+        return Optional.ofNullable(this.repositories.get(url));
+    }
+
+    /**
+     * Register the specified {@code repository}.
+     *
+     * @param repository the repository to register
+     */
+    protected void add(TRepository repository) {
+        this.repositories.put(repository.getUrl(), repository);
+    }
 }

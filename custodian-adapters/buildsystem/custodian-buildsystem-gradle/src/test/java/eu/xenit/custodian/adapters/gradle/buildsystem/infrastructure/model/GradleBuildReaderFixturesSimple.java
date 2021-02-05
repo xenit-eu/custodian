@@ -13,23 +13,6 @@ import org.junit.jupiter.api.Test;
 
 public class GradleBuildReaderFixturesSimple {
 
-    //    static class GradleBuilderReaderProvider implements ArgumentsProvider {
-//
-//        @Override
-//        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
-//            return Stream.of(
-////                    Arguments.of(new SentinelGradleBuildReaderAdapter(
-////                            new JacksonSentinelReportParser(), GradleRunner::create
-////                    )),
-//                    Arguments.of(new GradleToolingBuildReaderAdapter())
-//            );
-//        }
-//    }
-//
-//    @ParameterizedTest
-//    @ArgumentsSource(GradleBuilderReaderProvider.class)
-//    void testSimpleFixture(GradleBuildReaderPort reader) throws BuildSystemException {
-
     @Test
     void testSimpleFixture() throws BuildSystemException {
         GradleBuildReaderPort reader = new GradleToolingBuildReaderAdapter();
@@ -42,10 +25,9 @@ public class GradleBuildReaderFixturesSimple {
                 .assertRootProject(project -> {
                     project.hasName("simple");
                     project.hasProjectDir(location);
+
                     project.hasJavaPlugin();
-
                     project.hasMavenCentralRepository();
-
                     project.hasImplementationDependency("org.apache.httpcomponents:httpclient:4.5.1");
                     project.hasTestImplementationDependency("junit:junit:4.12");
                 });
@@ -60,24 +42,7 @@ public class GradleBuildReaderFixturesSimple {
 //                .assertField("gradle", gradle -> {
 //                    gradle.assertField("version", "5.6.2");
 //                })
-//                .assertFieldArray("repositories", repositories -> {
-//                    repositories.hasSize(1);
-//                    repositories.haveExactlyOne(Repository.withUrl("https://repo.maven.apache.org/maven2/"));
-//                })
-//                .assertField("dependencies", dependencies -> {
-//
-//                    dependencies.isObject();
-//                    dependencies.assertFieldArray("implementation", implementation -> {
-////                        implementation.assertFieldArray("dependencies", dependencies -> {
-//                        implementation.haveExactlyOne(dependency("org.apache.httpcomponents:httpclient:4.5.1"));
-////                            dependencies.doNotHave(Dependency.from("junit:junit:4.12"));
-////                        });
-//                    });
-//
-//                    dependencies.assertFieldArray("testImplementation", testImplementation -> {
-//                        testImplementation.haveExactlyOne(dependency("junit:junit:4.12"));
-//                    });
-//                });
+
     }
 
     @Test

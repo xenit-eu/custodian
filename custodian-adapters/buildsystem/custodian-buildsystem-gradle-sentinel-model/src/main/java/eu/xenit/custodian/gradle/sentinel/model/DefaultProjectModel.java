@@ -16,6 +16,7 @@ public class DefaultProjectModel implements ProjectModel, Serializable {
 
     private final PluginContainer plugins = new DefaultPluginContainer();
     private final DefaultDependenciesContainer dependencies = new DefaultDependenciesContainer();
+    private final DefaultRepositoriesContainer repositories = new DefaultRepositoriesContainer();
 
     public DefaultProjectModel(String path) {
         this.path = path;
@@ -76,6 +77,10 @@ public class DefaultProjectModel implements ProjectModel, Serializable {
         return buildFile;
     }
 
+    public void setBuildFile(String buildScript) {
+        this.buildFile = buildScript;
+    }
+
     @Override
     public PluginContainer getPlugins() {
         return this.plugins;
@@ -86,8 +91,9 @@ public class DefaultProjectModel implements ProjectModel, Serializable {
         return this.dependencies;
     }
 
-    public void setBuildFile(String buildScript) {
-        this.buildFile = buildScript;
+    @Override
+    public DefaultRepositoriesContainer getRepositories() {
+        return this.repositories;
     }
 
 

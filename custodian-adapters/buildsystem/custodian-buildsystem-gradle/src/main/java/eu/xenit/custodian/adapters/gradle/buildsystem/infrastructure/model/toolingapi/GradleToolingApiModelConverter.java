@@ -40,6 +40,12 @@ public class GradleToolingApiModelConverter {
                         });
                     })
 
+                    .withRepositories(repositories -> {
+                        project.getRepositories().all().forEach(repo -> {
+                            repositories.addMavenRepository(repo.getName(), repo.getUrl());
+                        });
+                    })
+
                     .withDependencies(dependencies -> {
                         project.getDependencies().all().forEach((configuration, dependencySet) -> {
                             dependencySet.forEach(dependency -> {

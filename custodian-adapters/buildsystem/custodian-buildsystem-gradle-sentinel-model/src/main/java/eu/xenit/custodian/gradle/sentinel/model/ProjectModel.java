@@ -13,4 +13,5 @@ public interface ProjectModel {
 
     PluginContainer getPlugins();
     DependenciesContainer getDependencies();
+    RepositoriesContainer getRepositories();
 }

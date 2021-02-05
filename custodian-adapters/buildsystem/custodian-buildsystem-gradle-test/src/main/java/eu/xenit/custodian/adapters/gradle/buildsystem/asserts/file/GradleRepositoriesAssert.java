@@ -15,6 +15,11 @@ public class GradleRepositoriesAssert extends AbstractStringAssert<GradleReposit
         return this.contains("maven { url '" + url + "' }");
     }
 
+    @Override
+    public RepositoriesAssert doesNotHaveRepository(String url) {
+        return this.doesNotContain("maven { url '" + url + "' }");
+    }
+
     public GradleRepositoriesAssert hasMavenCentral() {
         return this.contains("mavenCentral()");
     }
